@@ -3,7 +3,7 @@ layout: post
 title: So sánh các câu lệnh warmup primary key vào buffer pool với engine InnoDB mysql
 date: 2017-01-16 00:00:00
 summary: Buffer pool(BF) của mysql quả thực có nhiều lợi ích, và việc warm up BP luôn là việc nên làm đầu tiên mỗi khi start/reload/create new mysql. Tuy nhiên, "touch" thế nào cho tối ưu nhất? Trong quá trình thực hiện benchmark cho [tool này](https://github.com/manhdaovan/mysql_warmup), người viết thấy có 1 số điều thú vị như dưới đây.
-categories: tech mysql innodb mytool
+categories: tech mysql mytool
 ---
 
 #tech #mysql #vi

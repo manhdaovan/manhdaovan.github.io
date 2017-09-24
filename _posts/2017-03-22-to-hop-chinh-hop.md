@@ -3,7 +3,7 @@ layout: post
 title: Tổ hợp, chỉnh hợp và bài toán đếm cơ bản
 date: 2017-03-22 00:00
 summary: Một số bài toán về chỉnh hợp, tổ hợp cơ bản đã học hồi cấp 3 và áp dụng vào bài toán đếm
-categories: math combination accordant
+categories: math basic
 ---
 
 #math #combination #accordant #vi

@@ -4,16 +4,16 @@
     
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Vài suy nghĩ về nghề Lập Trình Viên (LTV) &#8211; ManhDV's blog</title>
+    <title>So sánh các câu lệnh warmup primary key vào buffer pool với engine InnoDB mysql &#8211; ManhDV's blog</title>
     <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
     <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Nghề LTV dưới góc nhìn của người viết. Liệu nó có phải là nghề &quot;đáng làm&quot; hay không?">
+    <meta name="description" content="Buffer pool(BF) của mysql quả thực có nhiều lợi ích, và việc warm up BP luôn là việc nên làm đầu tiên mỗi khi start/reload/create new mysql. Tuy nhiên, &quot;touch&quot; thế nào cho tối ưu nhất? Trong quá trình thực hiện benchmark cho [tool này](https://github.com/manhdaovan/mysql_warmup), người viết thấy có 1 số điều thú vị như dưới đây.">
     <meta name="robots" content="all">
     <meta name="author" content="Manh Dao Van">
     
-    <meta name="keywords" content="opinion, vi">
-    <link rel="canonical" href="http://localhost:4000/opinion/vi/2017/09/24/nghe-lap-trinh-vien/">
+    <meta name="keywords" content="tech, mysql, mytool">
+    <link rel="canonical" href="http://localhost:4000/tech/mysql/mytool/2017/01/16/so-sanh-warmup-commands/">
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for ManhDV's blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
@@ -47,9 +47,9 @@
     <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
     <meta property="og:locale" content="en_US">
     <meta property="og:type" content="article">
-    <meta property="og:title" content="Vài suy nghĩ về nghề Lập Trình Viên (LTV)">
+    <meta property="og:title" content="So sánh các câu lệnh warmup primary key vào buffer pool với engine InnoDB mysql">
     <meta property="og:description" content="95% những điều họ nói về ManhDV là sai, chỉ có lúc nào cũng so high là đúng thật :v">
-    <meta property="og:url" content="http://localhost:4000/opinion/vi/2017/09/24/nghe-lap-trinh-vien/">
+    <meta property="og:url" content="http://localhost:4000/tech/mysql/mytool/2017/01/16/so-sanh-warmup-commands/">
     <meta property="og:site_name" content="ManhDV's blog">
     
     <meta property="og:image" content="http://localhost:4000/images/me.png">
@@ -58,9 +58,9 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary" />
     
-    <meta name="twitter:title" content="Vài suy nghĩ về nghề Lập Trình Viên (LTV)" />
-    <meta name="twitter:description" content="Nghề LTV dưới góc nhìn của người viết. Liệu nó có phải là nghề "đáng làm" hay không?" />
-    <meta name="twitter:url" content="http://localhost:4000/opinion/vi/2017/09/24/nghe-lap-trinh-vien/" />
+    <meta name="twitter:title" content="So sánh các câu lệnh warmup primary key vào buffer pool với engine InnoDB mysql" />
+    <meta name="twitter:description" content="Buffer pool(BF) của mysql quả thực có nhiều lợi ích, và việc warm up BP luôn là việc nên làm đầu tiên mỗi khi start/reload/create new mysql. Tuy nhiên, "touch" thế nào cho tối ưu nhất? Trong quá trình thực hiện benchmark cho [tool này](https://github.com/manhdaovan/mysql_warmup), người viết thấy có 1 số điều thú vị như dưới đây." />
+    <meta name="twitter:url" content="http://localhost:4000/tech/mysql/mytool/2017/01/16/so-sanh-warmup-commands/" />
     
     <meta name="twitter:image" content="http://localhost:4000/images/me.png" />
     
@@ -162,58 +162,73 @@
 
 
 <div class="post-header mb2">
-  <h2>Vài suy nghĩ về nghề Lập Trình Viên (LTV)</h2>
-  <span class="post-meta">Sep 24, 2017</span><br>
+  <h2>So sánh các câu lệnh warmup primary key vào buffer pool với engine InnoDB mysql</h2>
+  <span class="post-meta">Jan 16, 2017</span><br>
   
   <span class="post-meta small">
   
-    3 minute read
+    2 minute read
   
   </span>
 </div>
 
 <article class="post-content">
-  <p>#opinion #vi #cntt #ltv</p>
+  <p>#tech #mysql #vi</p>
 
-<p><code class="highlighter-rouge">LTV được nhắc tới trong bài được gói gọn trong ngữ cảnh của LTV Phần mềm.
-Mọi ý kiến trong bài đều dựa trên góc nhìn của người viết, không có ý gây ra những tranh luận tiêu cực không đáng có.</code></p>
+<h3 id="background">Background</h3>
 
-<h3 id="tldr">TL;DR:</h3>
-<div class="highlighter-rouge"><pre class="highlight"><code>LTV là nghề đáng làm, vì:
-  * Không có trăn trở quá lớn về đạo đức
-  * Không tổn thật hoặc tổn thất ít tài nguyên khi thử nghiệm hoặc thử nghiệm thất bại
-  * Không yêu cầu quá nhiều thể lực
-</code></pre>
-</div>
+<p><a href="http://dev.mysql.com/doc/refman/5.7/en/glossary.html#glos_buffer_pool">Buffer pool(BF)</a> của mysql quả thực có nhiều lợi ích, và việc warm up BP luôn là việc nên làm đầu tiên mỗi khi start/reload/create new mysql.</p>
 
-<p>Anh nhà bác tôi sang năm thi đại học. Bác tôi có hỏi là giờ nên cho anh mày học cái gì, tôi mạnh dạn: “Để anh ấy học CNTT đi bác”.</p>
+<ul>
+  <li>Mysql version &gt;= 5.6 đã hỗ trợ đơn giản hoá việc save/restore BF state bằng cấu hình, nên việc cần làm chỉ là cấu hình là xong.</li>
+  <li>Và trong các case khác, như cấu hình 1 slave mới, hoặc mysql version &lt; 5.6, thì phải thực hiện việc này một cách thủ công. Cơ chế chung của việc warmup là “touch” vào primary key và index của table đó.</li>
+  <li>Tuy nhiên, “touch” thế nào cho tối ưu nhất? Trong quá trình thực hiện benchmark cho <a href="https://github.com/manhdaovan/mysql_warmup">tool này</a>, người viết thấy có 1 số điều thú vị như dưới đây.</li>
+</ul>
 
-<p>Nghề LTV có nhiều tên gọi biến thể hoặc mở rộng, nâng cấp khác như Coder, Developer, Software Engineer…, là một nghề trong lĩnh vực khoa học kỹ thuật.
-Tựu trung lại thì những nghề trên nói riêng, hay mọi nghề liên quan đến lĩnh vực khoa học kỹ thuật nói chung, đề là nghề đáng làm, rất đáng làm, do nó có các đặc điểm sau:</p>
+<h3 id="testing">Testing</h3>
 
-<h3 id="không-có-trăn-trở-quá-lớn-về-mặt-đạo-đức">Không có trăn trở quá lớn về mặt đạo đức</h3>
+<p>Việc testing theo các case khác nhau khá dài, và chủ yếu là người viết cực kỳ lười :v, nên các bạn vui lòng đọc tại <a href="https://github.com/manhdaovan/mysql_warmup/blob/master/CHANGE_SUM_TO_COUNT.md">link này</a>.</p>
 
-<p>Trong nghề LTV này, thành tựu và năng lực của một cá nhân được thể hiện rất rõ ràng, khó có thể bị hiểu một cách nhập nhằng. Thậm chí có câu nói: “<a href="https://en.wikiquote.org/wiki/Linus_Torvalds">Talk is cheap. Show me the code.</a>” kinh điển.
-Do là ngành mang đậm tính khoa học tự nhiên, nên kết quả chỉ có đúng/sai, không có khái niệm <strong>có vẻ đúng</strong> hay <strong>gần đúng rồi</strong> nào cả. Và tất nhiên, câu thần chú <strong>nhất quan hệ, nhì tiền tệ</strong> không có cửa áp dụng ở đây.
-Để lên được trình độ cao trong ngành, trong nghề, chỉ có con đường duy nhất là tạo ra những dòng code, những kiến trúc tốt, những sản phẩm có chất lượng cao. Tất nhiên, nếu rẽ hướng sang con đường làm quản lý thì lại là chuyện khác hẳn.</p>
+<h3 id="tldr">TL;DR</h3>
 
-<p>Nói đến đây thì hẳn người đọc sẽ có suy nghĩ: “Nghề nào mà chả vậy, giỏi là được”. Đúng. Nhưng ý của người viết là để được công nhận là giỏi trong nghề LTV này, thì ko cần cầu cạnh ai cả, cứ tạo ra những dòng code chói lòa, và để những người cùng nghề đánh giá :D</p>
+<p>Để warmup primary key của table, thì câu lệnh nào dưới đây là tối ưu trong trường hợp:</p>
 
-<h3 id="không-tổn-thật-hoặc-tổn-thất-ít-tài-nguyên-khi-thử-nghiệm-hoặc-thử-nghiệm-thất-bại">Không tổn thật hoặc tổn thất ít tài nguyên khi thử nghiệm hoặc thử nghiệm thất bại</h3>
+<ul>
+  <li>Table chỉ có primary key.</li>
+  <li>Table ngoài primary key ra còn có nhiều hơn hoặc bằng một index nữa</li>
+</ul>
 
-<p>Khi cá nhân có ý tưởng, hay đơn giản chỉ là muốn thử nghiệm cái mà bản thân chưa biết, thì làm điều này đối với nghề LTV luôn mang lại những trải nghiệm an toàn.
-An toàn ở chỗ là dù có làm sai, làm hỏng, chọc ngoáy đủ kiểu, thì thứ tốn kém chỉ là thời gian mà thôi. Chuyện gì sẽ xảy ra nếu như bạn xây sai một bức tường? Chỉ có đập. Đập nghĩa là ngoài thời gian đã bỏ ra, còn là gạch, vữa…
-Như vậy, ở một khía cạnh này, thì nghề LTV luôn khuyến khích mọi người thử nghiệm và học những cái mới nhanh chóng và an toàn.
-Và chỉ có vọc vạch thì tay nghề mới lên được.</p>
+<p><strong>Các câu lệnh thử nghiệm:</strong></p>
 
-<h3 id="không-yêu-cầu-quá-nhiều-thể-lực">Không yêu cầu quá nhiều thể lực</h3>
+<ul>
+  <li>select count(*) from table_name</li>
+  <li>select count(*) from table_name where non_index_column = 0 or non_index_column = ‘0’</li>
+  <li>select sum(primary_key) from table_name ?</li>
+</ul>
 
-<p>Ngắn gọn thôi: Với người chỉ cao 1m60 và nặng chưa bằng 1 bao xi măng như người viết còn làm được nghề này, thì ai chẳng làm được :v</p>
+<h4 id="kết-quả">Kết quả:</h4>
 
-<h3 id="ngoài-lề">Ngoài lề</h3>
+<p><strong>Table with only primary key:</strong></p>
 
-<p>Nghề LTV là nghề đáng làm, không có nghĩ nó là nghề <strong>việc nhẹ lương cao</strong> (Cụm từ này là cụm từ người viết căm ghét nhất từ lúc đi làm tới giờ, sẽ được giải thích ở post khác)
-Nó có những đặc thù riêng, với những chuẩn bị cũng khác nữa.</p>
+<ul>
+  <li><code class="highlighter-rouge">select count(*) from table_name where non_index_column = 0 or non_index_column = '0'</code> cho kết quả nhiều pages được load vào BF là nhiều nhất.</li>
+  <li><code class="highlighter-rouge">select count(*) from table_name</code> và <code class="highlighter-rouge">select sum(primary_key) from table_name</code> cho cùng 1 kết quả số pages được load, nhưng ít hơn câu trên.</li>
+</ul>
+
+<p><strong>Table with primary key and other index(es):</strong></p>
+
+<ul>
+  <li><code class="highlighter-rouge">select count(*) from table_name</code>: <strong>primary_key</strong> will be loaded.</li>
+  <li><code class="highlighter-rouge">select sum(primary_key) from table_name</code>: <strong>other_index</strong> will be loaded, not primary key (so funny).</li>
+  <li><code class="highlighter-rouge">select count(*) from table_name where non_index_column = 0 or non_index_column = '0'</code>: <strong>primary_key</strong> sẽ đựơc load với số lượng lớn nhất.</li>
+</ul>
+
+<h3 id="kết-luận">Kết luận:</h3>
+
+<ul>
+  <li>Nên manual bằng cách touch primary key theo cách đảm bảo là tất cả primary key sẽ được “sờ” tới, bằng cách add thêm điều kiện where cho non_index_column.</li>
+  <li>Nên dùng <strong>count(*)</strong> thay cho <strong>sum(primary_key)</strong></li>
+</ul>
 
 
 </article>
@@ -224,33 +239,33 @@ Nó có những đặc thù riêng, với những chuẩn bị cũng khác nữa
 
   <div class="share-links">
     
-      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fopinion%2Fvi%2F2017%2F09%2F24%2Fnghe-lap-trinh-vien%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Ftech%2Fmysql%2Fmytool%2F2017%2F01%2F16%2Fso-sanh-warmup-commands%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
     
 
     
-      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=V%C3%A0i+suy+ngh%C4%A9+v%E1%BB%81+ngh%E1%BB%81+L%E1%BA%ADp+Tr%C3%ACnh+Vi%C3%AAn+%28LTV%29&amp;url=http%3A%2F%2Flocalhost%3A4000%2Fopinion%2Fvi%2F2017%2F09%2F24%2Fnghe-lap-trinh-vien%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=So+s%C3%A1nh+c%C3%A1c+c%C3%A2u+l%E1%BB%87nh+warmup+primary+key+v%C3%A0o+buffer+pool+v%E1%BB%9Bi+engine+InnoDB+mysql&amp;url=http%3A%2F%2Flocalhost%3A4000%2Ftech%2Fmysql%2Fmytool%2F2017%2F01%2F16%2Fso-sanh-warmup-commands%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
     
 
     
-      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http%3A%2F%2Flocalhost%3A4000%2Fopinion%2Fvi%2F2017%2F09%2F24%2Fnghe-lap-trinh-vien%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http%3A%2F%2Flocalhost%3A4000%2Ftech%2Fmysql%2Fmytool%2F2017%2F01%2F16%2Fso-sanh-warmup-commands%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
     
 
     
-      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=http%3A%2F%2Flocalhost%3A4000%2Fopinion%2Fvi%2F2017%2F09%2F24%2Fnghe-lap-trinh-vien%2F&amp;title=V%C3%A0i+suy+ngh%C4%A9+v%E1%BB%81+ngh%E1%BB%81+L%E1%BA%ADp+Tr%C3%ACnh+Vi%C3%AAn+%28LTV%29" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
-    
-
-    
-
-    
-
-    
-      <a class="fa fa-reddit" href="http://reddit.com/submit?url=http%3A%2F%2Flocalhost%3A4000%2Fopinion%2Fvi%2F2017%2F09%2F24%2Fnghe-lap-trinh-vien%2F&amp;title=V%C3%A0i+suy+ngh%C4%A9+v%E1%BB%81+ngh%E1%BB%81+L%E1%BA%ADp+Tr%C3%ACnh+Vi%C3%AAn+%28LTV%29" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=http%3A%2F%2Flocalhost%3A4000%2Ftech%2Fmysql%2Fmytool%2F2017%2F01%2F16%2Fso-sanh-warmup-commands%2F&amp;title=So+s%C3%A1nh+c%C3%A1c+c%C3%A2u+l%E1%BB%87nh+warmup+primary+key+v%C3%A0o+buffer+pool+v%E1%BB%9Bi+engine+InnoDB+mysql" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
     
 
     
 
     
-      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=http%3A%2F%2Flocalhost%3A4000%2Fopinion%2Fvi%2F2017%2F09%2F24%2Fnghe-lap-trinh-vien%2F&amp;t=V%C3%A0i+suy+ngh%C4%A9+v%E1%BB%81+ngh%E1%BB%81+L%E1%BA%ADp+Tr%C3%ACnh+Vi%C3%AAn+%28LTV%29" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=http%3A%2F%2Flocalhost%3A4000%2Ftech%2Fmysql%2Fmytool%2F2017%2F01%2F16%2Fso-sanh-warmup-commands%2F&amp;title=So+s%C3%A1nh+c%C3%A1c+c%C3%A2u+l%E1%BB%87nh+warmup+primary+key+v%C3%A0o+buffer+pool+v%E1%BB%9Bi+engine+InnoDB+mysql" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=http%3A%2F%2Flocalhost%3A4000%2Ftech%2Fmysql%2Fmytool%2F2017%2F01%2F16%2Fso-sanh-warmup-commands%2F&amp;t=So+s%C3%A1nh+c%C3%A1c+c%C3%A2u+l%E1%BB%87nh+warmup+primary+key+v%C3%A0o+buffer+pool+v%E1%BB%9Bi+engine+InnoDB+mysql" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
     
   </div>
 </div>
@@ -283,8 +298,8 @@ Nó có những đặc thù riêng, với những chuẩn bị cũng khác nữa
   <div id="disqus_thread"></div>
   <script type="text/javascript">
     var disqus_shortname  = 'https-manhdaovan-github-io';
-    var disqus_identifier = '/opinion/vi/2017/09/24/nghe-lap-trinh-vien';
-    var disqus_title      = "Vài suy nghĩ về nghề Lập Trình Viên (LTV)";
+    var disqus_identifier = '/tech/mysql/mytool/2017/01/16/so-sanh-warmup-commands';
+    var disqus_title      = "So sánh các câu lệnh warmup primary key vào buffer pool với engine InnoDB mysql";
 
     (function() {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -299,6 +314,13 @@ Nó có những đặc thù riêng, với những chuẩn bị cũng khác nữa
 
 
   <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/opinion/vi/2017/09/24/nghe-lap-trinh-vien/" class="post-link">
+        <h4 class="post-title">Vài suy nghĩ về nghề Lập Trình Viên (LTV)</h4>
+        <p class="post-summary">Nghề LTV dưới góc nhìn của người viết. Liệu nó có phải là nghề "đáng làm" hay không?</p>
+      </a>
+    </div>
   
     <div class="post ml2">
       <a href="/tech/rails/actioncable/2017/04/07/Realtime-chat-voi-websocket/" class="post-link">
@@ -325,13 +347,6 @@ Nó có những đặc thù riêng, với những chuẩn bị cũng khác nữa
       <a href="/tech/mysql/mytool/2017/03/02/benchmark-mysql-inno-db-buffer-pool/" class="post-link">
         <h4 class="post-title">Thực hiện benchmark (BM) MySQL InnoDB Buffer Pool(BP) trước và sau khi được warmup</h4>
         <p class="post-summary">Mình thực hiện BM này cho chính [tool mình viết](https://github.com/manhdaovan/mysql_warmup), cũng là 1 tool đơn giản thôi, tiện thể đem kết quả lên khoe với mọi người luôn.</p>
-      </a>
-    </div>
-  
-    <div class="post ml2">
-      <a href="/tech/mysql/mytool/2017/01/16/so-sanh-warmup-commands/" class="post-link">
-        <h4 class="post-title">So sánh các câu lệnh warmup primary key vào buffer pool với engine InnoDB mysql</h4>
-        <p class="post-summary">Buffer pool(BF) của mysql quả thực có nhiều lợi ích, và việc warm up BP luôn là việc nên làm đầu tiên mỗi khi start/reload/create new mysql. Tuy nhiên, "touch" thế nào cho tối ưu nhất? Trong quá trình thực hiện benchmark cho [tool này](https://github.com/manhdaovan/mysql_warmup), người viết thấy có 1 số điều thú vị như dưới đây.</p>
       </a>
     </div>
   

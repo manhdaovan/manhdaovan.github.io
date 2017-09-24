@@ -4,16 +4,16 @@
     
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Vài suy nghĩ về nghề Lập Trình Viên (LTV) &#8211; ManhDV's blog</title>
+    <title>Xây dựng ứng dụng chat sử dụng websocket có khó không? &#8211; ManhDV's blog</title>
     <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
     <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Nghề LTV dưới góc nhìn của người viết. Liệu nó có phải là nghề &quot;đáng làm&quot; hay không?">
+    <meta name="description" content="A-to-Z Xây dựng ứng dụng realtime chat sử dụng action cable rails 5">
     <meta name="robots" content="all">
     <meta name="author" content="Manh Dao Van">
     
-    <meta name="keywords" content="opinion, vi">
-    <link rel="canonical" href="http://localhost:4000/opinion/vi/2017/09/24/nghe-lap-trinh-vien/">
+    <meta name="keywords" content="tech, rails, actioncable">
+    <link rel="canonical" href="http://localhost:4000/tech/rails/actioncable/2017/04/07/Realtime-chat-voi-websocket/">
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for ManhDV's blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
@@ -47,9 +47,9 @@
     <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
     <meta property="og:locale" content="en_US">
     <meta property="og:type" content="article">
-    <meta property="og:title" content="Vài suy nghĩ về nghề Lập Trình Viên (LTV)">
+    <meta property="og:title" content="Xây dựng ứng dụng chat sử dụng websocket có khó không?">
     <meta property="og:description" content="95% những điều họ nói về ManhDV là sai, chỉ có lúc nào cũng so high là đúng thật :v">
-    <meta property="og:url" content="http://localhost:4000/opinion/vi/2017/09/24/nghe-lap-trinh-vien/">
+    <meta property="og:url" content="http://localhost:4000/tech/rails/actioncable/2017/04/07/Realtime-chat-voi-websocket/">
     <meta property="og:site_name" content="ManhDV's blog">
     
     <meta property="og:image" content="http://localhost:4000/images/me.png">
@@ -58,9 +58,9 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary" />
     
-    <meta name="twitter:title" content="Vài suy nghĩ về nghề Lập Trình Viên (LTV)" />
-    <meta name="twitter:description" content="Nghề LTV dưới góc nhìn của người viết. Liệu nó có phải là nghề "đáng làm" hay không?" />
-    <meta name="twitter:url" content="http://localhost:4000/opinion/vi/2017/09/24/nghe-lap-trinh-vien/" />
+    <meta name="twitter:title" content="Xây dựng ứng dụng chat sử dụng websocket có khó không?" />
+    <meta name="twitter:description" content="A-to-Z Xây dựng ứng dụng realtime chat sử dụng action cable rails 5" />
+    <meta name="twitter:url" content="http://localhost:4000/tech/rails/actioncable/2017/04/07/Realtime-chat-voi-websocket/" />
     
     <meta name="twitter:image" content="http://localhost:4000/images/me.png" />
     
@@ -162,8 +162,8 @@
 
 
 <div class="post-header mb2">
-  <h2>Vài suy nghĩ về nghề Lập Trình Viên (LTV)</h2>
-  <span class="post-meta">Sep 24, 2017</span><br>
+  <h2>Xây dựng ứng dụng chat sử dụng websocket có khó không?</h2>
+  <span class="post-meta">Apr 7, 2017</span><br>
   
   <span class="post-meta small">
   
@@ -173,48 +173,53 @@
 </div>
 
 <article class="post-content">
-  <p>#opinion #vi #cntt #ltv</p>
+  <p>#tech #realtime #chatting #rails #actioncable #vi</p>
 
-<p><code class="highlighter-rouge">LTV được nhắc tới trong bài được gói gọn trong ngữ cảnh của LTV Phần mềm.
-Mọi ý kiến trong bài đều dựa trên góc nhìn của người viết, không có ý gây ra những tranh luận tiêu cực không đáng có.</code></p>
+<p>Cảnh báo: Mục đích của bài viết hơi bị lườm rau gắp thịt với tiêu đề.</p>
 
-<h3 id="tldr">TL;DR:</h3>
-<div class="highlighter-rouge"><pre class="highlight"><code>LTV là nghề đáng làm, vì:
-  * Không có trăn trở quá lớn về đạo đức
-  * Không tổn thật hoặc tổn thất ít tài nguyên khi thử nghiệm hoặc thử nghiệm thất bại
-  * Không yêu cầu quá nhiều thể lực
-</code></pre>
-</div>
+<h3 id="background">Background</h3>
 
-<p>Anh nhà bác tôi sang năm thi đại học. Bác tôi có hỏi là giờ nên cho anh mày học cái gì, tôi mạnh dạn: “Để anh ấy học CNTT đi bác”.</p>
+<ul>
+  <li>Bạn là người chưa nổi tiếng tới mức có trên trên wikipedia, nhưng vẫn là idol trong một group nào đó, như <a href="http://ruby.org.vn/">Ruby Vietnam</a> chẳng hạn, và nhận được hàng tá câu hỏi của newbie. Bạn rất muốn trả lời, nhưng lại không muốn share FB/email account?</li>
+  <li>Bạn mới gặp một em gái kute dễ thương, muốn nói chuyện lắm mà lại sợ em ấy bắt gặp mình đi công tác ở Trần D** H**g, nên ko dám cho số điện thoại?</li>
+  <li>Bạn đơn giản chỉ muốn sau cuộc nói chuyện thì mọi thứ liên quan đến cuộc nói chuyện đó đều về với mây?</li>
+</ul>
 
-<p>Nghề LTV có nhiều tên gọi biến thể hoặc mở rộng, nâng cấp khác như Coder, Developer, Software Engineer…, là một nghề trong lĩnh vực khoa học kỹ thuật.
-Tựu trung lại thì những nghề trên nói riêng, hay mọi nghề liên quan đến lĩnh vực khoa học kỹ thuật nói chung, đề là nghề đáng làm, rất đáng làm, do nó có các đặc điểm sau:</p>
+<p><a href="https://anychat.4me.tips/">Anychat</a> chính là dành cho bạn.</p>
 
-<h3 id="không-có-trăn-trở-quá-lớn-về-mặt-đạo-đức">Không có trăn trở quá lớn về mặt đạo đức</h3>
+<h3 id="một-số-tính-năng-đặc-sắc">Một số tính năng đặc sắc</h3>
 
-<p>Trong nghề LTV này, thành tựu và năng lực của một cá nhân được thể hiện rất rõ ràng, khó có thể bị hiểu một cách nhập nhằng. Thậm chí có câu nói: “<a href="https://en.wikiquote.org/wiki/Linus_Torvalds">Talk is cheap. Show me the code.</a>” kinh điển.
-Do là ngành mang đậm tính khoa học tự nhiên, nên kết quả chỉ có đúng/sai, không có khái niệm <strong>có vẻ đúng</strong> hay <strong>gần đúng rồi</strong> nào cả. Và tất nhiên, câu thần chú <strong>nhất quan hệ, nhì tiền tệ</strong> không có cửa áp dụng ở đây.
-Để lên được trình độ cao trong ngành, trong nghề, chỉ có con đường duy nhất là tạo ra những dòng code, những kiến trúc tốt, những sản phẩm có chất lượng cao. Tất nhiên, nếu rẽ hướng sang con đường làm quản lý thì lại là chuyện khác hẳn.</p>
+<ul>
+  <li>Do là tính năng chat ẩn danh, nên người khác không thể thấy bất cứ thông tin gì về profile của bạn, ngoại trừ <strong>username</strong></li>
+  <li>Vì thế, thay vì đọc cái nick <strong>trAiX0mnGHeO</strong> cho cô bạn gái mới quen chép lại, thì chỉ việc vào mục <strong>Profile &gt; Settings</strong> rồi chìa cái QR code ra cho cô em quét cái bíp là xong.</li>
+  <li>Thế khi offline mà có người khác nhắn tới thì có biết không? <strong>Có</strong> và <strong>Không</strong>. Có là khi ở <strong>Profile &gt; Settings</strong> bạn nhập email của mình vào, và đồng ý nhận tin nhắn khi offline, thì chỉ và chỉ một tin nhắn đầu tiên của người khác sẽ được gửi tới email này. Tất nhiên <strong>Không</strong> cho trường hợp còn lại. Và email này chỉ có mình bạn mới thấy thôi, ngoài ra không ai có thể xem được cả.</li>
+  <li>Nhắc lại một tiêu chí ở background là: Khi bạn thoát, hoặc tắt trình duyệt đi, thì mọi thứ liên quan đến cuộc nói chuyện đều bị xoá hết, bảo đảm chỉ có mình bạn và đối tác biết mà thôi.</li>
+</ul>
 
-<p>Nói đến đây thì hẳn người đọc sẽ có suy nghĩ: “Nghề nào mà chả vậy, giỏi là được”. Đúng. Nhưng ý của người viết là để được công nhận là giỏi trong nghề LTV này, thì ko cần cầu cạnh ai cả, cứ tạo ra những dòng code chói lòa, và để những người cùng nghề đánh giá :D</p>
+<h3 id="stack-sử-dụng-và-các-thông-tin-liên-quan">Stack sử dụng và các thông tin liên quan</h3>
 
-<h3 id="không-tổn-thật-hoặc-tổn-thất-ít-tài-nguyên-khi-thử-nghiệm-hoặc-thử-nghiệm-thất-bại">Không tổn thật hoặc tổn thất ít tài nguyên khi thử nghiệm hoặc thử nghiệm thất bại</h3>
+<ul>
+  <li><strong>Nginx</strong>: Vai trò làm reverse proxy, forward request cho Puma bên dưới.</li>
+  <li><strong>Puma</strong>: Làm application server, hứng request nhận được từ nginx đưa vào app xử lý, trả kết quả về cho nginx.</li>
+  <li><strong>Rails 5.0.2 with ActionCable</strong>: Con tim của ứng dụng :v. ActionCable là module nơi có build-in websocket sẽ được sử dụng cho chức năng realtime chat. Mọi chức năng khác như login, check online/offline, gửi tin nhắn đầu tiên khi offline… do Rails app đảm nhiệm.</li>
+  <li><strong>Redis</strong>: Do websocket không có session, nên muốn dùng chung với cái gì đó với app thì phải đi qua storage thứ 3. Mình chọn redis một phần cũng vì default stack của ActionCable có dùng redis nữa.</li>
+  <li><strong>MySQL</strong>: Chỉ dùng để lưu username/password (hashed). Nếu bạn muốn tự cài đặt thành server của mình, và lượng user không lớn, thì nên dùng sqlite thay thế, đỡ tốn resource để chạy MySQL service.</li>
+</ul>
 
-<p>Khi cá nhân có ý tưởng, hay đơn giản chỉ là muốn thử nghiệm cái mà bản thân chưa biết, thì làm điều này đối với nghề LTV luôn mang lại những trải nghiệm an toàn.
-An toàn ở chỗ là dù có làm sai, làm hỏng, chọc ngoáy đủ kiểu, thì thứ tốn kém chỉ là thời gian mà thôi. Chuyện gì sẽ xảy ra nếu như bạn xây sai một bức tường? Chỉ có đập. Đập nghĩa là ngoài thời gian đã bỏ ra, còn là gạch, vữa…
-Như vậy, ở một khía cạnh này, thì nghề LTV luôn khuyến khích mọi người thử nghiệm và học những cái mới nhanh chóng và an toàn.
-Và chỉ có vọc vạch thì tay nghề mới lên được.</p>
+<h3 id="kết-luận">Kết luận</h3>
 
-<h3 id="không-yêu-cầu-quá-nhiều-thể-lực">Không yêu cầu quá nhiều thể lực</h3>
+<p>Đến giờ thì mới là câu trả lời cho câu hỏi ở tiêu đề. Theo mình là dễ và khó :v</p>
 
-<p>Ngắn gọn thôi: Với người chỉ cao 1m60 và nặng chưa bằng 1 bao xi măng như người viết còn làm được nghề này, thì ai chẳng làm được :v</p>
+<ul>
+  <li>Dễ vì nếu chỉ làm theo tutorial và một service có chức năng đơn giản thì dễ.</li>
+  <li>Khó là khi kể cả chưa nhắc tới quy mô, thì việc tích hợp với một số tính năng bên lề xoay quanh user đang tương tác là khó. Vì websocket ko có session, nên mọi thông tin nhặt được từ client bằng cookie mà thôi. Vì vậy mà việc expired session sẽ có khó khăn hơn khi không có tích hợp websocket vào cùng.</li>
+</ul>
 
-<h3 id="ngoài-lề">Ngoài lề</h3>
+<p><a href="https://anychat.4me.tips/rooms/manhdv">manhdv@anychat</a></p>
 
-<p>Nghề LTV là nghề đáng làm, không có nghĩ nó là nghề <strong>việc nhẹ lương cao</strong> (Cụm từ này là cụm từ người viết căm ghét nhất từ lúc đi làm tới giờ, sẽ được giải thích ở post khác)
-Nó có những đặc thù riêng, với những chuẩn bị cũng khác nữa.</p>
+<p>Sourcecode của <a href="https://anychat.4me.tips/">Anychat</a> được public trên <a href="https://github.com/manhdaovan/anychat">Github</a></p>
 
+<p><strong><em>All pull requests, issues, stars are welcome!</em></strong></p>
 
 </article>
 
@@ -224,33 +229,33 @@ Nó có những đặc thù riêng, với những chuẩn bị cũng khác nữa
 
   <div class="share-links">
     
-      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fopinion%2Fvi%2F2017%2F09%2F24%2Fnghe-lap-trinh-vien%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Ftech%2Frails%2Factioncable%2F2017%2F04%2F07%2FRealtime-chat-voi-websocket%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
     
 
     
-      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=V%C3%A0i+suy+ngh%C4%A9+v%E1%BB%81+ngh%E1%BB%81+L%E1%BA%ADp+Tr%C3%ACnh+Vi%C3%AAn+%28LTV%29&amp;url=http%3A%2F%2Flocalhost%3A4000%2Fopinion%2Fvi%2F2017%2F09%2F24%2Fnghe-lap-trinh-vien%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=X%C3%A2y+d%E1%BB%B1ng+%E1%BB%A9ng+d%E1%BB%A5ng+chat+s%E1%BB%AD+d%E1%BB%A5ng+websocket+c%C3%B3+kh%C3%B3+kh%C3%B4ng%3F&amp;url=http%3A%2F%2Flocalhost%3A4000%2Ftech%2Frails%2Factioncable%2F2017%2F04%2F07%2FRealtime-chat-voi-websocket%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
     
 
     
-      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http%3A%2F%2Flocalhost%3A4000%2Fopinion%2Fvi%2F2017%2F09%2F24%2Fnghe-lap-trinh-vien%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http%3A%2F%2Flocalhost%3A4000%2Ftech%2Frails%2Factioncable%2F2017%2F04%2F07%2FRealtime-chat-voi-websocket%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
     
 
     
-      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=http%3A%2F%2Flocalhost%3A4000%2Fopinion%2Fvi%2F2017%2F09%2F24%2Fnghe-lap-trinh-vien%2F&amp;title=V%C3%A0i+suy+ngh%C4%A9+v%E1%BB%81+ngh%E1%BB%81+L%E1%BA%ADp+Tr%C3%ACnh+Vi%C3%AAn+%28LTV%29" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
-    
-
-    
-
-    
-
-    
-      <a class="fa fa-reddit" href="http://reddit.com/submit?url=http%3A%2F%2Flocalhost%3A4000%2Fopinion%2Fvi%2F2017%2F09%2F24%2Fnghe-lap-trinh-vien%2F&amp;title=V%C3%A0i+suy+ngh%C4%A9+v%E1%BB%81+ngh%E1%BB%81+L%E1%BA%ADp+Tr%C3%ACnh+Vi%C3%AAn+%28LTV%29" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=http%3A%2F%2Flocalhost%3A4000%2Ftech%2Frails%2Factioncable%2F2017%2F04%2F07%2FRealtime-chat-voi-websocket%2F&amp;title=X%C3%A2y+d%E1%BB%B1ng+%E1%BB%A9ng+d%E1%BB%A5ng+chat+s%E1%BB%AD+d%E1%BB%A5ng+websocket+c%C3%B3+kh%C3%B3+kh%C3%B4ng%3F" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
     
 
     
 
     
-      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=http%3A%2F%2Flocalhost%3A4000%2Fopinion%2Fvi%2F2017%2F09%2F24%2Fnghe-lap-trinh-vien%2F&amp;t=V%C3%A0i+suy+ngh%C4%A9+v%E1%BB%81+ngh%E1%BB%81+L%E1%BA%ADp+Tr%C3%ACnh+Vi%C3%AAn+%28LTV%29" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=http%3A%2F%2Flocalhost%3A4000%2Ftech%2Frails%2Factioncable%2F2017%2F04%2F07%2FRealtime-chat-voi-websocket%2F&amp;title=X%C3%A2y+d%E1%BB%B1ng+%E1%BB%A9ng+d%E1%BB%A5ng+chat+s%E1%BB%AD+d%E1%BB%A5ng+websocket+c%C3%B3+kh%C3%B3+kh%C3%B4ng%3F" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=http%3A%2F%2Flocalhost%3A4000%2Ftech%2Frails%2Factioncable%2F2017%2F04%2F07%2FRealtime-chat-voi-websocket%2F&amp;t=X%C3%A2y+d%E1%BB%B1ng+%E1%BB%A9ng+d%E1%BB%A5ng+chat+s%E1%BB%AD+d%E1%BB%A5ng+websocket+c%C3%B3+kh%C3%B3+kh%C3%B4ng%3F" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
     
   </div>
 </div>
@@ -283,8 +288,8 @@ Nó có những đặc thù riêng, với những chuẩn bị cũng khác nữa
   <div id="disqus_thread"></div>
   <script type="text/javascript">
     var disqus_shortname  = 'https-manhdaovan-github-io';
-    var disqus_identifier = '/opinion/vi/2017/09/24/nghe-lap-trinh-vien';
-    var disqus_title      = "Vài suy nghĩ về nghề Lập Trình Viên (LTV)";
+    var disqus_identifier = '/tech/rails/actioncable/2017/04/07/Realtime-chat-voi-websocket';
+    var disqus_title      = "Xây dựng ứng dụng chat sử dụng websocket có khó không?";
 
     (function() {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -301,9 +306,9 @@ Nó có những đặc thù riêng, với những chuẩn bị cũng khác nữa
   <h3 class="related-post-title">Related Posts</h3>
   
     <div class="post ml2">
-      <a href="/tech/rails/actioncable/2017/04/07/Realtime-chat-voi-websocket/" class="post-link">
-        <h4 class="post-title">Xây dựng ứng dụng chat sử dụng websocket có khó không?</h4>
-        <p class="post-summary">A-to-Z Xây dựng ứng dụng realtime chat sử dụng action cable rails 5</p>
+      <a href="/opinion/vi/2017/09/24/nghe-lap-trinh-vien/" class="post-link">
+        <h4 class="post-title">Vài suy nghĩ về nghề Lập Trình Viên (LTV)</h4>
+        <p class="post-summary">Nghề LTV dưới góc nhìn của người viết. Liệu nó có phải là nghề "đáng làm" hay không?</p>
       </a>
     </div>
   

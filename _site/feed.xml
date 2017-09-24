@@ -107,8 +107,8 @@ Nó có những đặc thù riêng, với những chuẩn bị cũng khác nữa
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;All pull requests, issues, stars are welcome!&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
 </description>
         <pubDate>Fri, 07 Apr 2017 00:00:00 +0000</pubDate>
-        <link>http://localhost:4000/realtime/chatting/rails/actioncable/2017/04/07/Realtime-chat-voi-websocket/</link>
-        <guid isPermaLink="true">http://localhost:4000/realtime/chatting/rails/actioncable/2017/04/07/Realtime-chat-voi-websocket/</guid>
+        <link>http://localhost:4000/tech/rails/actioncable/2017/04/07/Realtime-chat-voi-websocket/</link>
+        <guid isPermaLink="true">http://localhost:4000/tech/rails/actioncable/2017/04/07/Realtime-chat-voi-websocket/</guid>
       </item>
     
       <item>
@@ -321,8 +321,8 @@ conn.execute(“SELECT data FROM db03429.pins where local_id=7075733”)
 
 </description>
         <pubDate>Wed, 22 Mar 2017 00:00:00 +0000</pubDate>
-        <link>http://localhost:4000/tech/mysql/summary/pinterest/2017/03/22/Pinterest-da-thuc-hien-scaled-MySQL-cua-ho-nhu-the-nao/</link>
-        <guid isPermaLink="true">http://localhost:4000/tech/mysql/summary/pinterest/2017/03/22/Pinterest-da-thuc-hien-scaled-MySQL-cua-ho-nhu-the-nao/</guid>
+        <link>http://localhost:4000/tech/mysql/summary/2017/03/22/Pinterest-da-thuc-hien-scaled-MySQL-cua-ho-nhu-the-nao/</link>
+        <guid isPermaLink="true">http://localhost:4000/tech/mysql/summary/2017/03/22/Pinterest-da-thuc-hien-scaled-MySQL-cua-ho-nhu-the-nao/</guid>
       </item>
     
       <item>
@@ -471,8 +471,8 @@ end
 
 </description>
         <pubDate>Wed, 22 Mar 2017 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/math/combination/accordant/2017/03/22/to-hop-chinh-hop/</link>
-        <guid isPermaLink="true">http://localhost:4000/math/combination/accordant/2017/03/22/to-hop-chinh-hop/</guid>
+        <link>http://localhost:4000/math/basic/2017/03/22/to-hop-chinh-hop/</link>
+        <guid isPermaLink="true">http://localhost:4000/math/basic/2017/03/22/to-hop-chinh-hop/</guid>
       </item>
     
       <item>
@@ -661,8 +661,8 @@ Benchmark
 &lt;p&gt;Bạn có thể đọc &lt;a href=&quot;https://github.com/manhdaovan/mysql_warmup/blob/master/BENCHMARK.md&quot;&gt;bản tiếng Anh ở đây&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Thu, 02 Mar 2017 00:00:00 +0000</pubDate>
-        <link>http://localhost:4000/mysql/innodb/bufferpool/tool/2017/03/02/benchmark-mysql-inno-db-buffer-pool/</link>
-        <guid isPermaLink="true">http://localhost:4000/mysql/innodb/bufferpool/tool/2017/03/02/benchmark-mysql-inno-db-buffer-pool/</guid>
+        <link>http://localhost:4000/tech/mysql/mytool/2017/03/02/benchmark-mysql-inno-db-buffer-pool/</link>
+        <guid isPermaLink="true">http://localhost:4000/tech/mysql/mytool/2017/03/02/benchmark-mysql-inno-db-buffer-pool/</guid>
       </item>
     
       <item>
@@ -726,8 +726,8 @@ Benchmark
 
 </description>
         <pubDate>Mon, 16 Jan 2017 00:00:00 +0000</pubDate>
-        <link>http://localhost:4000/tech/mysql/innodb/mytool/2017/01/16/so-sanh-warmup-commands/</link>
-        <guid isPermaLink="true">http://localhost:4000/tech/mysql/innodb/mytool/2017/01/16/so-sanh-warmup-commands/</guid>
+        <link>http://localhost:4000/tech/mysql/mytool/2017/01/16/so-sanh-warmup-commands/</link>
+        <guid isPermaLink="true">http://localhost:4000/tech/mysql/mytool/2017/01/16/so-sanh-warmup-commands/</guid>
       </item>
     
   </channel>

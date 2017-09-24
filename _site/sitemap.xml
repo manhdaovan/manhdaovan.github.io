@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>http://localhost:4000/tech/mysql/innodb/mytool/2017/01/16/so-sanh-warmup-commands/</loc>
+<loc>http://localhost:4000/tech/mysql/mytool/2017/01/16/so-sanh-warmup-commands/</loc>
 <lastmod>2017-01-16T09:00:00+09:00</lastmod>
 </url>
 <url>
-<loc>http://localhost:4000/mysql/innodb/bufferpool/tool/2017/03/02/benchmark-mysql-inno-db-buffer-pool/</loc>
+<loc>http://localhost:4000/tech/mysql/mytool/2017/03/02/benchmark-mysql-inno-db-buffer-pool/</loc>
 <lastmod>2017-03-02T09:00:00+09:00</lastmod>
 </url>
 <url>
-<loc>http://localhost:4000/math/combination/accordant/2017/03/22/to-hop-chinh-hop/</loc>
+<loc>http://localhost:4000/math/basic/2017/03/22/to-hop-chinh-hop/</loc>
 <lastmod>2017-03-22T00:00:00+09:00</lastmod>
 </url>
 <url>
-<loc>http://localhost:4000/tech/mysql/summary/pinterest/2017/03/22/Pinterest-da-thuc-hien-scaled-MySQL-cua-ho-nhu-the-nao/</loc>
+<loc>http://localhost:4000/tech/mysql/summary/2017/03/22/Pinterest-da-thuc-hien-scaled-MySQL-cua-ho-nhu-the-nao/</loc>
 <lastmod>2017-03-22T09:00:00+09:00</lastmod>
 </url>
 <url>
-<loc>http://localhost:4000/realtime/chatting/rails/actioncable/2017/04/07/Realtime-chat-voi-websocket/</loc>
+<loc>http://localhost:4000/tech/rails/actioncable/2017/04/07/Realtime-chat-voi-websocket/</loc>
 <lastmod>2017-04-07T09:00:00+09:00</lastmod>
 </url>
 <url>

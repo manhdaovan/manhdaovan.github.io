@@ -3,7 +3,7 @@ layout: post
 title: Thực hiện benchmark (BM) MySQL InnoDB Buffer Pool(BP) trước và sau khi được warmup
 date: 2017-03-02 00:00:00
 summary: Mình thực hiện BM này cho chính [tool mình viết](https://github.com/manhdaovan/mysql_warmup), cũng là 1 tool đơn giản thôi, tiện thể đem kết quả lên khoe với mọi người luôn.
-categories: mysql innodb bufferpool tool
+categories: tech mysql mytool
 ---
 
 #tech #mysql #innodb #bufferpool #mytool #vi

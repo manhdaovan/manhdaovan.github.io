@@ -72,7 +72,7 @@ Nó có những đặc thù riêng, với những chuẩn bị cũng khác nữa
         
             <item>
                 <title>Xây dựng ứng dụng chat sử dụng websocket có khó không?</title>
-                <link>http://localhost:4000/realtime/chatting/rails/actioncable/2017/04/07/Realtime-chat-voi-websocket/</link>
+                <link>http://localhost:4000/tech/rails/actioncable/2017/04/07/Realtime-chat-voi-websocket/</link>
                 <content:encoded>
                     <![CDATA[
                     <p>#tech #realtime #chatting #rails #actioncable #vi</p>
@@ -125,7 +125,7 @@ Nó có những đặc thù riêng, với những chuẩn bị cũng khác nữa
 
                     ]]>
                 </content:encoded>
-                <guid isPermaLink="false">/realtime/chatting/rails/actioncable/2017/04/07/Realtime-chat-voi-websocket/</guid>
+                <guid isPermaLink="false">/tech/rails/actioncable/2017/04/07/Realtime-chat-voi-websocket/</guid>
                 <description>
                     
                     A-to-Z Xây dựng ứng dụng realtime chat sử dụng action cable rails 5
@@ -139,7 +139,7 @@ Nó có những đặc thù riêng, với những chuẩn bị cũng khác nữa
         
             <item>
                 <title>Pinterest đã thực hiện scaled MySQL của họ như thế nào</title>
-                <link>http://localhost:4000/tech/mysql/summary/pinterest/2017/03/22/Pinterest-da-thuc-hien-scaled-MySQL-cua-ho-nhu-the-nao/</link>
+                <link>http://localhost:4000/tech/mysql/summary/2017/03/22/Pinterest-da-thuc-hien-scaled-MySQL-cua-ho-nhu-the-nao/</link>
                 <content:encoded>
                     <![CDATA[
                     <p>#tech #summary #mysql #vi</p>
@@ -351,7 +351,7 @@ conn.execute(“SELECT data FROM db03429.pins where local_id=7075733”)
 
                     ]]>
                 </content:encoded>
-                <guid isPermaLink="false">/tech/mysql/summary/pinterest/2017/03/22/Pinterest-da-thuc-hien-scaled-MySQL-cua-ho-nhu-the-nao/</guid>
+                <guid isPermaLink="false">/tech/mysql/summary/2017/03/22/Pinterest-da-thuc-hien-scaled-MySQL-cua-ho-nhu-the-nao/</guid>
                 <description>
                     
                     Bài viết lược dịch từ Sharding Pinterest How we scaled our MySQL fleet, một bài viết theo mình đánh giá là rất chất lượng, và có nhiều giá trị có thể tham khảo.
@@ -365,7 +365,7 @@ conn.execute(“SELECT data FROM db03429.pins where local_id=7075733”)
         
             <item>
                 <title>Tổ hợp, chỉnh hợp và bài toán đếm cơ bản</title>
-                <link>http://localhost:4000/math/combination/accordant/2017/03/22/to-hop-chinh-hop/</link>
+                <link>http://localhost:4000/math/basic/2017/03/22/to-hop-chinh-hop/</link>
                 <content:encoded>
                     <![CDATA[
                     <p>#math #combination #accordant #vi</p>
@@ -513,7 +513,7 @@ end
 
                     ]]>
                 </content:encoded>
-                <guid isPermaLink="false">/math/combination/accordant/2017/03/22/to-hop-chinh-hop/</guid>
+                <guid isPermaLink="false">/math/basic/2017/03/22/to-hop-chinh-hop/</guid>
                 <description>
                     
                     Một số bài toán về chỉnh hợp, tổ hợp cơ bản đã học hồi cấp 3 và áp dụng vào bài toán đếm
@@ -527,7 +527,7 @@ end
         
             <item>
                 <title>Thực hiện benchmark (BM) MySQL InnoDB Buffer Pool(BP) trước và sau khi được warmup</title>
-                <link>http://localhost:4000/mysql/innodb/bufferpool/tool/2017/03/02/benchmark-mysql-inno-db-buffer-pool/</link>
+                <link>http://localhost:4000/tech/mysql/mytool/2017/03/02/benchmark-mysql-inno-db-buffer-pool/</link>
                 <content:encoded>
                     <![CDATA[
                     <p>#tech #mysql #innodb #bufferpool #mytool #vi</p>
@@ -715,7 +715,7 @@ Benchmark
 
                     ]]>
                 </content:encoded>
-                <guid isPermaLink="false">/mysql/innodb/bufferpool/tool/2017/03/02/benchmark-mysql-inno-db-buffer-pool/</guid>
+                <guid isPermaLink="false">/tech/mysql/mytool/2017/03/02/benchmark-mysql-inno-db-buffer-pool/</guid>
                 <description>
                     
                     Mình thực hiện BM này cho chính [tool mình viết](https://github.com/manhdaovan/mysql_warmup), cũng là 1 tool đơn giản thôi, tiện thể đem kết quả lên khoe với mọi người luôn.
@@ -729,7 +729,7 @@ Benchmark
         
             <item>
                 <title>So sánh các câu lệnh warmup primary key vào buffer pool với engine InnoDB mysql</title>
-                <link>http://localhost:4000/tech/mysql/innodb/mytool/2017/01/16/so-sanh-warmup-commands/</link>
+                <link>http://localhost:4000/tech/mysql/mytool/2017/01/16/so-sanh-warmup-commands/</link>
                 <content:encoded>
                     <![CDATA[
                     <p>#tech #mysql #vi</p>
@@ -792,7 +792,7 @@ Benchmark
 
                     ]]>
                 </content:encoded>
-                <guid isPermaLink="false">/tech/mysql/innodb/mytool/2017/01/16/so-sanh-warmup-commands/</guid>
+                <guid isPermaLink="false">/tech/mysql/mytool/2017/01/16/so-sanh-warmup-commands/</guid>
                 <description>
                     
                     Buffer pool(BF) của mysql quả thực có nhiều lợi ích, và việc warm up BP luôn là việc nên làm đầu tiên mỗi khi start/reload/create new mysql. Tuy nhiên, &quot;touch&quot; thế nào cho tối ưu nhất? Trong quá trình thực hiện benchmark cho [tool này](https://github.com/manhdaovan/mysql_warmup), người viết thấy có 1 số điều thú vị như dưới đây.

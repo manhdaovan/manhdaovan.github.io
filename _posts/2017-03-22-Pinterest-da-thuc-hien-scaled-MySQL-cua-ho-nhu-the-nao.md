@@ -3,7 +3,7 @@ layout: post
 title: Pinterest đã thực hiện scaled MySQL của họ như thế nào
 date: 2017-03-22 00:00:00
 summary: Bài viết lược dịch từ Sharding Pinterest How we scaled our MySQL fleet, một bài viết theo mình đánh giá là rất chất lượng, và có nhiều giá trị có thể tham khảo.
-categories: tech mysql summary pinterest
+categories: tech mysql summary
 ---
 
 #tech #summary #mysql #vi

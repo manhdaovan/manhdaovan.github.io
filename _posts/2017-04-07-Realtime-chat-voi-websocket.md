@@ -3,7 +3,7 @@ layout: post
 title: Xây dựng ứng dụng chat sử dụng websocket có khó không?
 date: 2017-04-07 00:00:00
 summary: A-to-Z Xây dựng ứng dụng realtime chat sử dụng action cable rails 5
-categories: realtime chatting rails actioncable
+categories: tech rails actioncable
 ---
 
 #tech #realtime #chatting #rails #actioncable #vi
