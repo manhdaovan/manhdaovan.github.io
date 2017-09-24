@@ -1,0 +1,734 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ManhDV's blog</title>
+    <description>95% những điều họ nói về ManhDV là sai, chỉ có lúc nào cũng so high là đúng thật :v</description>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+    
+      <item>
+        <title>Vài suy nghĩ về nghề Lập Trình Viên (LTV)</title>
+        <description>&lt;p&gt;#opinion #vi #cntt #ltv&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;LTV được nhắc tới trong bài được gói gọn trong ngữ cảnh của LTV Phần mềm.
+Mọi ý kiến trong bài đều dựa trên góc nhìn của người viết, không có ý gây ra những tranh luận tiêu cực không đáng có.&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;tldr&quot;&gt;TL;DR:&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;LTV là nghề đáng làm, vì:
+  * Không có trăn trở quá lớn về đạo đức
+  * Không tổn thật hoặc tổn thất ít tài nguyên khi thử nghiệm hoặc thử nghiệm thất bại
+  * Không yêu cầu quá nhiều thể lực
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Anh nhà bác tôi sang năm thi đại học. Bác tôi có hỏi là giờ nên cho anh mày học cái gì, tôi mạnh dạn: “Để anh ấy học CNTT đi bác”.&lt;/p&gt;
+
+&lt;p&gt;Nghề LTV có nhiều tên gọi biến thể hoặc mở rộng, nâng cấp khác như Coder, Developer, Software Engineer…, là một nghề trong lĩnh vực khoa học kỹ thuật.
+Tựu trung lại thì những nghề trên nói riêng, hay mọi nghề liên quan đến lĩnh vực khoa học kỹ thuật nói chung, đề là nghề đáng làm, rất đáng làm, do nó có các đặc điểm sau:&lt;/p&gt;
+
+&lt;h3 id=&quot;không-có-trăn-trở-quá-lớn-về-mặt-đạo-đức&quot;&gt;Không có trăn trở quá lớn về mặt đạo đức&lt;/h3&gt;
+
+&lt;p&gt;Trong nghề LTV này, thành tựu và năng lực của một cá nhân được thể hiện rất rõ ràng, khó có thể bị hiểu một cách nhập nhằng. Thậm chí có câu nói: “&lt;a href=&quot;https://en.wikiquote.org/wiki/Linus_Torvalds&quot;&gt;Talk is cheap. Show me the code.&lt;/a&gt;” kinh điển.
+Do là ngành mang đậm tính khoa học tự nhiên, nên kết quả chỉ có đúng/sai, không có khái niệm &lt;strong&gt;có vẻ đúng&lt;/strong&gt; hay &lt;strong&gt;gần đúng rồi&lt;/strong&gt; nào cả. Và tất nhiên, câu thần chú &lt;strong&gt;nhất quan hệ, nhì tiền tệ&lt;/strong&gt; không có cửa áp dụng ở đây.
+Để lên được trình độ cao trong ngành, trong nghề, chỉ có con đường duy nhất là tạo ra những dòng code, những kiến trúc tốt, những sản phẩm có chất lượng cao. Tất nhiên, nếu rẽ hướng sang con đường làm quản lý thì lại là chuyện khác hẳn.&lt;/p&gt;
+
+&lt;p&gt;Nói đến đây thì hẳn người đọc sẽ có suy nghĩ: “Nghề nào mà chả vậy, giỏi là được”. Đúng. Nhưng ý của người viết là để được công nhận là giỏi trong nghề LTV này, thì ko cần cầu cạnh ai cả, cứ tạo ra những dòng code chói lòa, và để những người cùng nghề đánh giá :D&lt;/p&gt;
+
+&lt;h3 id=&quot;không-tổn-thật-hoặc-tổn-thất-ít-tài-nguyên-khi-thử-nghiệm-hoặc-thử-nghiệm-thất-bại&quot;&gt;Không tổn thật hoặc tổn thất ít tài nguyên khi thử nghiệm hoặc thử nghiệm thất bại&lt;/h3&gt;
+
+&lt;p&gt;Khi cá nhân có ý tưởng, hay đơn giản chỉ là muốn thử nghiệm cái mà bản thân chưa biết, thì làm điều này đối với nghề LTV luôn mang lại những trải nghiệm an toàn.
+An toàn ở chỗ là dù có làm sai, làm hỏng, chọc ngoáy đủ kiểu, thì thứ tốn kém chỉ là thời gian mà thôi. Chuyện gì sẽ xảy ra nếu như bạn xây sai một bức tường? Chỉ có đập. Đập nghĩa là ngoài thời gian đã bỏ ra, còn là gạch, vữa…
+Như vậy, ở một khía cạnh này, thì nghề LTV luôn khuyến khích mọi người thử nghiệm và học những cái mới nhanh chóng và an toàn.
+Và chỉ có vọc vạch thì tay nghề mới lên được.&lt;/p&gt;
+
+&lt;h3 id=&quot;không-yêu-cầu-quá-nhiều-thể-lực&quot;&gt;Không yêu cầu quá nhiều thể lực&lt;/h3&gt;
+
+&lt;p&gt;Ngắn gọn thôi: Với người chỉ cao 1m60 và nặng chưa bằng 1 bao xi măng như người viết còn làm được nghề này, thì ai chẳng làm được :v&lt;/p&gt;
+
+&lt;h3 id=&quot;ngoài-lề&quot;&gt;Ngoài lề&lt;/h3&gt;
+
+&lt;p&gt;Nghề LTV là nghề đáng làm, không có nghĩ nó là nghề &lt;strong&gt;việc nhẹ lương cao&lt;/strong&gt; (Cụm từ này là cụm từ người viết căm ghét nhất từ lúc đi làm tới giờ, sẽ được giải thích ở post khác)
+Nó có những đặc thù riêng, với những chuẩn bị cũng khác nữa.&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 24 Sep 2017 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/opinion/vi/2017/09/24/nghe-lap-trinh-vien/</link>
+        <guid isPermaLink="true">http://localhost:4000/opinion/vi/2017/09/24/nghe-lap-trinh-vien/</guid>
+      </item>
+    
+      <item>
+        <title>Xây dựng ứng dụng chat sử dụng websocket có khó không?</title>
+        <description>&lt;p&gt;#tech #realtime #chatting #rails #actioncable #vi&lt;/p&gt;
+
+&lt;p&gt;Cảnh báo: Mục đích của bài viết hơi bị lườm rau gắp thịt với tiêu đề.&lt;/p&gt;
+
+&lt;h3 id=&quot;background&quot;&gt;Background&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Bạn là người chưa nổi tiếng tới mức có trên trên wikipedia, nhưng vẫn là idol trong một group nào đó, như &lt;a href=&quot;http://ruby.org.vn/&quot;&gt;Ruby Vietnam&lt;/a&gt; chẳng hạn, và nhận được hàng tá câu hỏi của newbie. Bạn rất muốn trả lời, nhưng lại không muốn share FB/email account?&lt;/li&gt;
+  &lt;li&gt;Bạn mới gặp một em gái kute dễ thương, muốn nói chuyện lắm mà lại sợ em ấy bắt gặp mình đi công tác ở Trần D** H**g, nên ko dám cho số điện thoại?&lt;/li&gt;
+  &lt;li&gt;Bạn đơn giản chỉ muốn sau cuộc nói chuyện thì mọi thứ liên quan đến cuộc nói chuyện đó đều về với mây?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://anychat.4me.tips/&quot;&gt;Anychat&lt;/a&gt; chính là dành cho bạn.&lt;/p&gt;
+
+&lt;h3 id=&quot;một-số-tính-năng-đặc-sắc&quot;&gt;Một số tính năng đặc sắc&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Do là tính năng chat ẩn danh, nên người khác không thể thấy bất cứ thông tin gì về profile của bạn, ngoại trừ &lt;strong&gt;username&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Vì thế, thay vì đọc cái nick &lt;strong&gt;trAiX0mnGHeO&lt;/strong&gt; cho cô bạn gái mới quen chép lại, thì chỉ việc vào mục &lt;strong&gt;Profile &amp;gt; Settings&lt;/strong&gt; rồi chìa cái QR code ra cho cô em quét cái bíp là xong.&lt;/li&gt;
+  &lt;li&gt;Thế khi offline mà có người khác nhắn tới thì có biết không? &lt;strong&gt;Có&lt;/strong&gt; và &lt;strong&gt;Không&lt;/strong&gt;. Có là khi ở &lt;strong&gt;Profile &amp;gt; Settings&lt;/strong&gt; bạn nhập email của mình vào, và đồng ý nhận tin nhắn khi offline, thì chỉ và chỉ một tin nhắn đầu tiên của người khác sẽ được gửi tới email này. Tất nhiên &lt;strong&gt;Không&lt;/strong&gt; cho trường hợp còn lại. Và email này chỉ có mình bạn mới thấy thôi, ngoài ra không ai có thể xem được cả.&lt;/li&gt;
+  &lt;li&gt;Nhắc lại một tiêu chí ở background là: Khi bạn thoát, hoặc tắt trình duyệt đi, thì mọi thứ liên quan đến cuộc nói chuyện đều bị xoá hết, bảo đảm chỉ có mình bạn và đối tác biết mà thôi.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;stack-sử-dụng-và-các-thông-tin-liên-quan&quot;&gt;Stack sử dụng và các thông tin liên quan&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Nginx&lt;/strong&gt;: Vai trò làm reverse proxy, forward request cho Puma bên dưới.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Puma&lt;/strong&gt;: Làm application server, hứng request nhận được từ nginx đưa vào app xử lý, trả kết quả về cho nginx.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Rails 5.0.2 with ActionCable&lt;/strong&gt;: Con tim của ứng dụng :v. ActionCable là module nơi có build-in websocket sẽ được sử dụng cho chức năng realtime chat. Mọi chức năng khác như login, check online/offline, gửi tin nhắn đầu tiên khi offline… do Rails app đảm nhiệm.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Redis&lt;/strong&gt;: Do websocket không có session, nên muốn dùng chung với cái gì đó với app thì phải đi qua storage thứ 3. Mình chọn redis một phần cũng vì default stack của ActionCable có dùng redis nữa.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;MySQL&lt;/strong&gt;: Chỉ dùng để lưu username/password (hashed). Nếu bạn muốn tự cài đặt thành server của mình, và lượng user không lớn, thì nên dùng sqlite thay thế, đỡ tốn resource để chạy MySQL service.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;kết-luận&quot;&gt;Kết luận&lt;/h3&gt;
+
+&lt;p&gt;Đến giờ thì mới là câu trả lời cho câu hỏi ở tiêu đề. Theo mình là dễ và khó :v&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Dễ vì nếu chỉ làm theo tutorial và một service có chức năng đơn giản thì dễ.&lt;/li&gt;
+  &lt;li&gt;Khó là khi kể cả chưa nhắc tới quy mô, thì việc tích hợp với một số tính năng bên lề xoay quanh user đang tương tác là khó. Vì websocket ko có session, nên mọi thông tin nhặt được từ client bằng cookie mà thôi. Vì vậy mà việc expired session sẽ có khó khăn hơn khi không có tích hợp websocket vào cùng.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://anychat.4me.tips/rooms/manhdv&quot;&gt;manhdv@anychat&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Sourcecode của &lt;a href=&quot;https://anychat.4me.tips/&quot;&gt;Anychat&lt;/a&gt; được public trên &lt;a href=&quot;https://github.com/manhdaovan/anychat&quot;&gt;Github&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;All pull requests, issues, stars are welcome!&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+</description>
+        <pubDate>Fri, 07 Apr 2017 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/realtime/chatting/rails/actioncable/2017/04/07/Realtime-chat-voi-websocket/</link>
+        <guid isPermaLink="true">http://localhost:4000/realtime/chatting/rails/actioncable/2017/04/07/Realtime-chat-voi-websocket/</guid>
+      </item>
+    
+      <item>
+        <title>Pinterest đã thực hiện scaled MySQL của họ như thế nào</title>
+        <description>&lt;p&gt;#tech #summary #mysql #vi&lt;/p&gt;
+
+&lt;h3 id=&quot;tl-dr&quot;&gt;TL; DR&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Cấu hình master-master trên nhiều node EC2&lt;/li&gt;
+  &lt;li&gt;Mỗi node có nhiều database, với schema giống hệt nhau.&lt;/li&gt;
+  &lt;li&gt;Thực hiện điều phối việc read/write bằng cách tạo UUID cho từng record.&lt;/li&gt;
+  &lt;li&gt;Sử dụng duy nhất column text blob data cho việc lưu mọi thông tin liên quan đến object dưới dạng JSON.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;background&quot;&gt;Background&lt;/h3&gt;
+
+&lt;p&gt;Với ứng dụng web có traffic lớn thì việc scale là không thể tránh khỏi. Scale thì có thể tiến hành trên nhiều tầng, như tầng app, tầng db. Và theo mình thì scale ở tầng DB vẫn luôn là bài toán khó nhất. Vậy chúng ta cùng xem các kỹ sư tại &lt;a href=&quot;https://www.pinterest.com/&quot;&gt;Pinterest&lt;/a&gt; vì sao họ lại phải scale Mysql và họ đã thực hiện như thế nào.&lt;/p&gt;
+
+&lt;p&gt;Bài viết lược dịch từ &lt;a href=&quot;https://medium.com/@Pinterest_Engineering/sharding-pinterest-how-we-scaled-our-mysql-fleet-3f341e96ca6f#.tm4mul2g2&quot;&gt;Sharding Pinterest: How we scaled our MySQL fleet&lt;/a&gt;, một bài viết theo mình đánh giá là rất chất lượng, và có nhiều giá trị có thể tham khảo.&lt;/p&gt;
+
+&lt;p&gt;Mình sẽ ko dịch nguyên xi, mà sẽ đi vào nét chính là &lt;strong&gt;Why&lt;/strong&gt; and &lt;strong&gt;How&lt;/strong&gt;, 2 câu hỏi điển hình mỗi khi ta định thực hiện việc gì đó. Đồng thời mình sẽ giải thích/mở rộng luôn những chỗ có khó hiểu (với bản thân mình) khi vừa đọc lần đầu.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;// Pinterest đã lauch architecture này từ đầu năm 2012, và hệ thống vẫn ngon cho tới bây giờ.&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;why&quot;&gt;Why&lt;/h3&gt;
+
+&lt;p&gt;Trước thời điểm tiến hành “cải tổ”, Pinterest có:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Hơn 50 tỷ pin được pin vào khoảng 1 tỷ board (mỗi user có nhiều boards, mỗi board có nhiều pins), và có nhiều thông tin râu ria như repin, like pin …&lt;/li&gt;
+  &lt;li&gt;Họ đã dùng một số công nghệ NoSQL, và tất nhiên cả mô hình master-slave kinh điển nữa, nhưng tất cả vẫn ko đáp ứng đủ với lượng dữ liệu trên. Cái thì break, cái thì lỗi.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Vì vậy họ phải nghĩ tới 1 phương án mới, với các tiêu chí sau:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Hệ thống phải ổn định, dễ vận hành, và dễ scale.&lt;/li&gt;
+  &lt;li&gt;Mọi thông tin mà Pinner (có thể hiểu là user) tạo ra phải đảm bảo có thể được accesss mọi lúc.&lt;/li&gt;
+  &lt;li&gt;Support việc query N pins trên một board đảm bảo theo 1 thứ tự cho trước (theo thời gian tạo pin hoặc theo 1 tiêu chí mà user đề ra)&lt;/li&gt;
+  &lt;li&gt;Nếu phải update, thì việc update phải là đơn giản nhất có thể.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Một số suy luận và định hướng mà họ nhận ra khi tiến hành sharding:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Một khi đã shard, họ sẽ ko thể sử dụng joins, foreign keys, hoặc index một cách global được. (Vì data đã được chia thành các “cục” nhỏ, isolate với nhau). Tất nhiên, họ vẫn có thể sử dụng các chức năng này với data cục bộ.&lt;/li&gt;
+  &lt;li&gt;Load balancing vẫn là cần thiết sau khi shard. Không để trường hợp node này quá đầy, node kia lại ko có gì.&lt;/li&gt;
+  &lt;li&gt;Những nodes cần có tính ổn định cao.&lt;/li&gt;
+  &lt;li&gt;Một khi đã shard, thì ko sờ vào data ở slave nữa. Mọi action read/write đều tiến hành trên master hết.&lt;/li&gt;
+  &lt;li&gt;Cần 1 giải thuật đơn giản khi tạo UUID cho tất cả các records của họ.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Và họ quyết định sharding hệ thống MySQL theo &lt;strong&gt;&lt;em&gt;cách của họ&lt;/em&gt;&lt;/strong&gt; như dưới đây.&lt;/p&gt;
+
+&lt;h3 id=&quot;how&quot;&gt;How&lt;/h3&gt;
+
+&lt;p&gt;&lt;em&gt;// Tại sao họ lại chọn MySQL mà ko phải nền tảng khác? Anh kỹ sư có nói trong bài viết là: &lt;a href=&quot;https://engineering.pinterest.com/blog/learn-stop-using-shiny-new-things-and-love-mysql&quot;&gt;Đừng đú theo công nghệ làm gì&lt;/a&gt; , hãy cứ right tool for right job :D&lt;/em&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Đầu tiên, họ bắt đầu với 8 con EC2, mỗi con EC2 (chạy một instance MySQL) lại có 1 con EC2 khác đi kèm, tạo thành 1 cặp với cấu hình master-master (ko phải là master-slave nữa), nhằm mục đích con master ko bị mất dữ liệu ngay cả khi nó bị tèo.
+&lt;em&gt;// Nếu con master1 bị tèo, thì lập tức con đi kèm được cho lên làm master luôn. Sau khi con master1 khôi phục thì vai diễn lại đổi thành master1 làm backup cho con đi kèm, cứ như vậy …&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Nói phải có sách, mách là phải có hình:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/1600/0*pImQYoxO9l9J3LG8.png&quot; alt=&quot;Mysql infra&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Và mọi thao tác read/write được thực hiện trên con master thôi, con đi kèm chỉ được dùng khi con master có vấn đề.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Trong mỗi con EC2 có nhiều database. Mỗi database này là 1 shard, &lt;strong&gt;có schema structure giống hệt nhau&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Lại hình:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/1600/0*dB5aSiZrInFvbefe.png&quot; alt=&quot;Mysql structure&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Họ lưu cấu hình &lt;strong&gt;shard nào, có ID là bao nhiêu? con EC2 nào chứa shard nào? …&lt;/strong&gt; vào ZooKeeper:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[{“range”:     (0,511), “master”: “MySQL001A”, “slave”: “MySQL001B”},
+ {“range”: (512, 1023), “master”: “MySQL002A”, “slave”: “MySQL002B”},
+    ...
+ {“range”: (3072, 3583), “master”: “MySQL007A”, “slave”: “MySQL007B”},
+ {“range”: (3584, 4095), “master”: “MySQL008A”, “slave”: “MySQL008B”}]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;// (0,511) tương ứng với db00000 to db00511 ở hình trên.&lt;/em&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Tạo UUID (đoạn này mình nghĩ là đoạn hay nhất của film), để có thể phân phối data được viết vào các shard một cách chính xác và balance nhất:
+&lt;em&gt;// Đoạn mình sẽ giải thích kỹ, để sau này mình có đọc lại cũng 1 phát hiểu luôn.&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Họ tạo UUID là 1 số 64 bit, dùng cho mọi query từ bên ngoài vào, có cấu trúc:&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;UUID = (shard ID &amp;lt;&amp;lt; 46) | (type ID &amp;lt;&amp;lt; 36) | (local ID&amp;lt;&amp;lt;0)&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Với:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;shard ID: là 1 số 16bit, có vai trò là ID của shard.&lt;/li&gt;
+  &lt;li&gt;type ID: là 1 số 10bit, có vai trò chỉ ra &lt;code class=&quot;highlighter-rouge&quot;&gt;type&lt;/code&gt; của &lt;code class=&quot;highlighter-rouge&quot;&gt;object&lt;/code&gt;. Ví dụ nếu type ID = 1 có nghĩa object type là Pin, type ID = 2 ứng với object type là Board chẳng hạn.&lt;/li&gt;
+  &lt;li&gt;local ID: là 1 số 36 bit, có vai trò là ID của records bên trong shard, có giá trị auto increment.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Từ công thức bên trên, có thể thấy UUID được tạo bằng cách:&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;(Dịch trái shard ID 46 bit) bitwise OR (Dịch trái type ID 36 bit) bitwise OR (Dịch trái local ID 0 bit)&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;// Dịch trái, dịch phải thì giống như việc kéo cái cửa trong nhà của tụi Nhật mà mình hay thấy trên film đó. Dịch trái thì kéo cái cửa sang trái, phần bên phải hở ra thì fill toàn bit 0 vào. Dịch phải là kéo cửa sang phải, các bit bị khuất thì bị xoá đi. Nói 1 cách khác, dịch trái làm tăng giá trị của số, dịch phải làm giảm giá trị của số.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;// Dịch trái numberA x bit: là việc fill x bit 0 vào bên phải của numberA ở dạng nhị phân. Ví dụ: numberA = 3 (dạng nhị phân là 11), thực hiện dịch trái numberA 5 bit, ta thu 1100000.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;// bitwise OR: thực hiện OR từng bit từ bên phải sang trái của 2 số dạng nhị phân. Nếu cả 2 bit là 0 thì bit thu được là 0, ngược lại bit thu được là 1. Ví dụ: 8 bitwise OR 22 = 1000 bitwise OR 10110 = 11110 = 30&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;// Do UUID là 1 số 64 bit, nên dù có dịch trái shard ID (có độ dài 16bit) 46bit đi nữa, thì cũng mới chỉ là 1 số 46 + 16 = 62 bit, vẫn dư 2 bit, và vẫn bảo đảm là ko số nào “dẫm” vào đuôi số kia, do số lượng bit dịch bằng tổng độ dài của các số phía trước rồi.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;// Theo mình đánh giá thì đây là 1 cách băm cực hay. Nếu như băm theo kiểu lấy tổng, hay tạo string rồi lấy hash thì ko chính xác, do có nhiều case bị trùng nhau. Và hơn nữa cách này decompose cực đơn giản, khỏi key với kiếc làm gì, sẽ đc giải thích như bên dưới.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Nói thì khó tưởng tượng, đi vào thực tế luôn. Ví dụ với URL:&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;https://www.pinterest.com/pin/241294492511762325/, thì UUID nhận được là 241294492511762325.&lt;/code&gt;, sẽ được decompose cái UUID theo cách sau:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Shard ID = (241294492511762325 &amp;gt;&amp;gt; 46) &amp;amp; 0xFFFF = 3429
+Type ID  = (241294492511762325 &amp;gt;&amp;gt; 36) &amp;amp; 0x3FF = 1 // type Pin -&amp;gt; query vào table pins
+Local ID = (241294492511762325 &amp;gt;&amp;gt;  0) &amp;amp; 0xFFFFFFFFF = 7075733
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Từ công thức trên, có thể thấy được:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Shard ID được decompose từ việc &lt;strong&gt;dịch phải 46bit UUID&lt;/strong&gt;, sau đó &lt;strong&gt;bitwise AND với 0xFFFF&lt;/strong&gt; (hay là 0b1111111111111111). Nghĩa là cắt đúng vị trí của Shard ID được dịch trái ở công thức tạo UUID bên trên. Trong trường hợp này thì việc bitwise AND với 0xFFFF là hơi thừa. Tuy nhiên nó lại có ích nếu như Shard ID ko còn đứng ở phía bên trái nhất của 64bit UUID nữa.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Type ID&lt;/strong&gt; và &lt;strong&gt;Local ID&lt;/strong&gt; được decompose tương tự, và cần phải bitwise AND tương ứng với 1 số 10bit và 1 số 36bit toàn 1. Như vậy là mọi thông tin cần thiết đã được decompose một cách toàn vẹn, mà lại còn nhanh nữa chứ. Tính toán trên bit mà.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;// Bitwise AND: thực hiện AND từng bit từ bên phải sang trái của 2 số dạng nhị phân. Nếu cả 2 bit là 1 thì bit thu được là 1, ngược lại bit thu được là 0. Ví dụ: 8 bitwise AND 22 = 1000 bitwise AND 10110 = 00000 = 0&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;// Anh kỹ sư nghĩ ra cái trò này có kinh nghiệm với compiler và chip design. Thế mới thấy mấy cha computer science đi thiết kế thì khác bọt thế nào.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Sau khi đã có đầy đủ thông tin, chỉ việc query:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;conn = MySQLdb.connect(host=”MySQL007A”)
+conn.execute(“SELECT data FROM db03429.pins where local_id=7075733”)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;// Host MySQL007A được nhặt ra từ shard ID 3429, có range nằm trong &lt;code class=&quot;highlighter-rouge&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“range”:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;(3072,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;3583),&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“master”:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“MySQL007A”,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“slave”:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“MySQL007B”&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;, nên nó chọn host MySQL007A để query thôi.&lt;/em&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Cấu trúc dữ liệu:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;Họ phân loại dữ liệu ra 2 loại: Object và Map. Nói nôm na là các table có tính chất là chứa thông tin, và các table có tính chất là tham chiếu. Ví dụ: Pin và Board là kiểu Object, còn board_has_pin là kiểu Map.&lt;/li&gt;
+      &lt;li&gt;Ví dụ với table Pin:&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CREATE TABLE pins (
+   local_id INT PRIMARY KEY AUTO_INCREMENT,
+   data TEXT,
+   ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;Để ý thấy là table Pin có bao nhiêu thông tin như thế, vậy mà sao lại có mỗi column data ? Cái hay là họ nhét tất cả các thông tin liên quan đến pin vào column data này, dưới dạng JSON:
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“details”:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“New&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;Star&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;Wars&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;character”,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“link”:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“http://webpage.com/asdf”,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“user_id”:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;241294629943640797,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“board_id”:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;241294561224164665,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;…&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;Tại sao? Vì giả sử nếu phải thêm 1 column mới cho 1 table theo cách tiếp cận cũ, thì việc alter table sẽ rất nặng (do phải alter cho tất cả các table tương ứng của các shard). Tuy nhiên với cách làm này, thì khỏi cần alter gì cả, chỉ cần khai báo ở tầng app giá trị default cho column mới mỗi khi muốn đọc ra thôi. Pinterest hơn 3 năm rồi (tính tới thời điểm bài gốc được đăng) chưa từng phải alter table!&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;Khi insert 1 record mới, họ chỉ định ghi nó vào shard ID nào, type ID là gì. Sau khi record được insert rồi, nó sẽ trả về local ID, lúc này sẽ kết hợp với Shard ID và Type ID để cho ra UUID theo cách bên trên. Quá lợi hại.&lt;/li&gt;
+      &lt;li&gt;Còn với table dạng Map thì có cấu trúc như này:&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CREATE TABLE board_has_pins (
+  board_id INT,
+  pin_id INT,
+  sequence INT,
+  INDEX(board_id, pin_id, sequence)
+) ENGINE=InnoDB;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;board_id&lt;/code&gt; và &lt;code class=&quot;highlighter-rouge&quot;&gt;pin_id&lt;/code&gt; là các UUID 64bit như trên, sequence có dạng timestamp, bảo đảm cho việc order theo created time rồi.&lt;/p&gt;
+
+    &lt;p&gt;&lt;em&gt;// Câu hỏi phát sinh: Vậy giả sử có query: lấy tất cả boards của user X, thì ko lẽ query trên tất cả các shards à? Mình dự là không. Đơn giản là có table users, trong column data có chứa luôn list board rồi. Vì là JSON mà, nó lưu gì chả được. Tiếp cận theo cách của NoSQL là hoàn toàn đúng đắn trong trường hợp này.&lt;/em&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;em&gt;// Bài viết lược dịch đoạn gây cấn nhất trong phim rồi. Bài gốc vẫn còn 1 đoạn nhắc tới 3 cách scale (scale cấu hình - nâng cấp sức mạnh cho EC2 instance, scale thêm EC2 instance bằng cách tăng số thứ tự của shard ID, và scale thêm instance bằng cách chia nhỏ range của shard ID), và 1 đoạn nhắc tới làm sao map others ID tới pinterest ID nữa, nhưng mình lười, dành phần này cho bạn đọc :))&lt;/em&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;em&gt;//P/S: Mấy lời tâm sự cuối bài của anh kỹ sư cũng hay.&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;kết-luận&quot;&gt;Kết luận:&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Mấy anh to lúc nào cũng đẳng cấp.&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 22 Mar 2017 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/tech/mysql/summary/pinterest/2017/03/22/Pinterest-da-thuc-hien-scaled-MySQL-cua-ho-nhu-the-nao/</link>
+        <guid isPermaLink="true">http://localhost:4000/tech/mysql/summary/pinterest/2017/03/22/Pinterest-da-thuc-hien-scaled-MySQL-cua-ho-nhu-the-nao/</guid>
+      </item>
+    
+      <item>
+        <title>Tổ hợp, chỉnh hợp và bài toán đếm cơ bản</title>
+        <description>&lt;p&gt;#math #combination #accordant #vi&lt;/p&gt;
+
+&lt;h3 id=&quot;background&quot;&gt;Background&lt;/h3&gt;
+
+&lt;p&gt;Bạn có nhớ gì về hồi cấp 3 ko? Ý mình ko phải là hình ảnh em gái xinh nhất khối mặc áo trong và ngoài có mã màu lần lượt là #000 và #fff đi trong mưa, mà là ít kiến thức về tổ hợp, chỉnh hợp hồi lớp 12 cơ.&lt;/p&gt;
+
+&lt;p&gt;Nếu vững kiến thức này, gần thì bạn sẽ rất nhẹ nhàng làm những bài test nhỏ kiểu như trên codility, paiza. Xa thì có thể ăn chắc 1 trong vài bài test khi đi xin việc :v&lt;/p&gt;
+
+&lt;h3 id=&quot;tổ-hợp-và-chỉnh-hợp&quot;&gt;Tổ hợp và chỉnh hợp&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Tổ hợp: là cách chọn ra K phần tử từ N phần tử (1 &amp;lt;= K &amp;lt;= N), không quan tâm đến thứ tự. Ví dụ, “Các thầy hãy chọn cho tôi 10 giáo viên nữ để đi tiếp khách”. Lúc này thì cứ chọn đủ 10 giáo viên là được, ko quan tâm ai trước ai sau, thì là 1 dạng của tổ hợp.&lt;/li&gt;
+  &lt;li&gt;Chỉnh hợp: Tương tự như trên, khác là có quan tâm đến thứ tự. Ví dụ, “Các thầy hãy chọn cho tôi 3 giáo viên để đảm nhiệm các vị trí Phó hiệu trưởng, Bí thư nhà trường và Cán bộ công đoàn”. Lúc này ai vào vị trí nào thì đều có thứ tự rồi, và chỉ cần đổi thứ tự là sẽ có case khác nhau.&lt;/li&gt;
+  &lt;li&gt;Vậy, dễ dàng thấy rằng, &lt;strong&gt;Số Chỉnh hợp&lt;/strong&gt; luôn nhiều hơn &lt;strong&gt;Số Tổ hợp&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Công thức &lt;strong&gt;Số Chỉnh hợp&lt;/strong&gt; = &lt;script type=&quot;math/tex&quot;&gt;\frac{N!}{\left( N-K \right)!}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;Công thức &lt;strong&gt;Số Tổ hợp&lt;/strong&gt; = &lt;strong&gt;Số Chỉnh hợp&lt;/strong&gt; / K! = &lt;script type=&quot;math/tex&quot;&gt;\frac{N!}{\left( N-K \right)!K!}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;Tại sao? Các bạn không cần nhớ lại làm gì, mình sẽ trình bày luôn phía dưới. :v&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;số-chỉnh-hợp--fracnleft-n-k-right&quot;&gt;Số Chỉnh hợp = &lt;script type=&quot;math/tex&quot;&gt;\frac{N!}{\left( N-K \right)!}&lt;/script&gt;&lt;/h3&gt;
+
+&lt;p&gt;Quay lại bài toán chọn 10 giáo viên trong số 30 giáo viên để đi tiếp khách. Như vậy, N = 30 và K = 10. Cụ thể:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Giáo viên thứ nhất có 30 cách chọn.&lt;/li&gt;
+  &lt;li&gt;Giáo viên thứ hai có 29 cách chọn.&lt;/li&gt;
+  &lt;li&gt;Giáo viên thứ ba có 28 cách chọn.&lt;/li&gt;
+  &lt;li&gt;….&lt;/li&gt;
+  &lt;li&gt;Giáo viên thứ 10 có 21 cách chọn.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Số cách chọn là: &lt;code class=&quot;highlighter-rouge&quot;&gt;30 * 29 * ... * 21&lt;/code&gt; .&lt;br /&gt;
+Tổng quát thành: &lt;code class=&quot;highlighter-rouge&quot;&gt;N * (N-1) * ... * (N - K + 1)&lt;/code&gt;.&lt;br /&gt;
+Vậy &lt;strong&gt;số chỉnh hợp&lt;/strong&gt; = &lt;code class=&quot;highlighter-rouge&quot;&gt;N * (N-1) * ... * (N - K + 1)&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Nhân cả 2 vế với với một lượng &lt;code class=&quot;highlighter-rouge&quot;&gt;(N - K) * (N - K -1) * ... * 2 * 1&lt;/code&gt;, hay chính là &lt;code class=&quot;highlighter-rouge&quot;&gt;(N - K)!&lt;/code&gt;, thu được:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;số chỉnh hợp&lt;/strong&gt; * &lt;code class=&quot;highlighter-rouge&quot;&gt;(N - K)!&lt;/code&gt; = &lt;code class=&quot;highlighter-rouge&quot;&gt;N * (N-1) * ... * (N - K + 1) * (N - K) * (N - K -1) * ... * 2 * 1&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Mà vế phải chính là N!, nên chia cả 2 vế cho &lt;code class=&quot;highlighter-rouge&quot;&gt;(N - K)!&lt;/code&gt;, thu:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Số Chỉnh hợp&lt;/strong&gt; = &lt;script type=&quot;math/tex&quot;&gt;\frac{N!}{\left( N-K \right)!}&lt;/script&gt; (ĐPCM)&lt;/p&gt;
+
+&lt;h3 id=&quot;số-tổ-hợp--số-chỉnh-hợp--k--fracnleft-n-k-rightk&quot;&gt;Số Tổ hợp = Số Chỉnh hợp / K! = &lt;script type=&quot;math/tex&quot;&gt;\frac{N!}{\left( N-K \right)!K!}&lt;/script&gt;&lt;/h3&gt;
+
+&lt;p&gt;Nhớ lại là &lt;strong&gt;tổ hợp&lt;/strong&gt; thì ko quan tâm đến thứ tự. Nghĩa là với bộ 3 số {1, 2, 3} thì ta có &lt;strong&gt;số chỉnh hợp&lt;/strong&gt; là 3! / (3-3)! = 6 (quy ước 0! = 1)&lt;/p&gt;
+
+&lt;p&gt;Nhưng &lt;strong&gt;số tổ hợp&lt;/strong&gt; thì chỉ là 1 mà thôi, vì ko quan tâm tới thứ tự mà, nên cho dù có bao nhiêu cách sắp xếp khác nhau thì cũng chỉ là một tổ hợp mà thôi.&lt;/p&gt;
+
+&lt;p&gt;Tổng quát lên, &lt;strong&gt;số tổ hợp = số chỉnh hợp / số cách sắp xếp khác nhau của K phần tử&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Mà &lt;strong&gt;số cách sắp xếp khác nhau của K phần tử&lt;/strong&gt; chính bằng &lt;strong&gt;số hoán vị của K&lt;/strong&gt;, hay K!, nên:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Số Tổ hợp&lt;/strong&gt; = &lt;strong&gt;Số Chỉnh hợp&lt;/strong&gt; / K!.&lt;/p&gt;
+
+&lt;p&gt;Thay Số Chỉnh hợp = &lt;script type=&quot;math/tex&quot;&gt;\frac{N!}{\left( N-K \right)!}&lt;/script&gt; thu:&lt;/p&gt;
+
+&lt;p&gt;Số Tổ hợp = &lt;script type=&quot;math/tex&quot;&gt;\frac{N!}{\left( N-K \right)!K!}&lt;/script&gt; (ĐPCM)&lt;/p&gt;
+
+&lt;h3 id=&quot;áp-dụng-cho-bài-toán-đếm-số-tương-tự&quot;&gt;Áp dụng cho bài toán đếm số tương tự&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Một số được cho là tương tự số ban đầu nếu số đó được tạo bởi các chữ số giống với các chữ số của số đã cho và ko xét nếu 0 ở đầu. Ví dụ 113 có 3 số tương tự là 113, 131, 311. Nhưng 100 chỉ có 1 số tương tự là 100 thôi, vì nếu 001 hay 010 thì ko hợp lệ.&lt;/li&gt;
+  &lt;li&gt;Vậy có cách nào tổng quát để tính số lượng số tương tự của 1 số cho trước không?&lt;/li&gt;
+  &lt;li&gt;Trước hết hãy cùng xem xét một bài toán có tên &lt;a href=&quot;http://web.mit.edu/neboat/Public/6.042/counting3.pdf&quot;&gt;Bookkeeper Rule&lt;/a&gt; dưới đây.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;bookkeeper-rule&quot;&gt;&lt;a href=&quot;http://web.mit.edu/neboat/Public/6.042/counting3.pdf&quot;&gt;Bookkeeper Rule&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;Là công thức tính số cách sắp xếp các chữ cái trong từ &lt;code class=&quot;highlighter-rouge&quot;&gt;bookkeeper&lt;/code&gt; theo các cách khác nhau. Ví dụ ta sẽ có &lt;code class=&quot;highlighter-rouge&quot;&gt;bokokeeper&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;bkookeeper&lt;/code&gt; …&lt;/p&gt;
+
+&lt;p&gt;Công thức được viết thành:&lt;br /&gt;
+Số cách xếp = &lt;script type=&quot;math/tex&quot;&gt;\frac{10!}{1!2!2!3!1!1!}&lt;/script&gt; = 302400 cách xếp.&lt;/p&gt;
+
+&lt;p&gt;Các con số trên lấy ở đâu ra?&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;10 = độ dài của xâu bookkeeper&lt;/li&gt;
+  &lt;li&gt;1, 2, 2, 3, 1, 1 lần lượt là số lần xuất hiện của &lt;code class=&quot;highlighter-rouge&quot;&gt;b, o, k, e, p, r&lt;/code&gt; trong xâu &lt;code class=&quot;highlighter-rouge&quot;&gt;bookkeeper&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Như vậy, nếu áp dụng Bookkeeper rule cho bài toán số tương tự, ta phải xét thêm trường hợp số 0 đứng đầu.
+Do &lt;strong&gt;cứ có số 0 đứng đầu thì số tạo thành là ko hợp lệ&lt;/strong&gt;, nên &lt;strong&gt;mọi cách sắp xếp của các chữ số còn lại trong trường hợp có số 0 ở đầu là không hợp lệ&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Vậy đơn giản là chỉ cần lấy &lt;strong&gt;tổng các số tương tự&lt;/strong&gt; trừ đi &lt;strong&gt;tổng số cách mà có 0 đứng đầu&lt;/strong&gt; là sẽ thu được kết quả đúng.&lt;/p&gt;
+
+&lt;p&gt;Và cũng có thể áp dụng Bookkeeper rule cho &lt;strong&gt;các chữ số còn lại trong trường hợp có số 0 ở đầu&lt;/strong&gt; để thu được số các số mà bắt đầu bằng 0.&lt;/p&gt;
+
+&lt;p&gt;Vậy có thể viết thành công thức tổng quát như sau:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;numbers_start_with_0 = if(original_number.contains(0)) bookkeeper(original_number.remove_one(0)) else 0
+simillar_numbers = bookkeeper(original_number) - numbers_start_with_0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Mình có viết một đoạn code bằng Ruby minh hoạ cho công thức trên như sau:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Calculate number of Similar Numbers
+# 112 has 112, 121, 211 (3 similar numbers)
+# 100 has 100 (1 similar number)
+# Given integer a (1 &amp;lt;= a &amp;lt;= 2^32)
+# Calculate number of similar numbers of a
+
+def permute(n)
+  return 1 if n == 0
+  (1..n).reduce(:*)
+end
+
+# BookKeeper Rule
+# http://web.mit.edu/neboat/Public/6.042/counting3.pdf
+#
+# group_digits has format:
+# {digit1 =&amp;gt; number_digits1, digit2 =&amp;gt; number_digits2}
+def bookkeeper(group_digits)
+  number_digits       = 0
+  denominator_permute = 1
+  group_digits.each do |_, n_digits|
+    number_digits       += n_digits
+    denominator_permute *= permute(n_digits)
+  end
+  permute(number_digits) / denominator_permute
+end
+
+def solution(a)
+  digits       = a.to_s.split('')
+  group_digits = Hash.new(0).tap { |h| digits.each { |d| h[d.to_i] += 1 } }
+  total_cases  = bookkeeper(group_digits)
+
+  # Remove all similar numbers that start with 0
+  # Means: If similar number start with 0,
+  # all other similar numbers that is created by other digits will be invalid
+  unless group_digits[0] == 0
+    group_digits[0] = group_digits[0] - 1
+    total_cases     -= bookkeeper(group_digits)
+  end
+
+  total_cases
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Make #cấp3 great again!&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 22 Mar 2017 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/math/combination/accordant/2017/03/22/to-hop-chinh-hop/</link>
+        <guid isPermaLink="true">http://localhost:4000/math/combination/accordant/2017/03/22/to-hop-chinh-hop/</guid>
+      </item>
+    
+      <item>
+        <title>Thực hiện benchmark (BM) MySQL InnoDB Buffer Pool(BP) trước và sau khi được warmup</title>
+        <description>&lt;p&gt;#tech #mysql #innodb #bufferpool #mytool #vi&lt;/p&gt;
+
+&lt;h3 id=&quot;background&quot;&gt;Background&lt;/h3&gt;
+
+&lt;p&gt;Với những database có lượng read lớn thì tầm quan trọng của việc warmup BP đã được nhắc tới nhiều. Nhưng nó có hiệu quả tới mức như thế nào? Mình đã thực hiện 1 BM đơn giản, với một table cũng đơn giản để cho thấy sự khác biệt trước và sau khi warmup.&lt;/p&gt;
+
+&lt;h3 id=&quot;môi-trường&quot;&gt;Môi trường:&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$mysql --version
+mysql  Ver 14.14 Distrib 5.7.14, for osx10.11 (x86_64) using  EditLine wrapper
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;CoreI5 @2.6GHz, DDR3 8GB@1600MHz, SSD&lt;/p&gt;
+
+&lt;h3 id=&quot;chuẩn-bị&quot;&gt;Chuẩn bị:&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Một MySQL instance KHÔNG CẤU HÌNH LOAD BP khi startup:&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; show variables like '%buffer_pool%';
++-------------------------------------+----------------+
+| Variable_name                       | Value          |
++-------------------------------------+----------------+
+| innodb_buffer_pool_chunk_size       | 268435456      |
+| innodb_buffer_pool_dump_at_shutdown | OFF            |
+| innodb_buffer_pool_dump_now         | OFF            |
+| innodb_buffer_pool_dump_pct         | 25             |
+| innodb_buffer_pool_filename         | ib_buffer_pool |
+| innodb_buffer_pool_instances        | 1              |
+| innodb_buffer_pool_load_abort       | OFF            |
+| innodb_buffer_pool_load_at_startup  | OFF            |
+| innodb_buffer_pool_load_now         | OFF            |
+| innodb_buffer_pool_size             | 268435456      |
++-------------------------------------+----------------+
+10 rows in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Một table với structure đơn giản như sau:&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; desc test_data;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| id          | int(11)      | NO   | PRI | NULL    | auto_increment |
+| random_str  | varchar(255) | YES  | MUL | NULL    |                |
+| random_str2 | varchar(255) | YES  |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Với 10triệu records:&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; select count(*) from test_data;
++----------+
+| count(*) |
++----------+
+| 10000000 |
++----------+
+1 row in set (8.38 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Một file SQL chứa 20k câu query để thực hiện BM, có format:&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;select * from test_data where random_str = &quot;unique_string_value&quot;;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Với &lt;code class=&quot;highlighter-rouge&quot;&gt;unique_string_value&lt;/code&gt; lần lượt là các giá trị lấy ra từ &lt;code class=&quot;highlighter-rouge&quot;&gt;random_str&lt;/code&gt; của table trên.&lt;/p&gt;
+
+&lt;h3 id=&quot;kịch-bản-bm&quot;&gt;Kịch bản BM&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Step0: Khởi động MySQL với option chỉ định KHÔNG LOAD, KHÔNG DUMP BP, và init BP size là 256MB:&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$mysql.server start --innodb_buffer_pool_load_at_startup=0 --innodb_buffer_pool_dump_at_shutdown=0 --innodb_buffer_pool_chunk_size=256M --innodb_buffer_pool_size=256M
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Step1: Chạy BM command khi không dùng tool &lt;a href=&quot;https://github.com/manhdaovan/mysql_warmup&quot;&gt;mysql-warmup&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$mysqlslap --create-schema=warmup_benchmark --delimiter=&quot;;&quot; --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
+Enter password:
+Benchmark
+    Average number of seconds to run all queries: 7.562 seconds
+    Minimum number of seconds to run all queries: 7.562 seconds
+    Maximum number of seconds to run all queries: 7.562 seconds
+    Number of clients running queries: 1
+    Average number of queries per client: 20001
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Ý nghĩa câu lệnh trên là: Mô phỏng 1 client, thực hiện 20k queries, mỗi query là 1 câu select theo value của column random_str (column này đã được index).&lt;br /&gt;
+Giả sử câu lệnh BM chuyển thành: Mô phỏng 20k clients, query cùng 1 nội dung, thì BM ko có ý nghĩa.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Step2: Chạy cùng câu lệnh như trên ngay sau đó, để thấy sự khác biệt khi BP được hit thay vì hit vào disk:&lt;/strong&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$mysqlslap --create-schema=warmup_benchmark --delimiter=&quot;;&quot; --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
+Enter password:
+Benchmark
+  Average number of seconds to run all queries: 1.740 seconds
+  Minimum number of seconds to run all queries: 1.740 seconds
+  Maximum number of seconds to run all queries: 1.740 seconds
+  Number of clients running queries: 1
+  Average number of queries per client: 20001
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Step 3: Tắt mysql, Khởi động lại máy (cho chắc, tránh MySQL rơi vào sleep mode), sau đó khởi động MySQL service lên như Step0.&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Step4: Chạy mysql-warmup tool:&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$mysql-warmup -uroot -dwarmup_benchmark
+
+Input the mysql password:
+my_mysql_root_password
+2017-02-24 15:33:07 +0900: --- &amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt; START WARMUP FOR DB: warmup_benchmark &amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;
+2017-02-24 15:33:07 +0900: --- START WARMUP FOR TABLE:   `warmup_benchmark`.`test_data`
+2017-02-24 15:33:29 +0900: --- SUCCESS WARMUP FOR TABLE: `warmup_benchmark`.`test_data`
+
+2017-02-24 15:33:29 +0900: --- +++++++ SUCCESS WARMUP FOR DB: warmup_benchmark +++++++
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Step5: Chạy lại câu lệnh BM như Step1:&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$mysqlslap --create-schema=warmup_benchmark --delimiter=&quot;;&quot; --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
+Enter password:
+Benchmark
+    Average number of seconds to run all queries: 2.132 seconds
+    Minimum number of seconds to run all queries: 2.132 seconds
+    Maximum number of seconds to run all queries: 2.132 seconds
+    Number of clients running queries: 1
+    Average number of queries per client: 20001
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Step6: Chạy lại câu lệnh như trên một lần nữa, xem có sự khác biệt nào không:&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$mysqlslap --create-schema=warmup_benchmark --delimiter=&quot;;&quot; --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
+Enter password:
+Benchmark
+    Average number of seconds to run all queries: 1.886 seconds
+    Minimum number of seconds to run all queries: 1.886 seconds
+    Maximum number of seconds to run all queries: 1.886 seconds
+    Number of clients running queries: 1
+    Average number of queries per client: 20001
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;kết-luận&quot;&gt;Kết luận:&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Nhìn vào kết quả ở Step1 và Step5: 7.562 seconds vs 2.132 seconds cho những request đầu tiên. Không tệ lắm nhỉ.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;ps-câu-hỏi-dành-cho-bạn-đọc&quot;&gt;P/S: Câu hỏi dành cho bạn đọc:&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Tại sao kết quả ở Step2(1.740 seconds) lại nhanh hơn ở Step5(2.132 seconds) ?&lt;/li&gt;
+  &lt;li&gt;Tại sao kết quả ở Step6(1.886 seconds) lại nhanh hơn ở Step5(2.132 seconds), nhưng lại chậm hơn ở Step2(1.740 seconds)?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Bạn có thể đọc &lt;a href=&quot;https://github.com/manhdaovan/mysql_warmup/blob/master/BENCHMARK.md&quot;&gt;bản tiếng Anh ở đây&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Thu, 02 Mar 2017 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/mysql/innodb/bufferpool/tool/2017/03/02/benchmark-mysql-inno-db-buffer-pool/</link>
+        <guid isPermaLink="true">http://localhost:4000/mysql/innodb/bufferpool/tool/2017/03/02/benchmark-mysql-inno-db-buffer-pool/</guid>
+      </item>
+    
+      <item>
+        <title>So sánh các câu lệnh warmup primary key vào buffer pool với engine InnoDB mysql</title>
+        <description>&lt;p&gt;#tech #mysql #vi&lt;/p&gt;
+
+&lt;h3 id=&quot;background&quot;&gt;Background&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://dev.mysql.com/doc/refman/5.7/en/glossary.html#glos_buffer_pool&quot;&gt;Buffer pool(BF)&lt;/a&gt; của mysql quả thực có nhiều lợi ích, và việc warm up BP luôn là việc nên làm đầu tiên mỗi khi start/reload/create new mysql.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Mysql version &amp;gt;= 5.6 đã hỗ trợ đơn giản hoá việc save/restore BF state bằng cấu hình, nên việc cần làm chỉ là cấu hình là xong.&lt;/li&gt;
+  &lt;li&gt;Và trong các case khác, như cấu hình 1 slave mới, hoặc mysql version &amp;lt; 5.6, thì phải thực hiện việc này một cách thủ công. Cơ chế chung của việc warmup là “touch” vào primary key và index của table đó.&lt;/li&gt;
+  &lt;li&gt;Tuy nhiên, “touch” thế nào cho tối ưu nhất? Trong quá trình thực hiện benchmark cho &lt;a href=&quot;https://github.com/manhdaovan/mysql_warmup&quot;&gt;tool này&lt;/a&gt;, người viết thấy có 1 số điều thú vị như dưới đây.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;testing&quot;&gt;Testing&lt;/h3&gt;
+
+&lt;p&gt;Việc testing theo các case khác nhau khá dài, và chủ yếu là người viết cực kỳ lười :v, nên các bạn vui lòng đọc tại &lt;a href=&quot;https://github.com/manhdaovan/mysql_warmup/blob/master/CHANGE_SUM_TO_COUNT.md&quot;&gt;link này&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;tldr&quot;&gt;TL;DR&lt;/h3&gt;
+
+&lt;p&gt;Để warmup primary key của table, thì câu lệnh nào dưới đây là tối ưu trong trường hợp:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Table chỉ có primary key.&lt;/li&gt;
+  &lt;li&gt;Table ngoài primary key ra còn có nhiều hơn hoặc bằng một index nữa&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Các câu lệnh thử nghiệm:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;select count(*) from table_name&lt;/li&gt;
+  &lt;li&gt;select count(*) from table_name where non_index_column = 0 or non_index_column = ‘0’&lt;/li&gt;
+  &lt;li&gt;select sum(primary_key) from table_name ?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;kết-quả&quot;&gt;Kết quả:&lt;/h4&gt;
+
+&lt;p&gt;&lt;strong&gt;Table with only primary key:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;select count(*) from table_name where non_index_column = 0 or non_index_column = '0'&lt;/code&gt; cho kết quả nhiều pages được load vào BF là nhiều nhất.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;select count(*) from table_name&lt;/code&gt; và &lt;code class=&quot;highlighter-rouge&quot;&gt;select sum(primary_key) from table_name&lt;/code&gt; cho cùng 1 kết quả số pages được load, nhưng ít hơn câu trên.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Table with primary key and other index(es):&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;select count(*) from table_name&lt;/code&gt;: &lt;strong&gt;primary_key&lt;/strong&gt; will be loaded.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;select sum(primary_key) from table_name&lt;/code&gt;: &lt;strong&gt;other_index&lt;/strong&gt; will be loaded, not primary key (so funny).&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;select count(*) from table_name where non_index_column = 0 or non_index_column = '0'&lt;/code&gt;: &lt;strong&gt;primary_key&lt;/strong&gt; sẽ đựơc load với số lượng lớn nhất.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;kết-luận&quot;&gt;Kết luận:&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Nên manual bằng cách touch primary key theo cách đảm bảo là tất cả primary key sẽ được “sờ” tới, bằng cách add thêm điều kiện where cho non_index_column.&lt;/li&gt;
+  &lt;li&gt;Nên dùng &lt;strong&gt;count(*)&lt;/strong&gt; thay cho &lt;strong&gt;sum(primary_key)&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Mon, 16 Jan 2017 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/tech/mysql/innodb/mytool/2017/01/16/so-sanh-warmup-commands/</link>
+        <guid isPermaLink="true">http://localhost:4000/tech/mysql/innodb/mytool/2017/01/16/so-sanh-warmup-commands/</guid>
+      </item>
+    
+  </channel>
+</rss>
