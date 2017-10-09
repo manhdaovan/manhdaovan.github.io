@@ -98,8 +98,8 @@ mà chúng ta thêm vào bị lỗi trong quá trình truyền tải. (Đến ng
 Phần này rất dài, và đặc toán là toán, bạn nào dễ bị đau đầu thì ko nên đọc.
 Còn bạn nào đầu cứng thì có thể tham khảo ở link:
 
-* https://en.m.wikiversity.org/wiki/Reed%E2%80%93Solomon_codes_for_coders
-* http://www.thonky.com/qr-code-tutorial/error-correction-coding
+* [https://en.m.wikiversity.org/wiki/Reed%E2%80%93Solomon_codes_for_coders](https://en.m.wikiversity.org/wiki/Reed%E2%80%93Solomon_codes_for_coders)
+* [http://www.thonky.com/qr-code-tutorial/error-correction-coding](http://www.thonky.com/qr-code-tutorial/error-correction-coding)
 
 2 ví dụ trên tác giả viết rõ cho trường hợp áp dụng cho QR code,
 cũng như giải thích cặn kẽ các kiến thức toán học liên quan, rất đáng tham khảo nếu đi sâu vào tìm hiểu QR.
