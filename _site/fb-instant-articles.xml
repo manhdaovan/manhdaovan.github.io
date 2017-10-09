@@ -10,10 +10,11 @@
         
             <item>
                 <title>Kỹ thuật sửa lỗi Reed - Solomon</title>
-                <link>http://localhost:4000/math/basic/2017/09/24/reed-solomon-error-correction/</link>
+                <link>http://localhost:4000/math/advance/2017/09/24/reed-solomon-error-correction/</link>
                 <content:encoded>
                     <![CDATA[
-                    <p>Đây là bài viết thuộc chủ đề nghiên cứu của nhóm ruby <a href="https://github.com/ruby-vietnam/hardcore-rule">hardcore</a></p>
+                    <p>Đây là bài viết thuộc chủ đề nghiên cứu của nhóm ruby <a href="https://github.com/ruby-vietnam/hardcore-rule">hardcore</a>,
+được lược dịch chủ yếu từ <a href="https://www.cs.cmu.edu/~guyb/realworld/reedsolomon/reed_solomon_codes.html">bài viết này.</a></p>
 
 <hr />
 
@@ -26,11 +27,12 @@ Và làm sao có thể hạn chế tối đã những lỗi này, thậm chí ư
 
 <p>Reed-solomon là một kỹ thuật trong <a href="https://en.wikipedia.org/wiki/Forward_error_correction#List_of_error-correcting_codes">rất nhiều kỹ thuật</a> nhằm đảm bảo toàn vẹn dữ liệu.
 Nó cho phép phát hiện và sửa lỗi, được ứng dụng rất rộng rãi, từ những sản phẩm rất bình dân mà bạn thấy hằng ngày như đĩa CD, DVD,
-cao cấp hơn tí có mã QR, hay các công nghệ phức tạp như DSL, WiMAX, RAID 6, thậm chí cả <a href="http://antoanthongtin.vn/Detail.aspx?NewsID=05a52da7-ee6a-4578-8792-1d3b471c18f9&amp;CatID=43b7448c-0f7e-4558-a39f-1d209751aad2">công nghệ vũ trụ</a>…</p>
+cao cấp hơn tí có mã QR, hay các công nghệ phức tạp như DSL, WiMAX, RAID 6,
+thậm chí cả <a href="http://antoanthongtin.vn/Detail.aspx?NewsID=05a52da7-ee6a-4578-8792-1d3b471c18f9&amp;CatID=43b7448c-0f7e-4558-a39f-1d209751aad2">công nghệ vũ trụ</a>…</p>
 
 <p>Tưởng tượng một chút là ta mua cái đĩa về, mở lên thấy Ưng Hoàng Phúc hát mà thỉnh thoảng lại thấy giọng của Ngọc Trinh thì hay nhỉ :D</p>
 
-<h3 id="tư-tưởng-chung">Tư tưởng chung</h3>
+<h3 id="nguyên-lý-chung">Nguyên lý chung</h3>
 
 <p>Cứ tưởng tượng thế này cho dễ. Trong 1 đoàn quân gửi đi đánh nhau, rất có thể có những người lính biến chất dọc đường.
 Làm sao để phát hiện và khôi phục lòng trung thành của những người lính này, thì bạn phải cài cắm người mà bạn tin vào trong đoàn quân đó,
@@ -41,26 +43,111 @@ Xịn hơn nữa, người được cài cắm có thể tự động khuyên nh
 rất có thể có những bit bị sai lệch vì nhiễu trên kênh truyền (=lính biến chất),
 bạn sẽ phải đưa thêm những bit giám sát (=cài cắm người mà bạn tin) vào số bit trên, và truyền tải đi.</p>
 
-<p>Chi tiết sẽ được trình bày phía dưới.</p>
+<p>Việc cài cắm sẽ được thông qua bộ <strong>encoder</strong>, và bộ <strong>decoder</strong> sẽ lo việc khôi phục.</p>
 
-<h3 id="các-khái-niệm-kỹ-thuật">Các khái niệm kỹ thuật</h3>
+<h3 id="các-khái-niệm-kỹ-thuật-liên-quan">Các khái niệm kỹ thuật liên quan</h3>
 
-<p>…</p>
+<p>Theo định nghĩa xịn ở <a href="https://www.cs.cmu.edu/~guyb/realworld/reedsolomon/reed_solomon_codes.html">đây</a>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>A Reed-Solomon code is specified as RS(n,k) with s-bit symbols.
+
+This means that the encoder takes k data symbols of s bits each and adds parity symbols to make an n symbol codeword.
+There are n-k parity symbols of s bits each. A Reed-Solomon decoder can correct up to t symbols that contain errors in a codeword, where 2t = n-k.
+</code></pre>
+</div>
+
+<p>Vietsub:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Mã Reed-Solomon được đặc tả là RS(n,k), với mỗi ký tự được cấu tạo từ s-bit.
+Nghĩa là bộ mã hóa sẽ nhận k ký tự, sau đó thêm vào các ký tự kiểm tra để tạo ra codeword có độ lớn n ký tự.
+Số ký tự kiểm tra là `n-k`, và số ký tự có thể được sửa tối đa là (n-k)/2
+</code></pre>
+</div>
+
+<p>Ta có thể liên tưởng đến các khái niệm được nhắc tới với nguyên lý chung ở trên như sau:</p>
+
+<ul>
+  <li><strong>symbols(ký tự):</strong> Có ý nghĩa như một anh lính. Anh lính này (symbol) được cấu tạo từ s-bit.</li>
+  <li><strong>k data symbols:</strong> Có ý nghĩa như một đoàn quân trước khi được cài cắm người vào. Đoàn quân này có số lượng là <code class="highlighter-rouge">k</code> anh lính.</li>
+  <li><strong>n symbol codeword:</strong> Có ý nghĩa như đoàn quân <strong>sau khi cài cắm người vào</strong>, có số lượng là <code class="highlighter-rouge">n</code> anh lính. (n &gt; k)</li>
+  <li><strong>n-k parity symbols(ký tự kiểm tra):</strong> Số lính mà ta cài cắm vào đoàn quân. Tất nhiên mỗi anh lính được cài vào vẫn được cấu tạo từ s-bit.</li>
+  <li><strong>2t = n-k:</strong> Reed-Solomon có thể sửa được <strong>tối đa</strong> <code class="highlighter-rouge">t</code> anh lính (symbols) biến chất trong đoàn quân, với <code class="highlighter-rouge">2t = n - k</code></li>
+</ul>
+
+<p>Người ta bảo trăm nghe ko bằng một thấy, vậy dưới đây là hơn 100 lần nghe :v</p>
+
+<p><img src="/images/assets/reed_solomon_code_word.gif" alt="Hình minh họa cấu tạo RS codeword" /></p>
+
+<h3 id="một-số-tính-chất">Một số tính chất</h3>
+
 <ol>
-  <li>Tư tưởng chung</li>
-  <li>‎Các khái niệm cụ thể</li>
-  <li>‎Áp dụng vào ví dụ</li>
-  <li>Mở rộng</li>
-  <li>‎Một vài suy nghĩ cá nhân</li>
+  <li>
+    <p>Với một ký tự(symbol) được tạo nên từ s-bit, thì codeword n có độ dài ko quá $n=2^{s}\; -\; 1$
+Ví dụ một ký tự có độ dài 8 bit (s=8) thì n &lt;= 2^8 -1 = 255.
+Một mã RS điển hình là RS(255,223), ta sẽ có: n = 255, k = 223, s = 8, 2t = 32, t = 16</p>
+  </li>
+  <li>
+    <p>Một symbol được coi là bị lỗi nếu 1 bit trong nó là lỗi hoặc tất cả các bit trong symbol đó là lỗi.
+Như vậy, với ví dụ cho RS(255,223) ở trên, mã RS này có thể sửa được 16 symbol lỗi (t=16).</p>
+  </li>
 </ol>
+
+<ul>
+  <li>
+    <p>Trong trường hợp xấu nhất, có 16 symbol riêng biệt nhau bị lỗi, và chỉ lỗi có 1 bit thôi.
+Lúc này, bộ giải mã chỉ có thể sửa được 16 * 1 = 16 bit lỗi.</p>
+  </li>
+  <li>
+    <p>Nhưng nếu như tất cả bit của cả 16 symbol đều lỗi, thì bộ decoder có thể sửa tới 16 * 8 = 128 bit lỗi.
+Vậy dễ nhận thấy là mã RS sẽ rất đắc lực trong trường hợp mà chuỗi các bit liên tiếp nhau bị lỗi.</p>
+  </li>
+</ul>
+
+<ol>
+  <li>Một symbol được coi là bị xóa nếu như biết được vị trí của symbol bị xóa.
+Bộ decoder có thể sửa được tối đa t symbol lỗi và 2t symbol bị xóa.
+Khi dữ liệu đi qua bộ decoder sẽ có 3 trường hợp xảy ra:</li>
+</ol>
+
+<ul>
+  <li>2e + r &lt; 2t với e là số symbol lỗi, r là số symbol bị xóa, thì codeword n luôn đc bảo đảm là đúng.</li>
+  <li>Ngược lại, decoder sẽ báo là không thể khôi phục dữ liệu, hoặc:</li>
+  <li>decoder sẽ decode và khôi phục sai dữ liệu. Đây là trường hợp khi mà chính <strong>parity symbols</strong>
+mà chúng ta thêm vào bị lỗi trong quá trình truyền tải. (Đến người mình tin yêu còn phản mình thì có mà bấu víu vào trời :v)</li>
+</ul>
+
+<h3 id="cài-đặt-cụ-thể">Cài đặt cụ thể</h3>
+
+<p>Phần này rất dài, và đặc toán là toán, bạn nào dễ bị đau đầu thì ko nên đọc.
+Còn bạn nào đầu cứng thì có thể tham khảo ở link:</p>
+
+<ul>
+  <li>https://en.m.wikiversity.org/wiki/Reed%E2%80%93Solomon_codes_for_coders</li>
+  <li>http://www.thonky.com/qr-code-tutorial/error-correction-coding</li>
+</ul>
+
+<p>2 ví dụ trên tác giả viết rõ cho trường hợp áp dụng cho QR code,
+cũng như giải thích cặn kẽ các kiến thức toán học liên quan, rất đáng tham khảo nếu đi sâu vào tìm hiểu QR.</p>
+
+<h3 id="một-số-kết-luận-tóm-gọn">‎Một số kết luận tóm gọn</h3>
+
+<ul>
+  <li>Cost càng ngày càng tăng nếu data càng dài (hiển nhiên luôn)</li>
+  <li>Encoding đã khó, decoding còn khó hơn nhiều :v</li>
+  <li>Rất nhiều kiến thức toán cao cấp của năm 1 2 đại học được áp dụng như Vành đa thức (univariate polynomials),
+tập hữu hạn và các phép toán trên tập hữu hạn (finite fields)</li>
+</ul>
+
+<p>PS: trên ruby cũng có <a href="https://github.com/whomwah/rqrcode">lib generate string sang QR code</a>
+với format png, ansi… mà mình cũng đang sử dụng cho <a href="https://anychat.4me.tips/">Anychat</a></p>
 
 
                     ]]>
                 </content:encoded>
-                <guid isPermaLink="false">/math/basic/2017/09/24/reed-solomon-error-correction/</guid>
+                <guid isPermaLink="false">/math/advance/2017/09/24/reed-solomon-error-correction/</guid>
                 <description>
                     
-                    Tìm hiểu kỹ thuật sửa lỗi Reed - Solomon thông qua ví dụ, với sự tham gia của Ưng Hoàng Phúc, Ngọc Trinh :v
+                    Tìm hiểu một số khái niệm và tính chất của kỹ thuật sửa lỗi Reed - Solomon, với sự xuất hiện của Ưng Hoàng Phúc, Ngọc Trinh :v
                     
                 </description>
                 <pubDate>Sun, 24 Sep 2017 00:00:00 +0000</pubDate>
@@ -874,8 +961,7 @@ Benchmark
 thì một số bạn có pm và đặt câu hỏi là bạn ấy có nhu cầu qua Nhật làm việc theo dạng kỹ sư, vậy cần chuẩn bị hoặc làm gì để có thể sang Nhật làm việc được?</p>
 
 <p>Trước khi đi vào câu trả lời thì mình xin nói trước là kinh nghiệm đi Nhật của mình không phong phú,
-và hơn nữa mình cũng không có kinh nghiệm tư vấn lắm, chỉ là mình nói dựa trên những điều bản thân mình đã trải qua.
-Mình không có blog cá nhân, lại càng không có website riêng, tiện thì mình post lên đây để chia sẽ với các bạn thôi.</p>
+và hơn nữa mình cũng không có kinh nghiệm tư vấn lắm, chỉ là mình nói dựa trên những điều bản thân mình đã trải qua.</p>
 
 <p>Trước tiên là nói về việc sang Nhật theo dạng kỹ sư thì khác với dạng khác (Tu nghiệp sinh, lao động phổ thông…) như thế nào.
 Mình thấy có 3 điểm khác biệt lớn nhất:</p>
@@ -956,6 +1042,8 @@ Chúc bạn may mắn và đạt được công việc mong muốn.</p>
                 </content:encoded>
                 <guid isPermaLink="false">/opinion/career/2015/06/26/muon-sang-nhat-thi-lam-gi/</guid>
                 <description>
+                    
+                    Kinh nghiệm bản thân về việc chuẩn bị sang vùng kinh tế mới :v
                     
                 </description>
                 <pubDate>Fri, 26 Jun 2015 00:00:00 +0000</pubDate>

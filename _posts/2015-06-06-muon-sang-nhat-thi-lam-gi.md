@@ -2,7 +2,7 @@
 layout: post
 title: Muốn đi Nhật - Cần làm gì?
 date: 2015-06-26 00:00:00
-summary:
+summary: Kinh nghiệm bản thân về việc chuẩn bị sang vùng kinh tế mới :v
 categories: opinion career
 ---
 
@@ -11,7 +11,6 @@ thì một số bạn có pm và đặt câu hỏi là bạn ấy có nhu cầu 
 
 Trước khi đi vào câu trả lời thì mình xin nói trước là kinh nghiệm đi Nhật của mình không phong phú,
 và hơn nữa mình cũng không có kinh nghiệm tư vấn lắm, chỉ là mình nói dựa trên những điều bản thân mình đã trải qua.
-Mình không có blog cá nhân, lại càng không có website riêng, tiện thì mình post lên đây để chia sẽ với các bạn thôi.
 
 Trước tiên là nói về việc sang Nhật theo dạng kỹ sư thì khác với dạng khác (Tu nghiệp sinh, lao động phổ thông...) như thế nào.
 Mình thấy có 3 điểm khác biệt lớn nhất:

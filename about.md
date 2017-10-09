@@ -13,9 +13,9 @@ tags: about
   <div style="text-align: left;">
     <pre>
         <code>
-            $pwd
-            /Users/manhdaovan/my_life
-            $whoami
+            ➜  ~ pwd
+            /Users/manhdaovan/life
+            ➜  ~ whoami
             root
         </code>
     </pre>

@@ -4,6 +4,7 @@ title: Vài suy nghĩ về nghề Lập Trình Viên (LTV)
 date: 2017-09-24 00:00:00
 summary: Nghề LTV dưới góc nhìn của người viết. Liệu nó có phải là nghề "đáng làm" hay không?
 categories: opinion vi
+draft: true
 ---
 
 #opinion #vi #cntt #ltv
