@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Higher-Order Function (HOF) và Currying &#8211; ManhDV's blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="HOF và Currying là hai kỹ thuật không khó, thậm chí bạn đang dùng nó hàng ngày mà không để ý. Cùng tìm hiểu chúng thông qua một số ví dụ.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Manh Dao Van">
+    
+    <meta name="keywords" content="programming, vi">
+    <link rel="canonical" href="http://localhost:4000/programming/vi/2017/10/14/higer-order-function-and-currying/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for ManhDV's blog" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201710152118" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" async
+        src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+      <meta name="google-site-verification" content="EZuWhMA9JoA5QkSbCDS_VEv3HQSM3OtKFhhmspqZj30" />
+    
+    
+      <meta name="msvalidate.01" content="AFCB98997376EE993BAB6C89AE10D1B8" />
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Higher-Order Function (HOF) và Currying">
+    <meta property="og:description" content="95% những điều họ nói về ManhDV là sai, chỉ có lúc nào cũng so high là đúng thật :v">
+    <meta property="og:url" content="http://localhost:4000/programming/vi/2017/10/14/higer-order-function-and-currying/">
+    <meta property="og:site_name" content="ManhDV's blog">
+    
+    <meta property="og:image" content="http://localhost:4000/images/me.png">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+    <meta name="twitter:title" content="Higher-Order Function (HOF) và Currying" />
+    <meta name="twitter:description" content="HOF và Currying là hai kỹ thuật không khó, thậm chí bạn đang dùng nó hàng ngày mà không để ý. Cùng tìm hiểu chúng thông qua một số ví dụ." />
+    <meta name="twitter:url" content="http://localhost:4000/programming/vi/2017/10/14/higer-order-function-and-currying/" />
+    
+    <meta name="twitter:image" content="http://localhost:4000/images/me.png" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-106952703-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<body class="site">
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://localhost:4000" class="site-title">ManhDV's blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/posts/">Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/manhdaovan"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:manhdaovan@gmail.com"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h2>Higher-Order Function (HOF) và Currying</h2>
+  <span class="post-meta">Oct 14, 2017</span><br>
+  
+  <span class="post-meta small">
+  
+    9 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p><strong>Bài viết khá dài và có nhiều chi tiết rất bình thường, hãy cân nhắc trước khi đọc :D</strong></p>
+
+<h3 id="background">Background</h3>
+
+<p>Tôi cho rằng một kỹ sư phần mềm pro không phải là người viết ra những dòng code đánh đố người đọc hay đồng nghiệp,
+mà là người viết những dòng code mà khi người khác đọc nó liền cảm thấy trong sáng, dễ hiểu, dễ bảo trì.</p>
+
+<p>Cũng như sự tiến hóa của con người, khi mà “ăn no, ăn sạch rồi ăn ngon”, thì coding cũng có slogan tương tự:
+<a href="http://wiki.c2.com/?MakeItWorkMakeItRightMakeItFast">“chạy được, chạy đúng, sau cùng là chạy nhanh”</a>.
+Vậy, sau khi chạy được và chạy đúng rồi, chúng ta nên suy nghĩ xem ngoài việc có thể chạy nhanh hơn ko,
+thì đoạn code này đã sáng sủa chưa? Nếu bị/được sửa thì có dễ ko?</p>
+
+<p>HOF và Currying là 2 trong số ti tỉ kỹ thuật nhằm giúp chúng ta, những lập trình viên huyền thoại, đạt được tiêu chí trên.</p>
+
+<p>Trước khi đi vào khái niệm cụ thể, chúng ta cùng xem ví dụ dưới đây:</p>
+
+<h3 id="ví-dụ-1">Ví dụ 1</h3>
+
+<p>Nhóc con nhà bạn nhờ bạn tìm những số tự nhiên khác 0 nhỏ hơn 20 và là số lẻ.
+Là một ông bố mẫu mực với niềm kiêu hãnh nhiều năm kinh nghiệm fixed hàng trăm bug nhỏ và <del>tạo ra</del> hàng tá bug to,
+bạn muốn viết một chương trình hoành tráng để lấy le với con mình. Ok, you win!.
+Dưới đây chắc hẳn là đoạn code đầu tiên xuất hiện trong đầu:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>function pickOddNumbers(maximum) {
+  const result = [];
+
+  for (let i = 1; i &lt;= maximum; i += 1) {
+    if (i % 2 === 1) result.push(i);
+  }
+
+  return result;
+}
+
+pickOddNumbers(20);
+</code></pre>
+</div>
+
+<p>Nhưng đời không bao giờ là mơ, khi hôm sau nhóc con lại mếu máo: “Cô giáo cho thêm bài: Tìm những số tự nhiên khác 0 nhỏ hơn 20 mà nếu gấp 3 số đó rồi từ đi 2 thì thu được số chẵn.”.
+Ok bố chiều cô luôn. Vậy là bạn lại cho ra phiên bản mới:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>function pickSpecialNumbers(maximum) {
+  const result = [];
+
+  for (let i = 1; i &lt;= maximum; i += 1) {
+    if (((i * 3) - 2) % 2 === 0) result.push(i);
+  }
+
+  return result;
+}
+
+pickSpecialNumbers(20);
+</code></pre>
+</div>
+
+<p>Đời vẫn ko như mơ khi cô giáo lại cho thêm bài tập: “Tìm những số tự nhiên khác 0 nhỏ hơn 20 mà nếu lấy phần dư số đó cho 9 rồi cộng thêm 2 thì thu số lẻ.”
+Ơ cô giáo từ từ, để bố em sửa function bên trên đã :))))</p>
+
+<p>Cứ như vậy, mỗi lần cô giáo cho thêm yêu cầu là bạn lại phải sửa phiên bản cũ hoặc cho ra một bản mới,
+tuy yêu cầu khác nhau nhưng xử lý cơ bản là giống nhau, chỉ khác ở đoạn xử lý điều kiện cho số được chọn.
+Và bạn chợt nhớ tới HOF, một ứng cử viên sáng giá cho việc làm đoạn code trên sạch hơn, gọn hơn, dễ sửa hơn.</p>
+
+<h3 id="định-nghĩa-hof">Định nghĩa HOF</h3>
+
+<p>Theo <a href="https://en.wikipedia.org/wiki/Higher-order_function">wikipedia</a> thì:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>A higher-order function (also functional, functional form or functor) is a function that does at least one of the following:
+
+・takes one or more functions as arguments,
+・returns a function as its result.
+</code></pre>
+</div>
+
+<p>Vietsub:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>HOF là một function mà cho phép thực hiện ít nhất 1 trong 2 khả năng sau:
+・Nhận vào một hoặc nhiều function như là tham số, hoặc/và
+・Trả về kết quả là một function.
+</code></pre>
+</div>
+
+<p><em>// Bạn có thể thấy có rất nhiều ngôn ngữ hỗ trợ HOF ở link wiki trên. Đến Java còn hỗ trợ nữa là :v</em></p>
+
+<p>Trăm nghe không bằng một thấy, trăm thấy không bằng một sờ, và chúng ta lại cùng sờ với ví dụ bên trên.
+Lần này là bản nâng cấp có giá trị về mặt học thuật, vì được áp dụng HOF vào cơ mà :)))</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>function pickNumbers(maximum, pickingCondition) {
+  const result = [];
+
+  for (let i = 1; i &lt;= maximum; i += 1) {
+    if (pickingCondition(i)) result.push(i);
+  }
+
+  return result;
+}
+
+// Chọn ra những số lẻ
+pickNumbers(20, function(number) {
+  return number % 2 === 1;
+});
+
+// Chọn ra những số mà gấp 3 số đó rồi trừ đi 2 thu số chẵn
+pickNumbers(20, function(number) {
+  return ((number * 3) - 2) % 2 === 0;
+});
+
+</code></pre>
+</div>
+
+<p>Với việc đưa HOF vào function bên trên, giờ thì cô giáo thích gì cũng chiều được nhé,
+chỉ cần thay đổi function kiểm tra điều kiện vào thôi, ko cần phải copy thành function mới nữa.</p>
+
+<h3 id="định-nghĩa-currying">Định nghĩa Currying</h3>
+
+<p>Lại theo <a href="https://en.wikipedia.org/wiki/Currying">wikipedia</a>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> Currying is the technique of translating the evaluation of a function
+ that takes multiple arguments (or a tuple of arguments)
+ into evaluating a sequence of functions, each with a single argument.
+</code></pre>
+</div>
+
+<p>Vietsub:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Currying là kỹ thuật mà cho phép chuyển đổi một function với nhiều tham số
+thành những functions liên tiếp có một tham số.
+// Ví dụ f(a,b,c) có thể được convert thành g(a)h(b, c) hay g(a)h(b)k(c), thậm chí là đổi thứ tự của các function tương ứng...
+</code></pre>
+</div>
+
+<p>Vậy dễ dàng nhận thấy <code class="highlighter-rouge">Currying</code> là một trường hợp của <code class="highlighter-rouge">HOF</code>, vì nó thỏa mãn điều kiện <code class="highlighter-rouge">trả về kết quả là một function</code>.</p>
+
+<p>Cụ thể áp dụng cho ví dụ trên, có thể viết thành dạng sau:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>function pickNumbers(maximum) {
+  return function (pickingCondition) {
+    const result = [];
+
+    for (let i = 1; i &lt;= maximum; i += 1) {
+      if (pickingCondition(i)) result.push(i);
+    }
+
+    return result;
+  };
+}
+
+// Chọn ra những số lẻ
+pickNumbers(20)(function (number) {
+  return number % 2 === 1;
+});
+
+// Chọn ra những số mà gấp 3 số đó rồi trừ đi 2 thu số chẵn
+pickNumbers(20)(function (number) {
+  return (number * 3 - 2) % 2 === 0;
+});
+</code></pre>
+</div>
+
+<p>So sánh ví dụ áp dụng Currying này với ví dụ sử dụng HOF ở trên, rõ ràng là ta chưa thấy sự ưu việt của Currying so với HOF, thậm chí còn thấy hơi rườm rà nữa.
+Tuy nhiên, hãy cùng xem xét ví dụ dưới đây:</p>
+
+<h3 id="ví-dụ-2">Ví dụ 2</h3>
+
+<p>Viết một function lấy ra giá trị của một <code class="highlighter-rouge">key</code> của object, được chọn ra từ một mảng các objects với điều kiện. Đơn giản vậy thôi, nên việc cài đặt cũng có vẻ là đơn giản.</p>
+
+<p>Với HOF:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>function getValue(objects, key, pickingCondition) {
+  var object = null;
+
+  for (var i = 0; i &lt; objects.length; i++) {
+    if (pickingCondition(objects[i])) {
+      object = objects[i];
+      break;
+    }
+  }
+
+  return object ? object[key] : null;
+};
+</code></pre>
+</div>
+
+<p>Mỗi khi gọi function với key khác nhau, hẳn là sẽ phải gọi kiểu như vầy:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var valueByKey1 = getValue(objects, 'key1', pickingCondition);
+var valueByKey2 = getValue(objects, 'key2', pickingCondition);
+</code></pre>
+</div>
+
+<p>Nếu như coi <code class="highlighter-rouge">key</code> là <strong>biết trước</strong>, chỉ thay đổi <code class="highlighter-rouge">objects</code> và <code class="highlighter-rouge">pickingCondition</code>, thì việc áp dụng Currying lại hợp lý:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>function getValue(key) {
+  return function (objects, pickingCondition) {
+    let object = null;
+
+    for (let i = 0; i &lt; objects.length; i++) {
+      if (pickingCondition(objects[i])) {
+        object = objects[i];
+        break;
+      }
+    }
+
+    return object ? object[key] : null;
+  };
+};
+
+// Wrap getValue thành những function ngắn hơn với tên sáng nghĩa:
+var getValueByKey1 = getValue('key1');
+var getValueByKey2 = getValue('key2');
+
+// Sử dụng:
+var valueByKey1 = getValueByKey1(objects, pickingCondition);
+var valueByKey2 = getValueByKey2(objects, pickingCondition);
+</code></pre>
+</div>
+
+<p>Khá là gọn gàng.</p>
+
+<p><em>// Ngoài lề: Nếu bạn làm việc với ReactJs, hẳn bạn đã biết tới thuật ngữ Higher-Order Component,
+hay các selectors mà redux-form cung cấp, thì chúng đều áp dụng kỹ thuật Currying này, cũng như HOF.</em></p>
+
+<p>Dưới đây là một vài ví dụ cho thấy tác dụng tốt của Currying:</p>
+
+<h3 id="ví-dụ-3">Ví dụ 3</h3>
+
+<p>Viết function để kiểm tra độ dài của một xâu <code class="highlighter-rouge">s</code> có vượt quá <code class="highlighter-rouge">n</code> hay ko.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// Cách 1: Không dùng Currying
+function isLengthOver(s, n){
+  return s.length &gt; n
+}
+
+// Cách 2: Có Currying
+function isLengthOver(n){
+  return function(s){
+    return s.length &gt; n;
+  }
+}
+</code></pre>
+</div>
+
+<p>Giả sử cả 2 cách viết trên được sử dụng cho việc validate của một field trên form, với <code class="highlighter-rouge">n = 10</code> thì có sự khác biệt như sau:</p>
+
+<p>Với cách 1:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;input type="text" validate={value =&gt; isLengthOver(value, 10)} /&gt;
+</code></pre>
+</div>
+
+<p>Với cách 2:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;input type="text" validate={isLengthOver(10)} /&gt;
+</code></pre>
+</div>
+
+<p>Quá khác bọt!</p>
+
+<h3 id="ví-dụ-4">Ví dụ 4</h3>
+
+<p>Viết function hiển thị tên group mà một nhân viên đang làm việc, với:</p>
+
+<p>Input:</p>
+<ul>
+  <li><code class="highlighter-rouge">employeeGroupId</code> là id của group mà nhân viên đang làm việc,</li>
+  <li>Một group luôn có id khác null,</li>
+  <li>Mảng chứa toàn bộ <code class="highlighter-rouge">groups</code> có trong công ty. Nếu groupB là group con của groupA, thì groupB sẽ có <code class="highlighter-rouge">parentGroupId</code> là id của groupA. Group không là con khi <code class="highlighter-rouge">parentGroupId</code> của nó là null,</li>
+  <li>Không có quan hệ vòng tròn. (Kiểu: <code class="highlighter-rouge">groupA là con groupB, groupB là con groupC, groupC là con groupA</code>)</li>
+</ul>
+
+<p>Output:</p>
+<ul>
+  <li>Full path của group mà nhân viên đang làm việc, phân cách bởi dấu <code class="highlighter-rouge">/</code>. Ví dụ <code class="highlighter-rouge">Group A / Group B / Group C</code></li>
+</ul>
+
+<p>Chắc hẳn bạn sẽ nghĩ tới cách dùng vòng lặp, kiểm tra chừng nào còn tìm thấy group có id bằng <code class="highlighter-rouge">parentGroupId</code>. Và tôi cũng nghĩ vậy :D</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>const getGroupFullPathName = (groups, employeeGroupId) =&gt; {
+  const groupNames = [];
+
+  let group = groups.find(grp =&gt; grp.id === employeeGroupId);
+  while (group) {
+    groupNames.unshift(group.name);
+    group = groups.find(grp =&gt; grp.id === group.parentGroupId);
+  }
+
+  return groupNames.join('/');
+};
+</code></pre>
+</div>
+
+<p>Nhưng đoạn code trên vẫn chưa ngon, do vi phạm rule <a href="https://eslint.org/docs/rules/no-loop-func">Don’t make functions within a loop</a> của ESLint.
+Cụ thể: Mỗi khi vòng while được chạy thì <code class="highlighter-rouge">groups.find(grp =&gt; grp.id === group.parentGroupId)</code> lại sinh ra một anonymous function, chính là <code class="highlighter-rouge">grp =&gt; grp.id === group.parentGroupId</code>.</p>
+
+<p>Cách khắc phục là ta viết một currying bên ngoài vòng while là được:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>const getGroupFullPathName = (groups, employeeGroupId) =&gt; {
+  const groupNames = [];
+  const condition = parentGroupId =&gt; group =&gt; group.id === parentGroupId;
+
+  let group = groups.find(grp =&gt; grp.id === employeeGroupId);
+  while (group) {
+    groupNames.unshift(group.name);
+    group = groups.find(condition(group.parentDepartmentId));
+  }
+
+  return groupNames.join('/');
+};
+</code></pre>
+</div>
+
+<h3 id="kết-luận">Kết luận:</h3>
+<p>Bài quá dài.</p>
+
+
+</article>
+
+
+  <br/>
+  <div class="share-page">
+  <div>♫Em có thể dối anh trong lời nói</div>
+  <div>Nhưng làm sao giấu được trên Facebook</div>
+  <div>Em nói là sẽ nhấn share bài viết</div>
+  <div>Mà sao chưa thấy đường link...♪</div>
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fprogramming%2Fvi%2F2017%2F10%2F14%2Fhiger-order-function-and-currying%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Higher-Order+Function+%28HOF%29+v%C3%A0+Currying&amp;url=http%3A%2F%2Flocalhost%3A4000%2Fprogramming%2Fvi%2F2017%2F10%2F14%2Fhiger-order-function-and-currying%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http%3A%2F%2Flocalhost%3A4000%2Fprogramming%2Fvi%2F2017%2F10%2F14%2Fhiger-order-function-and-currying%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=http%3A%2F%2Flocalhost%3A4000%2Fprogramming%2Fvi%2F2017%2F10%2F14%2Fhiger-order-function-and-currying%2F&amp;title=Higher-Order+Function+%28HOF%29+v%C3%A0+Currying" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=http%3A%2F%2Flocalhost%3A4000%2Fprogramming%2Fvi%2F2017%2F10%2F14%2Fhiger-order-function-and-currying%2F&amp;title=Higher-Order+Function+%28HOF%29+v%C3%A0+Currying" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=http%3A%2F%2Flocalhost%3A4000%2Fprogramming%2Fvi%2F2017%2F10%2F14%2Fhiger-order-function-and-currying%2F&amp;t=Higher-Order+Function+%28HOF%29+v%C3%A0+Currying" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <a href="https://creativecommons.org/licenses/by-nd/4.0/">License: CC BY-ND 4.0 with love</a>
+</div>
+
+
+
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'https-manhdaovan-github-io';
+    var disqus_identifier = '/programming/vi/2017/10/14/higer-order-function-and-currying';
+    var disqus_title      = "Higher-Order Function (HOF) và Currying";
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/math/advance/2017/09/24/reed-solomon-error-correction/" class="post-link">
+        <h4 class="post-title">Kỹ thuật sửa lỗi Reed - Solomon</h4>
+        <p class="post-summary">Tìm hiểu một số khái niệm và tính chất của kỹ thuật sửa lỗi Reed - Solomon, với sự xuất hiện của Ưng Hoàng Phúc, Ngọc Trinh :v</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/opinion/vi/2017/09/24/nghe-lap-trinh-vien/" class="post-link">
+        <h4 class="post-title">Vài suy nghĩ về nghề Lập Trình Viên (LTV)</h4>
+        <p class="post-summary">Nghề LTV dưới góc nhìn của người viết. Liệu nó có phải là nghề "đáng làm" hay không?</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/tech/rails/actioncable/2017/04/07/Realtime-chat-voi-websocket/" class="post-link">
+        <h4 class="post-title">Xây dựng ứng dụng chat sử dụng websocket có khó không?</h4>
+        <p class="post-summary">A-to-Z Xây dựng ứng dụng realtime chat sử dụng action cable rails 5</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/tech/mysql/summary/2017/03/22/Pinterest-da-thuc-hien-scaled-MySQL-cua-ho-nhu-the-nao/" class="post-link">
+        <h4 class="post-title">Pinterest đã thực hiện scaled MySQL của họ như thế nào</h4>
+        <p class="post-summary">Bài viết lược dịch từ Sharding Pinterest How we scaled our MySQL fleet, một bài viết theo mình đánh giá là rất chất lượng, và có nhiều giá trị có thể tham khảo.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/math/basic/2017/03/22/to-hop-chinh-hop/" class="post-link">
+        <h4 class="post-title">Tổ hợp, chỉnh hợp và bài toán đếm cơ bản</h4>
+        <p class="post-summary">Một số bài toán về chỉnh hợp, tổ hợp cơ bản đã học hồi cấp 3 và áp dụng vào bài toán đếm</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/tech/mysql/mytool/2017/03/02/benchmark-mysql-inno-db-buffer-pool/" class="post-link">
+        <h4 class="post-title">Thực hiện benchmark (BM) MySQL InnoDB Buffer Pool(BP) trước và sau khi được warmup</h4>
+        <p class="post-summary">Mình thực hiện BM này cho chính [tool mình viết](https://github.com/manhdaovan/mysql_warmup), cũng là 1 tool đơn giản thôi, tiện thể đem kết quả lên khoe với mọi người luôn.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/tech/mysql/mytool/2017/01/16/so-sanh-warmup-commands/" class="post-link">
+        <h4 class="post-title">So sánh các câu lệnh warmup primary key vào buffer pool với engine InnoDB mysql</h4>
+        <p class="post-summary">Buffer pool(BF) của mysql quả thực có nhiều lợi ích, và việc warm up BP luôn là việc nên làm đầu tiên mỗi khi start/reload/create new mysql. Tuy nhiên, "touch" thế nào cho tối ưu nhất? Trong quá trình thực hiện benchmark cho [tool này](https://github.com/manhdaovan/mysql_warmup), người viết thấy có 1 số điều thú vị như dưới đây.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/opinion/career/2015/06/26/muon-sang-nhat-thi-lam-gi/" class="post-link">
+        <h4 class="post-title">Muốn đi Nhật - Cần làm gì?</h4>
+        <p class="post-summary">Kinh nghiệm bản thân về việc chuẩn bị sang vùng kinh tế mới :v</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">GitHub</a>.
+    </small>
+  </div>
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/3.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h2, article h3, article h4, article h5, article h6');
+</script>
+
+</body>
+</html>

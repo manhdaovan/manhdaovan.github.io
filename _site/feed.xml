@@ -7,6 +7,324 @@
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Higher-Order Function (HOF) và Currying</title>
+        <description>&lt;p&gt;&lt;strong&gt;Bài viết khá dài và có nhiều chi tiết rất bình thường, hãy cân nhắc trước khi đọc :D&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;background&quot;&gt;Background&lt;/h3&gt;
+
+&lt;p&gt;Tôi cho rằng một kỹ sư phần mềm pro không phải là người viết ra những dòng code đánh đố người đọc hay đồng nghiệp,
+mà là người viết những dòng code mà khi người khác đọc nó liền cảm thấy trong sáng, dễ hiểu, dễ bảo trì.&lt;/p&gt;
+
+&lt;p&gt;Cũng như sự tiến hóa của con người, khi mà “ăn no, ăn sạch rồi ăn ngon”, thì coding cũng có slogan tương tự:
+&lt;a href=&quot;http://wiki.c2.com/?MakeItWorkMakeItRightMakeItFast&quot;&gt;“chạy được, chạy đúng, sau cùng là chạy nhanh”&lt;/a&gt;.
+Vậy, sau khi chạy được và chạy đúng rồi, chúng ta nên suy nghĩ xem ngoài việc có thể chạy nhanh hơn ko,
+thì đoạn code này đã sáng sủa chưa? Nếu bị/được sửa thì có dễ ko?&lt;/p&gt;
+
+&lt;p&gt;HOF và Currying là 2 trong số ti tỉ kỹ thuật nhằm giúp chúng ta, những lập trình viên huyền thoại, đạt được tiêu chí trên.&lt;/p&gt;
+
+&lt;p&gt;Trước khi đi vào khái niệm cụ thể, chúng ta cùng xem ví dụ dưới đây:&lt;/p&gt;
+
+&lt;h3 id=&quot;ví-dụ-1&quot;&gt;Ví dụ 1&lt;/h3&gt;
+
+&lt;p&gt;Nhóc con nhà bạn nhờ bạn tìm những số tự nhiên khác 0 nhỏ hơn 20 và là số lẻ.
+Là một ông bố mẫu mực với niềm kiêu hãnh nhiều năm kinh nghiệm fixed hàng trăm bug nhỏ và &lt;del&gt;tạo ra&lt;/del&gt; hàng tá bug to,
+bạn muốn viết một chương trình hoành tráng để lấy le với con mình. Ok, you win!.
+Dưới đây chắc hẳn là đoạn code đầu tiên xuất hiện trong đầu:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function pickOddNumbers(maximum) {
+  const result = [];
+
+  for (let i = 1; i &amp;lt;= maximum; i += 1) {
+    if (i % 2 === 1) result.push(i);
+  }
+
+  return result;
+}
+
+pickOddNumbers(20);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Nhưng đời không bao giờ là mơ, khi hôm sau nhóc con lại mếu máo: “Cô giáo cho thêm bài: Tìm những số tự nhiên khác 0 nhỏ hơn 20 mà nếu gấp 3 số đó rồi từ đi 2 thì thu được số chẵn.”.
+Ok bố chiều cô luôn. Vậy là bạn lại cho ra phiên bản mới:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function pickSpecialNumbers(maximum) {
+  const result = [];
+
+  for (let i = 1; i &amp;lt;= maximum; i += 1) {
+    if (((i * 3) - 2) % 2 === 0) result.push(i);
+  }
+
+  return result;
+}
+
+pickSpecialNumbers(20);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Đời vẫn ko như mơ khi cô giáo lại cho thêm bài tập: “Tìm những số tự nhiên khác 0 nhỏ hơn 20 mà nếu lấy phần dư số đó cho 9 rồi cộng thêm 2 thì thu số lẻ.”
+Ơ cô giáo từ từ, để bố em sửa function bên trên đã :))))&lt;/p&gt;
+
+&lt;p&gt;Cứ như vậy, mỗi lần cô giáo cho thêm yêu cầu là bạn lại phải sửa phiên bản cũ hoặc cho ra một bản mới,
+tuy yêu cầu khác nhau nhưng xử lý cơ bản là giống nhau, chỉ khác ở đoạn xử lý điều kiện cho số được chọn.
+Và bạn chợt nhớ tới HOF, một ứng cử viên sáng giá cho việc làm đoạn code trên sạch hơn, gọn hơn, dễ sửa hơn.&lt;/p&gt;
+
+&lt;h3 id=&quot;định-nghĩa-hof&quot;&gt;Định nghĩa HOF&lt;/h3&gt;
+
+&lt;p&gt;Theo &lt;a href=&quot;https://en.wikipedia.org/wiki/Higher-order_function&quot;&gt;wikipedia&lt;/a&gt; thì:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A higher-order function (also functional, functional form or functor) is a function that does at least one of the following:
+
+・takes one or more functions as arguments,
+・returns a function as its result.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Vietsub:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;HOF là một function mà cho phép thực hiện ít nhất 1 trong 2 khả năng sau:
+・Nhận vào một hoặc nhiều function như là tham số, hoặc/và
+・Trả về kết quả là một function.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;// Bạn có thể thấy có rất nhiều ngôn ngữ hỗ trợ HOF ở link wiki trên. Đến Java còn hỗ trợ nữa là :v&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Trăm nghe không bằng một thấy, trăm thấy không bằng một sờ, và chúng ta lại cùng sờ với ví dụ bên trên.
+Lần này là bản nâng cấp có giá trị về mặt học thuật, vì được áp dụng HOF vào cơ mà :)))&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function pickNumbers(maximum, pickingCondition) {
+  const result = [];
+
+  for (let i = 1; i &amp;lt;= maximum; i += 1) {
+    if (pickingCondition(i)) result.push(i);
+  }
+
+  return result;
+}
+
+// Chọn ra những số lẻ
+pickNumbers(20, function(number) {
+  return number % 2 === 1;
+});
+
+// Chọn ra những số mà gấp 3 số đó rồi trừ đi 2 thu số chẵn
+pickNumbers(20, function(number) {
+  return ((number * 3) - 2) % 2 === 0;
+});
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Với việc đưa HOF vào function bên trên, giờ thì cô giáo thích gì cũng chiều được nhé,
+chỉ cần thay đổi function kiểm tra điều kiện vào thôi, ko cần phải copy thành function mới nữa.&lt;/p&gt;
+
+&lt;h3 id=&quot;định-nghĩa-currying&quot;&gt;Định nghĩa Currying&lt;/h3&gt;
+
+&lt;p&gt;Lại theo &lt;a href=&quot;https://en.wikipedia.org/wiki/Currying&quot;&gt;wikipedia&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; Currying is the technique of translating the evaluation of a function
+ that takes multiple arguments (or a tuple of arguments)
+ into evaluating a sequence of functions, each with a single argument.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Vietsub:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Currying là kỹ thuật mà cho phép chuyển đổi một function với nhiều tham số
+thành những functions liên tiếp có một tham số.
+// Ví dụ f(a,b,c) có thể được convert thành g(a)h(b, c) hay g(a)h(b)k(c), thậm chí là đổi thứ tự của các function tương ứng...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Vậy dễ dàng nhận thấy &lt;code class=&quot;highlighter-rouge&quot;&gt;Currying&lt;/code&gt; là một trường hợp của &lt;code class=&quot;highlighter-rouge&quot;&gt;HOF&lt;/code&gt;, vì nó thỏa mãn điều kiện &lt;code class=&quot;highlighter-rouge&quot;&gt;trả về kết quả là một function&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Cụ thể áp dụng cho ví dụ trên, có thể viết thành dạng sau:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function pickNumbers(maximum) {
+  return function (pickingCondition) {
+    const result = [];
+
+    for (let i = 1; i &amp;lt;= maximum; i += 1) {
+      if (pickingCondition(i)) result.push(i);
+    }
+
+    return result;
+  };
+}
+
+// Chọn ra những số lẻ
+pickNumbers(20)(function (number) {
+  return number % 2 === 1;
+});
+
+// Chọn ra những số mà gấp 3 số đó rồi trừ đi 2 thu số chẵn
+pickNumbers(20)(function (number) {
+  return (number * 3 - 2) % 2 === 0;
+});
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;So sánh ví dụ áp dụng Currying này với ví dụ sử dụng HOF ở trên, rõ ràng là ta chưa thấy sự ưu việt của Currying so với HOF, thậm chí còn thấy hơi rườm rà nữa.
+Tuy nhiên, hãy cùng xem xét ví dụ dưới đây:&lt;/p&gt;
+
+&lt;h3 id=&quot;ví-dụ-2&quot;&gt;Ví dụ 2&lt;/h3&gt;
+
+&lt;p&gt;Viết một function lấy ra giá trị của một &lt;code class=&quot;highlighter-rouge&quot;&gt;key&lt;/code&gt; của object, được chọn ra từ một mảng các objects với điều kiện. Đơn giản vậy thôi, nên việc cài đặt cũng có vẻ là đơn giản.&lt;/p&gt;
+
+&lt;p&gt;Với HOF:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function getValue(objects, key, pickingCondition) {
+  var object = null;
+
+  for (var i = 0; i &amp;lt; objects.length; i++) {
+    if (pickingCondition(objects[i])) {
+      object = objects[i];
+      break;
+    }
+  }
+
+  return object ? object[key] : null;
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Mỗi khi gọi function với key khác nhau, hẳn là sẽ phải gọi kiểu như vầy:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var valueByKey1 = getValue(objects, 'key1', pickingCondition);
+var valueByKey2 = getValue(objects, 'key2', pickingCondition);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Nếu như coi &lt;code class=&quot;highlighter-rouge&quot;&gt;key&lt;/code&gt; là &lt;strong&gt;biết trước&lt;/strong&gt;, chỉ thay đổi &lt;code class=&quot;highlighter-rouge&quot;&gt;objects&lt;/code&gt; và &lt;code class=&quot;highlighter-rouge&quot;&gt;pickingCondition&lt;/code&gt;, thì việc áp dụng Currying lại hợp lý:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function getValue(key) {
+  return function (objects, pickingCondition) {
+    let object = null;
+
+    for (let i = 0; i &amp;lt; objects.length; i++) {
+      if (pickingCondition(objects[i])) {
+        object = objects[i];
+        break;
+      }
+    }
+
+    return object ? object[key] : null;
+  };
+};
+
+// Wrap getValue thành những function ngắn hơn với tên sáng nghĩa:
+var getValueByKey1 = getValue('key1');
+var getValueByKey2 = getValue('key2');
+
+// Sử dụng:
+var valueByKey1 = getValueByKey1(objects, pickingCondition);
+var valueByKey2 = getValueByKey2(objects, pickingCondition);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Khá là gọn gàng.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;// Ngoài lề: Nếu bạn làm việc với ReactJs, hẳn bạn đã biết tới thuật ngữ Higher-Order Component,
+hay các selectors mà redux-form cung cấp, thì chúng đều áp dụng kỹ thuật Currying này, cũng như HOF.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Dưới đây là một vài ví dụ cho thấy tác dụng tốt của Currying:&lt;/p&gt;
+
+&lt;h3 id=&quot;ví-dụ-3&quot;&gt;Ví dụ 3&lt;/h3&gt;
+
+&lt;p&gt;Viết function để kiểm tra độ dài của một xâu &lt;code class=&quot;highlighter-rouge&quot;&gt;s&lt;/code&gt; có vượt quá &lt;code class=&quot;highlighter-rouge&quot;&gt;n&lt;/code&gt; hay ko.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Cách 1: Không dùng Currying
+function isLengthOver(s, n){
+  return s.length &amp;gt; n
+}
+
+// Cách 2: Có Currying
+function isLengthOver(n){
+  return function(s){
+    return s.length &amp;gt; n;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Giả sử cả 2 cách viết trên được sử dụng cho việc validate của một field trên form, với &lt;code class=&quot;highlighter-rouge&quot;&gt;n = 10&lt;/code&gt; thì có sự khác biệt như sau:&lt;/p&gt;
+
+&lt;p&gt;Với cách 1:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;input type=&quot;text&quot; validate={value =&amp;gt; isLengthOver(value, 10)} /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Với cách 2:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;input type=&quot;text&quot; validate={isLengthOver(10)} /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Quá khác bọt!&lt;/p&gt;
+
+&lt;h3 id=&quot;ví-dụ-4&quot;&gt;Ví dụ 4&lt;/h3&gt;
+
+&lt;p&gt;Viết function hiển thị tên group mà một nhân viên đang làm việc, với:&lt;/p&gt;
+
+&lt;p&gt;Input:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;employeeGroupId&lt;/code&gt; là id của group mà nhân viên đang làm việc,&lt;/li&gt;
+  &lt;li&gt;Một group luôn có id khác null,&lt;/li&gt;
+  &lt;li&gt;Mảng chứa toàn bộ &lt;code class=&quot;highlighter-rouge&quot;&gt;groups&lt;/code&gt; có trong công ty. Nếu groupB là group con của groupA, thì groupB sẽ có &lt;code class=&quot;highlighter-rouge&quot;&gt;parentGroupId&lt;/code&gt; là id của groupA. Group không là con khi &lt;code class=&quot;highlighter-rouge&quot;&gt;parentGroupId&lt;/code&gt; của nó là null,&lt;/li&gt;
+  &lt;li&gt;Không có quan hệ vòng tròn. (Kiểu: &lt;code class=&quot;highlighter-rouge&quot;&gt;groupA là con groupB, groupB là con groupC, groupC là con groupA&lt;/code&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Output:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Full path của group mà nhân viên đang làm việc, phân cách bởi dấu &lt;code class=&quot;highlighter-rouge&quot;&gt;/&lt;/code&gt;. Ví dụ &lt;code class=&quot;highlighter-rouge&quot;&gt;Group A / Group B / Group C&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Chắc hẳn bạn sẽ nghĩ tới cách dùng vòng lặp, kiểm tra chừng nào còn tìm thấy group có id bằng &lt;code class=&quot;highlighter-rouge&quot;&gt;parentGroupId&lt;/code&gt;. Và tôi cũng nghĩ vậy :D&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;const getGroupFullPathName = (groups, employeeGroupId) =&amp;gt; {
+  const groupNames = [];
+
+  let group = groups.find(grp =&amp;gt; grp.id === employeeGroupId);
+  while (group) {
+    groupNames.unshift(group.name);
+    group = groups.find(grp =&amp;gt; grp.id === group.parentGroupId);
+  }
+
+  return groupNames.join('/');
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Nhưng đoạn code trên vẫn chưa ngon, do vi phạm rule &lt;a href=&quot;https://eslint.org/docs/rules/no-loop-func&quot;&gt;Don’t make functions within a loop&lt;/a&gt; của ESLint.
+Cụ thể: Mỗi khi vòng while được chạy thì &lt;code class=&quot;highlighter-rouge&quot;&gt;groups.find(grp =&amp;gt; grp.id === group.parentGroupId)&lt;/code&gt; lại sinh ra một anonymous function, chính là &lt;code class=&quot;highlighter-rouge&quot;&gt;grp =&amp;gt; grp.id === group.parentGroupId&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Cách khắc phục là ta viết một currying bên ngoài vòng while là được:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;const getGroupFullPathName = (groups, employeeGroupId) =&amp;gt; {
+  const groupNames = [];
+  const condition = parentGroupId =&amp;gt; group =&amp;gt; group.id === parentGroupId;
+
+  let group = groups.find(grp =&amp;gt; grp.id === employeeGroupId);
+  while (group) {
+    groupNames.unshift(group.name);
+    group = groups.find(condition(group.parentDepartmentId));
+  }
+
+  return groupNames.join('/');
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;kết-luận&quot;&gt;Kết luận:&lt;/h3&gt;
+&lt;p&gt;Bài quá dài.&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 14 Oct 2017 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/programming/vi/2017/10/14/higer-order-function-and-currying/</link>
+        <guid isPermaLink="true">http://localhost:4000/programming/vi/2017/10/14/higer-order-function-and-currying/</guid>
+      </item>
+    
+      <item>
         <title>Kỹ thuật sửa lỗi Reed - Solomon</title>
         <description>&lt;p&gt;Đây là bài viết thuộc chủ đề nghiên cứu của nhóm ruby &lt;a href=&quot;https://github.com/ruby-vietnam/hardcore-rule&quot;&gt;hardcore&lt;/a&gt;,
 được lược dịch chủ yếu từ &lt;a href=&quot;https://www.cs.cmu.edu/~guyb/realworld/reedsolomon/reed_solomon_codes.html&quot;&gt;bài viết này.&lt;/a&gt;&lt;/p&gt;
