@@ -266,8 +266,11 @@ Viết function hiển thị tên group mà một nhân viên đang làm việc,
 
 Input:
 * `employeeGroupId` là id của group mà nhân viên đang làm việc,
+* Mảng chứa toàn bộ `groups` có trong công ty.
+
+Điều kiện rằng buộc:
 * Một group luôn có id khác null,
-* Mảng chứa toàn bộ `groups` có trong công ty. Nếu groupB là group con của groupA, thì groupB sẽ có `parentGroupId` là id của groupA. Group không là con khi `parentGroupId` của nó là null,
+* Nếu groupB là group con của groupA, thì groupB sẽ có `parentGroupId` là id của groupA. Group không là con khi `parentGroupId` của nó là null,
 * Không có quan hệ vòng tròn. (Kiểu: `groupA là con groupB, groupB là con groupC, groupC là con groupA`)
 
 Output:

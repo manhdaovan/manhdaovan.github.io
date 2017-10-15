@@ -17,7 +17,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for ManhDV's blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201710152118" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201710152132" type="text/css">
 
     <!-- Fonts -->
     
@@ -443,8 +443,13 @@ function isLengthOver(n){
 <p>Input:</p>
 <ul>
   <li><code class="highlighter-rouge">employeeGroupId</code> là id của group mà nhân viên đang làm việc,</li>
+  <li>Mảng chứa toàn bộ <code class="highlighter-rouge">groups</code> có trong công ty.</li>
+</ul>
+
+<p>Điều kiện rằng buộc:</p>
+<ul>
   <li>Một group luôn có id khác null,</li>
-  <li>Mảng chứa toàn bộ <code class="highlighter-rouge">groups</code> có trong công ty. Nếu groupB là group con của groupA, thì groupB sẽ có <code class="highlighter-rouge">parentGroupId</code> là id của groupA. Group không là con khi <code class="highlighter-rouge">parentGroupId</code> của nó là null,</li>
+  <li>Nếu groupB là group con của groupA, thì groupB sẽ có <code class="highlighter-rouge">parentGroupId</code> là id của groupA. Group không là con khi <code class="highlighter-rouge">parentGroupId</code> của nó là null,</li>
   <li>Không có quan hệ vòng tròn. (Kiểu: <code class="highlighter-rouge">groupA là con groupB, groupB là con groupC, groupC là con groupA</code>)</li>
 </ul>
 

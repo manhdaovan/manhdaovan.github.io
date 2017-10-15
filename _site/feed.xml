@@ -269,8 +269,13 @@ function isLengthOver(n){
 &lt;p&gt;Input:&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;employeeGroupId&lt;/code&gt; là id của group mà nhân viên đang làm việc,&lt;/li&gt;
+  &lt;li&gt;Mảng chứa toàn bộ &lt;code class=&quot;highlighter-rouge&quot;&gt;groups&lt;/code&gt; có trong công ty.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Điều kiện rằng buộc:&lt;/p&gt;
+&lt;ul&gt;
   &lt;li&gt;Một group luôn có id khác null,&lt;/li&gt;
-  &lt;li&gt;Mảng chứa toàn bộ &lt;code class=&quot;highlighter-rouge&quot;&gt;groups&lt;/code&gt; có trong công ty. Nếu groupB là group con của groupA, thì groupB sẽ có &lt;code class=&quot;highlighter-rouge&quot;&gt;parentGroupId&lt;/code&gt; là id của groupA. Group không là con khi &lt;code class=&quot;highlighter-rouge&quot;&gt;parentGroupId&lt;/code&gt; của nó là null,&lt;/li&gt;
+  &lt;li&gt;Nếu groupB là group con của groupA, thì groupB sẽ có &lt;code class=&quot;highlighter-rouge&quot;&gt;parentGroupId&lt;/code&gt; là id của groupA. Group không là con khi &lt;code class=&quot;highlighter-rouge&quot;&gt;parentGroupId&lt;/code&gt; của nó là null,&lt;/li&gt;
   &lt;li&gt;Không có quan hệ vòng tròn. (Kiểu: &lt;code class=&quot;highlighter-rouge&quot;&gt;groupA là con groupB, groupB là con groupC, groupC là con groupA&lt;/code&gt;)&lt;/li&gt;
 &lt;/ul&gt;
 
