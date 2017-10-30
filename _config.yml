@@ -7,6 +7,7 @@ baseurl:     ""
 url:         "https://manhdaovan.github.io/"
 date_format: "%b %-d, %Y"
 header_pages:
+ - ja.html
  - posts.html
  - about.md
 

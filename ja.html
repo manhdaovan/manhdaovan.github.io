@@ -1,0 +1,37 @@
+---
+layout: page
+title: Japanese Posts
+permalink: /ja/posts/
+tags: posts
+---
+
+{% assign posts = site.posts %}
+{% assign posts_count = posts.size %}
+{% assign year = nil %}
+
+
+<div class="home">
+    {% if posts_count > 0 %}
+    <div class="posts">
+        {% for post in posts %}
+        {% if post.language == 'ja' %}
+        {% assign post_year = post.date | split: "-" | first %}
+
+        {% if post_year != year %}
+          {% assign year = post_year %}
+          <a href="#{{ year }}" class="post-link"><h2 class="h1 post-title">{{ year }}</h2></a>
+        {% endif %}
+
+        <div class="post py1">
+            <p class="post-meta">{{ post.date | date: site.date_format }}</p>
+            <a href="{{ post.url | prepend: site.baseurl }}" class="post-link">
+                <h3 class="h3 post-title">{% if post.draft %} [Draft] {% endif %}{{ post.title }}</h3>
+            </a>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <h1 class='center'>{{ site.text.index.coming_soon }}</h1>
+    {% endif %}
+</div>
