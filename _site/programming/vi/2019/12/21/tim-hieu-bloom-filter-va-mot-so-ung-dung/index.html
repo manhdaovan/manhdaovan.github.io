@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Tìm hiểu bộ lọc Bloom (Bloom filter) và một số ứng dụng dưới con mắt đời thường &#8211; ManhDV's blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Bloom filter không phải là một cài đặt cụ thể, nó là một tư tưởng thoả mãn tính chất False positive.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Manh Dao Van">
+    
+    <meta name="keywords" content="programming, vi">
+    <link rel="canonical" href="http://localhost:4000/programming/vi/2019/12/21/tim-hieu-bloom-filter-va-mot-so-ung-dung/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for ManhDV's blog" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201912221043" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" async
+        src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+      <meta name="google-site-verification" content="EZuWhMA9JoA5QkSbCDS_VEv3HQSM3OtKFhhmspqZj30" />
+    
+    
+      <meta name="msvalidate.01" content="AFCB98997376EE993BAB6C89AE10D1B8" />
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Tìm hiểu bộ lọc Bloom (Bloom filter) và một số ứng dụng dưới con mắt đời thường">
+    <meta property="og:description" content="95% những điều họ nói về ManhDV là sai, chỉ có lúc nào cũng so high là đúng thật :v">
+    <meta property="og:url" content="http://localhost:4000/programming/vi/2019/12/21/tim-hieu-bloom-filter-va-mot-so-ung-dung/">
+    <meta property="og:site_name" content="ManhDV's blog">
+    
+    <meta property="og:image" content="http://localhost:4000/images/me.png">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+    <meta name="twitter:title" content="Tìm hiểu bộ lọc Bloom (Bloom filter) và một số ứng dụng dưới con mắt đời thường" />
+    <meta name="twitter:description" content="Bloom filter không phải là một cài đặt cụ thể, nó là một tư tưởng thoả mãn tính chất False positive." />
+    <meta name="twitter:url" content="http://localhost:4000/programming/vi/2019/12/21/tim-hieu-bloom-filter-va-mot-so-ung-dung/" />
+    
+    <meta name="twitter:image" content="http://localhost:4000/images/me.png" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-106952703-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<body class="site">
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://localhost:4000" class="site-title">ManhDV's blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/posts/">Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/manhdaovan"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:manhdaovan@gmail.com"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h2>Tìm hiểu bộ lọc Bloom (Bloom filter) và một số ứng dụng dưới con mắt đời thường</h2>
+  <span class="post-meta">Dec 21, 2019</span><br>
+  
+  <span class="post-meta small">
+  
+    8 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <blockquote>
+  <p>Bạn có thể đọc bản gốc về định nghĩa, tính chất cũng như cách hoạt động Bloom filter (BF) <a href="https://en.wikipedia.org/wiki/Bloom_filter">tại đây</a>. Tuy nhiên, do bản gốc có thể gây lạ lẫm với những người không liên quan đến IT, nên người viết sẽ cố gắng trình bày theo ngôn từ gần gũi hơn.</p>
+</blockquote>
+
+<p>Trước khi đến với BF, chúng ta cùng tìm hiểu xem tính chất <code class="highlighter-rouge">False positive</code> là gì, vì đây là tính chất quan trọng, gắn chặt với BF.</p>
+
+<h2 id="tính-chất-false-positive-fp">Tính chất False positive (FP)</h2>
+<p>Khi ta đưa ra câu hỏi X, thì nếu như một thực thể đưa ra câu trả lời chỉ là <code class="highlighter-rouge">X hoàn toàn không có (hoàn toàn phủ định)</code> hoặc <code class="highlighter-rouge">X có thể có (có khả năng)</code>, thì thực thể đó có tính chất FP.
+Ví dụ, ta có câu hỏi: <code class="highlighter-rouge">Trong rổ có quả bóng đỏ nào không?</code>, mà câu trả lời nhận được là <code class="highlighter-rouge">Hoàn toàn không có</code> hoặc <code class="highlighter-rouge">Có thể có</code>, thì đây cũng thoả mãn tính chất của FP.</p>
+
+<p>Nếu như câu trả lời không phải là <code class="highlighter-rouge">hoàn toàn phủ định</code> hoặc <code class="highlighter-rouge">có khả năng</code>, thì không thoả mãn tính chất FP. (Ví dụ như câu trả lời là: <code class="highlighter-rouge">Chắc chắn có bóng đỏ trong rổ</code>)</p>
+
+<p>Do câu trả lời nhận được là <code class="highlighter-rouge">có khả năng</code>, nghĩa là FP không <code class="highlighter-rouge">hoàn toàn chắc chắn (hoàn toàn khẳng định)</code> với câu trả lời (ví dụ <code class="highlighter-rouge">chắc chắn trong rổ có quả bóng đỏ</code>), nghĩa là có những lúc bạn sẽ nhận được câu trả lời sai! (Ví dụ, trong rổ không có quả bóng đỏ nào, nhưng câu trả lời nhận được lại là <code class="highlighter-rouge">có thể có bóng đỏ trong rổ</code>). Vì vậy nó mới được gọi là False positive, tức là có thể sai trong trường hợp câu trả lời có tính khẳng định.</p>
+
+<h2 id="bloom-filter-bf-là-gì">Bloom filter (BF) là gì?</h2>
+<p>Được nghĩ ra bởi Burton Howard Bloom vào năm 1970, BF là một cấu trúc dữ liệu cho phép xác định một phần tử E (element) có nằm trong tập cho trước S (set) hay không. Và BF thoả mãn tính chất FP, nghĩa là BF sẽ đưa ra câu trả lời dạng <code class="highlighter-rouge">hoàn toàn phủ định</code> hoặc <code class="highlighter-rouge">có khả năng</code> cho câu hỏi được đưa ra.</p>
+
+<h2 id="nguyên-tắc-hoạt-động">Nguyên tắc hoạt động</h2>
+<p>Để có thể đưa ra câu trả lời cho câu hỏi <code class="highlighter-rouge">Có phần tử E trong tập S không?</code>, thì với mọi phần tử của tập S, BF lưu giữ những đặc điểm của từng phần tử này.
+Khi phần tử E được đưa cho BF, BF sẽ kiểm tra xem phần tử E này có đặc điểm nào trùng với những đặc điểm mà nó đang lưu giữ không. Nếu không có đặc điểm trùng, thì khẳng định chắc chắn là E không nằm trong tập S, ngược lại thì S <strong>có khả năng có chứa</strong> E.</p>
+
+<p>Vậy, sẽ dẫn tới một số câu hỏi:</p>
+<ul>
+  <li>Q: BF trích xuất đặc điểm của từng phần tử trong S và lưu trữ thế nào?</li>
+  <li>
+    <p>A: BF dùng những hàm băm (hash function) để lấy ra những đặc điểm của phần tử, và lưu giữ những đặc điểm này. Càng nhiều hàm băm thì cho tỉ lệ câu trả lời <code class="highlighter-rouge">hoàn toàn phủ định</code> càng chính xác (hay ngược lại là tỉ lệ câu trả lời <code class="highlighter-rouge">có khả năng</code> là sai càng thấp).</p>
+
+    <p>Việc chứng minh phải dùng tới công thức tính xác xuất(có thể tham khảo mục <a href="https://en.wikipedia.org/wiki/Bloom_filter"><code class="highlighter-rouge">Probability of false positives</code> ở đây</a>), nhưng có thể hiểu nôm na là, khi càng dùng nhiều các hàm băm khác nhau, vậy ta sẽ có càng nhiều các đặc điểm khác nhau của phần tử đó. Như vậy, càng nhiều đặc điểm mà phần tử phải thoả mãn, thì tỉ lệ phần tử thoả mãn tất cả các điều kiện đó càng thấp.
+  (Ví dụ, em gái tuyển người yêu với các tiêu chí (đặc điểm): <code class="highlighter-rouge">đẹp trai, cao to nhà giàu, học Back Quoa, là dân IT</code> thì sẽ có ít cơ hội hơn em gái chỉ tuyển với 1 tiêu chí là: <code class="highlighter-rouge">Là dân IT</code>.)</p>
+
+    <p>(<em>Trong chuyên ngành thực tế</em>, BF dùng một mảng gồm m bits, và k hash functions, để tính toán và lưu trữ những “đặc điểm” của phần tử đó. Cụ thể:
+   <img src="/images/assets/Bloom-Filter-works.png" alt="Bloom filter works" /></p>
+
+    <p>Ảnh: Wikipedia)</p>
+  </li>
+  <li>Q: Tại sao lại là <strong>có khả năng có chứa</strong>? Chẳng phải E thoả mãn đặc điểm thì E sẽ nằm trong S hay sao?</li>
+  <li>A: Tuy E thoả mãn điều kiện, nhưng có thể có trường hợp E’ khác (E’ khác E) cũng thoả mãn điều kiện, và S chứa E’ chứ không chứa E. Vậy nên <strong>không thể khẳng định chắc chắn</strong> là S chứa E được.</li>
+</ul>
+
+<h2 id="ứng-dụng-dạng-ý-tưởng">Ứng dụng dạng ý tưởng</h2>
+<p>Một công việc T có chi phí thực hiện lớn, thường sẽ được đặt sau BF để giảm chi phí cho yêu cầu không thoả mãn công việc T. Ví dụ, có 1 rổ gồm 1000 quả bóng, được đánh số ngẫu nhiên từ 1 đến 10.000. Giờ có yêu cầu, tìm quả bóng có đánh số X.
+Nếu làm theo cách thông thường, thì sẽ tìm lần lượt trong 1000 quả bóng đó, nếu có thì trả về quả bóng X, còn nếu ko có thì trả lời là không có. Rõ ràng là khá tốn công.</p>
+
+<p>Có nhiều cách để tìm nhanh quả bóng, nhưng để liên quan đến bài viết, ta sẽ đặt trước rổ bóng một BF, và dùng hàm băm là: <code class="highlighter-rouge">Là phần dư của X cho 10</code>. Vậy với ví dụ: rổ có <code class="highlighter-rouge">các quả bóng 1, 2, 11, ...</code>, ta sẽ có:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1 / 10 = 0 dư 1
+2 / 10 = 0 dư 2
+11 / 10 = 1 dư 1
+</code></pre></div></div>
+<p>=&gt; BF sẽ lưu trữ 1, 2 lần lượt là số dư các phép chia trên</p>
+
+<ul>
+  <li>Nếu X = 3, ta có <code class="highlighter-rouge">3 / 10 = 0 dư 3</code>, 3 không nằm trong số những số dư mà BF đang lưu giữ =&gt; kết luận luôn là bóng 3 <code class="highlighter-rouge">hoàn toàn không</code> nằm trong rổ mà không cần tìm kiếm gì cả.</li>
+  <li>Nếu X = 21, ta có <code class="highlighter-rouge">21 / 10 = 2 dư 1</code>, 1 nằm trong danh sách số dư, vậy kết luận là 21 <code class="highlighter-rouge">có khả năng</code> nằm trong rổ. Tuy nhiên khi tìm thì không có. Đây chính là một false positive.</li>
+</ul>
+
+<h2 id="ứng-dụng-thực-tế">Ứng dụng thực tế</h2>
+<p>Trong lĩnh vực công nghệ thông tin, BF được ứng dụng cực kỳ rộng rãi. Tuy nhiên, do đặc thù từng ứng dụng là khác nhau, mà cách cài đặt BF cho ứng dụng đó cũng khác nhau.</p>
+
+<ul>
+  <li>Ví dụ với Bitcoin
+    <ul>
+      <li>Overview ở <a href="https://bitcoin.org/en/glossary/bloom-filter">đây</a> và <a href="https://bitcoin.org/en/operating-modes-guide#bloom-filters">đây</a></li>
+      <li>Source code ở <a href="https://github.com/bitcoin/bitcoin/blob/8f9df2ed88c4b80691144a810e62e86fec694384/src/bloom.h">đây</a> và <a href="https://github.com/bitcoin/bitcoin/blob/8f9df2ed88c4b80691144a810e62e86fec694384/src/bloom.cpp">đây</a></li>
+    </ul>
+  </li>
+  <li>Ví dụ với Redis
+    <ul>
+      <li>Overview ở <a href="https://oss.redislabs.com/redisbloom/#bfexists">đây</a> và <a href="https://redislabs.com/redis-best-practices/bloom-filter-pattern/">đây</a></li>
+      <li>Source code ở <a href="https://github.com/RedisBloom/RedisBloom/blob/fa54d05800acc25c1039ba671cac54906e190a74/contrib/bloom.h">đây</a> và <a href="https://github.com/RedisBloom/RedisBloom/blob/e4c3f5d3f26689a61685af983a9535a9c64e8f75/contrib/bloom.c">đây</a></li>
+    </ul>
+  </li>
+</ul>
+
+<p>Rõ ràng có sự khác nhau trong việc cài đặt hash function cho BF trong <a href="https://github.com/bitcoin/bitcoin/blob/8f9df2ed88c4b80691144a810e62e86fec694384/src/hash.cpp#L15:14">Bitcoin</a> và <a href="https://github.com/RedisBloom/RedisBloom/blob/e4c3f5d3f26689a61685af983a9535a9c64e8f75/contrib/MurmurHash2.c#L21:10">Redis</a></p>
+
+<h2 id="một-số-biến-thể-trong-cuộc-sống">Một số biến thể trong cuộc sống</h2>
+<p>Trong cuộc sống cũng có những ứng dụng, nếu xét về bản chất, thì rất liên quan đến ý tưởng của BF ở trên.</p>
+
+<p>Ví dụ gần đây có <a href="https://baosuckhoecongdong.vn/giam-doc-bv-xanh-pon-khong-co-chuyen-tron-nhieu-mau-mau-benh-nhan-truoc-khi-xet-nghiem-144856.html">tin đồn bệnh viện Xanh Lè cho trộn chung huyết thanh của bệnh nhân để xét nghiệm.</a> Nếu nhìn dưới góc độ BF thì việc này không hẳn hoàn toàn là xấu.</p>
+
+<p>Việc trộn chung mẫu máu (ví dụ của 3 người) chính là việc chọn hàm băm (hash function), và việc xét nghiệm trên máy ELISA chính là việc có chi phí tốn kém (“tốn kém” theo tiêu chí: Số lượng máy ELISA có hạn, người cần xét nghiệm đông, vậy nếu xét nghiệm từng người một, sẽ rất mất thời gian).</p>
+
+<p>Với việc xét nghiệm chung 1 lần cho 3 người</p>
+<ul>
+  <li>Nếu kết quả trả về là âm tính, nghĩa là cả 3 người đều <strong>không có bệnh</strong> =&gt; giảm số lần xét nghiệm từ 3 xuống 1.</li>
+  <li>Nếu kết quả trả về là dương tính, nghĩa là 1 trong 3 (hoặc cả 3) <strong>có khả năng có bệnh</strong> =&gt; xét nghiệm riêng 1 lần nữa với nhóm 3 người này =&gt; nâng số lần xét nghiệm từ 3 lên 4.</li>
+  <li>Tuy nhiên, phải để ý rằng, tỉ lệ người nhiễm bệnh là <strong>thấp hơn rất nhiều</strong> người không bệnh, nên nếu tính ra thì sự đánh đổi này là “có lời”</li>
+</ul>
+
+<p>Mặc dù vậy, đây sẽ là tai hại, nếu</p>
+<ul>
+  <li>Việc trộn chung mẫu máu làm ảnh hưởng tới độ chính xác của xét nghiệm. 
+  Ví dụ người có bệnh có tỉ lệ máu xấu (để phát hiện ra bệnh) trên tổng máu là 10% (người viết không rành về y, chỉ nói trên góc nhìn con số). Vậy 1 người nhiễm bệnh trộn với 2 người ko bệnh sẽ cho ra mẫu huyết thanh là 3.3%. Giả sử máy ELISA phát hiện với tỉ lệ máu xâú tối thiểu là 5%, vậy nghiễm nhiên người có bệnh sẽ đc chuẩn đoán là không bệnh.</li>
+  <li>Việc gộp chung thế này có làm giảm chi phí xét nghiệm cho bệnh nhân không? Hay là 1 người xét nghiệm riêng cũng 1 chẹo, 3 người gộp chung mà vẫn mỗi người 1 chẹo?</li>
+</ul>
+
+</article>
+
+
+  <br/>
+  <hr />
+<div class="share-page">
+  <div>♫Em có thể dối anh trong lời nói</div>
+  <div>Nhưng làm sao giấu được trên Facebook</div>
+  <div>Em nói là sẽ nhấn share bài viết</div>
+  <div>Mà sao chưa thấy đường link...♪</div>
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fprogramming%2Fvi%2F2019%2F12%2F21%2Ftim-hieu-bloom-filter-va-mot-so-ung-dung%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=T%C3%ACm+hi%E1%BB%83u+b%E1%BB%99+l%E1%BB%8Dc+Bloom+%28Bloom+filter%29+v%C3%A0+m%E1%BB%99t+s%E1%BB%91+%E1%BB%A9ng+d%E1%BB%A5ng+d%C6%B0%E1%BB%9Bi+con+m%E1%BA%AFt+%C4%91%E1%BB%9Di+th%C6%B0%E1%BB%9Dng&amp;url=http%3A%2F%2Flocalhost%3A4000%2Fprogramming%2Fvi%2F2019%2F12%2F21%2Ftim-hieu-bloom-filter-va-mot-so-ung-dung%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http%3A%2F%2Flocalhost%3A4000%2Fprogramming%2Fvi%2F2019%2F12%2F21%2Ftim-hieu-bloom-filter-va-mot-so-ung-dung%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=http%3A%2F%2Flocalhost%3A4000%2Fprogramming%2Fvi%2F2019%2F12%2F21%2Ftim-hieu-bloom-filter-va-mot-so-ung-dung%2F&amp;title=T%C3%ACm+hi%E1%BB%83u+b%E1%BB%99+l%E1%BB%8Dc+Bloom+%28Bloom+filter%29+v%C3%A0+m%E1%BB%99t+s%E1%BB%91+%E1%BB%A9ng+d%E1%BB%A5ng+d%C6%B0%E1%BB%9Bi+con+m%E1%BA%AFt+%C4%91%E1%BB%9Di+th%C6%B0%E1%BB%9Dng" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=http%3A%2F%2Flocalhost%3A4000%2Fprogramming%2Fvi%2F2019%2F12%2F21%2Ftim-hieu-bloom-filter-va-mot-so-ung-dung%2F&amp;title=T%C3%ACm+hi%E1%BB%83u+b%E1%BB%99+l%E1%BB%8Dc+Bloom+%28Bloom+filter%29+v%C3%A0+m%E1%BB%99t+s%E1%BB%91+%E1%BB%A9ng+d%E1%BB%A5ng+d%C6%B0%E1%BB%9Bi+con+m%E1%BA%AFt+%C4%91%E1%BB%9Di+th%C6%B0%E1%BB%9Dng" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=http%3A%2F%2Flocalhost%3A4000%2Fprogramming%2Fvi%2F2019%2F12%2F21%2Ftim-hieu-bloom-filter-va-mot-so-ung-dung%2F&amp;t=T%C3%ACm+hi%E1%BB%83u+b%E1%BB%99+l%E1%BB%8Dc+Bloom+%28Bloom+filter%29+v%C3%A0+m%E1%BB%99t+s%E1%BB%91+%E1%BB%A9ng+d%E1%BB%A5ng+d%C6%B0%E1%BB%9Bi+con+m%E1%BA%AFt+%C4%91%E1%BB%9Di+th%C6%B0%E1%BB%9Dng" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <a href="https://creativecommons.org/licenses/by-nd/4.0/">License: CC BY-ND 4.0 with love</a>
+</div>
+
+
+
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'https-manhdaovan-github-io';
+    var disqus_identifier = '/programming/vi/2019/12/21/tim-hieu-bloom-filter-va-mot-so-ung-dung';
+    var disqus_title      = "Tìm hiểu bộ lọc Bloom (Bloom filter) và một số ứng dụng dưới con mắt đời thường";
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/programming/vi/2017/10/14/higer-order-function-and-currying/" class="post-link">
+        <h4 class="post-title">Higher-Order Function (HOF) và Currying</h4>
+        <p class="post-summary">HOF và Currying là hai kỹ thuật không khó, thậm chí bạn đang dùng nó hàng ngày mà không để ý. Cùng tìm hiểu chúng thông qua một số ví dụ.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/math/advance/2017/09/24/reed-solomon-error-correction/" class="post-link">
+        <h4 class="post-title">Kỹ thuật sửa lỗi Reed - Solomon</h4>
+        <p class="post-summary">Tìm hiểu một số khái niệm và tính chất của kỹ thuật sửa lỗi Reed - Solomon, với sự xuất hiện của Ưng Hoàng Phúc, Ngọc Trinh :v</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/opinion/vi/2017/09/24/nghe-lap-trinh-vien/" class="post-link">
+        <h4 class="post-title">Vài suy nghĩ về nghề Lập Trình Viên (LTV)</h4>
+        <p class="post-summary">Nghề LTV dưới góc nhìn của người viết. Liệu nó có phải là nghề "đáng làm" hay không?</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/tech/rails/actioncable/2017/04/07/Realtime-chat-voi-websocket/" class="post-link">
+        <h4 class="post-title">Xây dựng ứng dụng chat sử dụng websocket có khó không?</h4>
+        <p class="post-summary">A-to-Z Xây dựng ứng dụng realtime chat sử dụng action cable rails 5</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/tech/mysql/summary/2017/03/22/Pinterest-da-thuc-hien-scaled-MySQL-cua-ho-nhu-the-nao/" class="post-link">
+        <h4 class="post-title">Pinterest đã thực hiện scaled MySQL của họ như thế nào</h4>
+        <p class="post-summary">Bài viết lược dịch từ Sharding Pinterest How we scaled our MySQL fleet, một bài viết theo mình đánh giá là rất chất lượng, và có nhiều giá trị có thể tham khảo.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/math/basic/2017/03/22/to-hop-chinh-hop/" class="post-link">
+        <h4 class="post-title">Tổ hợp, chỉnh hợp và bài toán đếm cơ bản</h4>
+        <p class="post-summary">Một số bài toán về chỉnh hợp, tổ hợp cơ bản đã học hồi cấp 3 và áp dụng vào bài toán đếm</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/tech/mysql/mytool/2017/03/02/benchmark-mysql-inno-db-buffer-pool/" class="post-link">
+        <h4 class="post-title">Thực hiện benchmark (BM) MySQL InnoDB Buffer Pool(BP) trước và sau khi được warmup</h4>
+        <p class="post-summary">Mình thực hiện BM này cho chính [tool mình viết](https://github.com/manhdaovan/mysql_warmup), cũng là 1 tool đơn giản thôi, tiện thể đem kết quả lên khoe với mọi người luôn.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/tech/mysql/mytool/2017/01/16/so-sanh-warmup-commands/" class="post-link">
+        <h4 class="post-title">So sánh các câu lệnh warmup primary key vào buffer pool với engine InnoDB mysql</h4>
+        <p class="post-summary">Buffer pool(BF) của mysql quả thực có nhiều lợi ích, và việc warm up BP luôn là việc nên làm đầu tiên mỗi khi start/reload/create new mysql. Tuy nhiên, "touch" thế nào cho tối ưu nhất? Trong quá trình thực hiện benchmark cho [tool này](https://github.com/manhdaovan/mysql_warmup), người viết thấy có 1 số điều thú vị như dưới đây.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/opinion/career/2015/06/26/muon-sang-nhat-thi-lam-gi/" class="post-link">
+        <h4 class="post-title">Muốn đi Nhật - Cần làm gì?</h4>
+        <p class="post-summary">Kinh nghiệm bản thân về việc chuẩn bị sang vùng kinh tế mới :v</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">GitHub</a>.
+    </small>
+  </div>
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/3.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h2, article h3, article h4, article h5, article h6');
+</script>
+
+</body>
+</html>

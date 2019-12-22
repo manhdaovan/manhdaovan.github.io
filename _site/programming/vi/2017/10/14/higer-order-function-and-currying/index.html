@@ -17,7 +17,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for ManhDV's blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201710152132" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201912221043" type="text/css">
 
     <!-- Fonts -->
     
@@ -205,7 +205,7 @@ Là một ông bố mẫu mực với niềm kiêu hãnh nhiều năm kinh nghi�
 bạn muốn viết một chương trình hoành tráng để lấy le với con mình. Ok, you win!.
 Dưới đây chắc hẳn là đoạn code đầu tiên xuất hiện trong đầu:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function pickOddNumbers(maximum) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function pickOddNumbers(maximum) {
   const result = [];
 
   for (let i = 1; i &lt;= maximum; i += 1) {
@@ -216,13 +216,12 @@ Dưới đây chắc hẳn là đoạn code đầu tiên xuất hiện trong đ�
 }
 
 pickOddNumbers(20);
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Nhưng đời không bao giờ là mơ, khi hôm sau nhóc con lại mếu máo: “Cô giáo cho thêm bài: Tìm những số tự nhiên khác 0 nhỏ hơn 20 mà nếu gấp 3 số đó rồi từ đi 2 thì thu được số chẵn.”.
 Ok bố chiều cô luôn. Vậy là bạn lại cho ra phiên bản mới:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function pickSpecialNumbers(maximum) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function pickSpecialNumbers(maximum) {
   const result = [];
 
   for (let i = 1; i &lt;= maximum; i += 1) {
@@ -233,8 +232,7 @@ Ok bố chiều cô luôn. Vậy là bạn lại cho ra phiên bản mới:</p>
 }
 
 pickSpecialNumbers(20);
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Đời vẫn ko như mơ khi cô giáo lại cho thêm bài tập: “Tìm những số tự nhiên khác 0 nhỏ hơn 20 mà nếu lấy phần dư số đó cho 9 rồi cộng thêm 2 thì thu số lẻ.”
 Ơ cô giáo từ từ, để bố em sửa function bên trên đã :))))</p>
@@ -247,27 +245,25 @@ Và bạn chợt nhớ tới HOF, một ứng cử viên sáng giá cho việc l
 
 <p>Theo <a href="https://en.wikipedia.org/wiki/Higher-order_function">wikipedia</a> thì:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>A higher-order function (also functional, functional form or functor) is a function that does at least one of the following:
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>A higher-order function (also functional, functional form or functor) is a function that does at least one of the following:
 
 ・takes one or more functions as arguments,
 ・returns a function as its result.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Vietsub:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>HOF là một function mà cho phép thực hiện ít nhất 1 trong 2 khả năng sau:
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HOF là một function mà cho phép thực hiện ít nhất 1 trong 2 khả năng sau:
 ・Nhận vào một hoặc nhiều function như là tham số, hoặc/và
 ・Trả về kết quả là một function.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><em>// Bạn có thể thấy có rất nhiều ngôn ngữ hỗ trợ HOF ở link wiki trên. Đến Java còn hỗ trợ nữa là :v</em></p>
 
 <p>Trăm nghe không bằng một thấy, trăm thấy không bằng một sờ, và chúng ta lại cùng sờ với ví dụ bên trên.
 Lần này là bản nâng cấp có giá trị về mặt học thuật, vì được áp dụng HOF vào cơ mà :)))</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function pickNumbers(maximum, pickingCondition) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function pickNumbers(maximum, pickingCondition) {
   const result = [];
 
   for (let i = 1; i &lt;= maximum; i += 1) {
@@ -287,8 +283,7 @@ pickNumbers(20, function(number) {
   return ((number * 3) - 2) % 2 === 0;
 });
 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Với việc đưa HOF vào function bên trên, giờ thì cô giáo thích gì cũng chiều được nhé,
 chỉ cần thay đổi function kiểm tra điều kiện vào thôi, ko cần phải copy thành function mới nữa.</p>
@@ -297,25 +292,23 @@ chỉ cần thay đổi function kiểm tra điều kiện vào thôi, ko cần 
 
 <p>Lại theo <a href="https://en.wikipedia.org/wiki/Currying">wikipedia</a>:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code> Currying is the technique of translating the evaluation of a function
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Currying is the technique of translating the evaluation of a function
  that takes multiple arguments (or a tuple of arguments)
  into evaluating a sequence of functions, each with a single argument.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Vietsub:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Currying là kỹ thuật mà cho phép chuyển đổi một function với nhiều tham số
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Currying là kỹ thuật mà cho phép chuyển đổi một function với nhiều tham số
 thành những functions liên tiếp có một tham số.
 // Ví dụ f(a,b,c) có thể được convert thành g(a)h(b, c) hay g(a)h(b)k(c), thậm chí là đổi thứ tự của các function tương ứng...
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Vậy dễ dàng nhận thấy <code class="highlighter-rouge">Currying</code> là một trường hợp của <code class="highlighter-rouge">HOF</code>, vì nó thỏa mãn điều kiện <code class="highlighter-rouge">trả về kết quả là một function</code>.</p>
 
 <p>Cụ thể áp dụng cho ví dụ trên, có thể viết thành dạng sau:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function pickNumbers(maximum) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function pickNumbers(maximum) {
   return function (pickingCondition) {
     const result = [];
 
@@ -336,8 +329,7 @@ pickNumbers(20)(function (number) {
 pickNumbers(20)(function (number) {
   return (number * 3 - 2) % 2 === 0;
 });
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So sánh ví dụ áp dụng Currying này với ví dụ sử dụng HOF ở trên, rõ ràng là ta chưa thấy sự ưu việt của Currying so với HOF, thậm chí còn thấy hơi rườm rà nữa.
 Tuy nhiên, hãy cùng xem xét ví dụ dưới đây:</p>
@@ -348,7 +340,7 @@ Tuy nhiên, hãy cùng xem xét ví dụ dưới đây:</p>
 
 <p>Với HOF:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function getValue(objects, key, pickingCondition) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function getValue(objects, key, pickingCondition) {
   var object = null;
 
   for (var i = 0; i &lt; objects.length; i++) {
@@ -360,19 +352,17 @@ Tuy nhiên, hãy cùng xem xét ví dụ dưới đây:</p>
 
   return object ? object[key] : null;
 };
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Mỗi khi gọi function với key khác nhau, hẳn là sẽ phải gọi kiểu như vầy:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>var valueByKey1 = getValue(objects, 'key1', pickingCondition);
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var valueByKey1 = getValue(objects, 'key1', pickingCondition);
 var valueByKey2 = getValue(objects, 'key2', pickingCondition);
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Nếu như coi <code class="highlighter-rouge">key</code> là <strong>biết trước</strong>, chỉ thay đổi <code class="highlighter-rouge">objects</code> và <code class="highlighter-rouge">pickingCondition</code>, thì việc áp dụng Currying lại hợp lý:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function getValue(key) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function getValue(key) {
   return function (objects, pickingCondition) {
     let object = null;
 
@@ -394,8 +384,7 @@ var getValueByKey2 = getValue('key2');
 // Sử dụng:
 var valueByKey1 = getValueByKey1(objects, pickingCondition);
 var valueByKey2 = getValueByKey2(objects, pickingCondition);
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Khá là gọn gàng.</p>
 
@@ -408,7 +397,7 @@ hay các selectors mà redux-form cung cấp, thì chúng đều áp dụng kỹ
 
 <p>Viết function để kiểm tra độ dài của một xâu <code class="highlighter-rouge">s</code> có vượt quá <code class="highlighter-rouge">n</code> hay ko.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>// Cách 1: Không dùng Currying
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Cách 1: Không dùng Currying
 function isLengthOver(s, n){
   return s.length &gt; n
 }
@@ -419,20 +408,17 @@ function isLengthOver(n){
     return s.length &gt; n;
   }
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Giả sử cả 2 cách viết trên được sử dụng cho việc validate của một field trên form, với <code class="highlighter-rouge">n = 10</code> thì có sự khác biệt như sau:</p>
 
 <p>Với cách 1:</p>
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;input type="text" validate={value =&gt; isLengthOver(value, 10)} /&gt;
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;input type="text" validate={value =&gt; isLengthOver(value, 10)} /&gt;
+</code></pre></div></div>
 
 <p>Với cách 2:</p>
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;input type="text" validate={isLengthOver(10)} /&gt;
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;input type="text" validate={isLengthOver(10)} /&gt;
+</code></pre></div></div>
 
 <p>Quá khác bọt!</p>
 
@@ -460,7 +446,7 @@ function isLengthOver(n){
 
 <p>Chắc hẳn bạn sẽ nghĩ tới cách dùng vòng lặp, kiểm tra chừng nào còn tìm thấy group có id bằng <code class="highlighter-rouge">parentGroupId</code>. Và tôi cũng nghĩ vậy :D</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>const getGroupFullPathName = (groups, employeeGroupId) =&gt; {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>const getGroupFullPathName = (groups, employeeGroupId) =&gt; {
   const groupNames = [];
 
   let group = groups.find(grp =&gt; grp.id === employeeGroupId);
@@ -471,15 +457,14 @@ function isLengthOver(n){
 
   return groupNames.join('/');
 };
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Nhưng đoạn code trên vẫn chưa ngon, do vi phạm rule <a href="https://eslint.org/docs/rules/no-loop-func">Don’t make functions within a loop</a> của ESLint.
 Cụ thể: Mỗi khi vòng while được chạy thì <code class="highlighter-rouge">groups.find(grp =&gt; grp.id === group.parentGroupId)</code> lại sinh ra một anonymous function, chính là <code class="highlighter-rouge">grp =&gt; grp.id === group.parentGroupId</code>.</p>
 
 <p>Cách khắc phục là ta viết một currying bên ngoài vòng while là được:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>const getGroupFullPathName = (groups, employeeGroupId) =&gt; {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>const getGroupFullPathName = (groups, employeeGroupId) =&gt; {
   const groupNames = [];
   const condition = parentGroupId =&gt; group =&gt; group.id === parentGroupId;
 
@@ -491,8 +476,7 @@ Cụ thể: Mỗi khi vòng while được chạy thì <code class="highlighter-
 
   return groupNames.join('/');
 };
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="kết-luận">Kết luận:</h3>
 <p>Bài quá dài.</p>
@@ -502,7 +486,8 @@ Cụ thể: Mỗi khi vòng while được chạy thì <code class="highlighter-
 
 
   <br/>
-  <div class="share-page">
+  <hr />
+<div class="share-page">
   <div>♫Em có thể dối anh trong lời nói</div>
   <div>Nhưng làm sao giấu được trên Facebook</div>
   <div>Em nói là sẽ nhấn share bài viết</div>
@@ -572,6 +557,13 @@ Cụ thể: Mỗi khi vòng while được chạy thì <code class="highlighter-
 
 
   <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/programming/vi/2019/12/21/tim-hieu-bloom-filter-va-mot-so-ung-dung/" class="post-link">
+        <h4 class="post-title">Tìm hiểu bộ lọc Bloom (Bloom filter) và một số ứng dụng dưới con mắt đời thường</h4>
+        <p class="post-summary">Bloom filter không phải là một cài đặt cụ thể, nó là một tư tưởng thoả mãn tính chất False positive.</p>
+      </a>
+    </div>
   
     <div class="post ml2">
       <a href="/math/advance/2017/09/24/reed-solomon-error-correction/" class="post-link">

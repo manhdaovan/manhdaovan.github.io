@@ -9,6 +9,121 @@
     
         
             <item>
+                <title>Tìm hiểu bộ lọc Bloom (Bloom filter) và một số ứng dụng dưới con mắt đời thường</title>
+                <link>http://localhost:4000/programming/vi/2019/12/21/tim-hieu-bloom-filter-va-mot-so-ung-dung/</link>
+                <content:encoded>
+                    <![CDATA[
+                    <blockquote>
+  <p>Bạn có thể đọc bản gốc về định nghĩa, tính chất cũng như cách hoạt động Bloom filter (BF) <a href="https://en.wikipedia.org/wiki/Bloom_filter">tại đây</a>. Tuy nhiên, do bản gốc có thể gây lạ lẫm với những người không liên quan đến IT, nên người viết sẽ cố gắng trình bày theo ngôn từ gần gũi hơn.</p>
+</blockquote>
+
+<p>Trước khi đến với BF, chúng ta cùng tìm hiểu xem tính chất <code class="highlighter-rouge">False positive</code> là gì, vì đây là tính chất quan trọng, gắn chặt với BF.</p>
+
+<h2 id="tính-chất-false-positive-fp">Tính chất False positive (FP)</h2>
+<p>Khi ta đưa ra câu hỏi X, thì nếu như một thực thể đưa ra câu trả lời chỉ là <code class="highlighter-rouge">X hoàn toàn không có (hoàn toàn phủ định)</code> hoặc <code class="highlighter-rouge">X có thể có (có khả năng)</code>, thì thực thể đó có tính chất FP.
+Ví dụ, ta có câu hỏi: <code class="highlighter-rouge">Trong rổ có quả bóng đỏ nào không?</code>, mà câu trả lời nhận được là <code class="highlighter-rouge">Hoàn toàn không có</code> hoặc <code class="highlighter-rouge">Có thể có</code>, thì đây cũng thoả mãn tính chất của FP.</p>
+
+<p>Nếu như câu trả lời không phải là <code class="highlighter-rouge">hoàn toàn phủ định</code> hoặc <code class="highlighter-rouge">có khả năng</code>, thì không thoả mãn tính chất FP. (Ví dụ như câu trả lời là: <code class="highlighter-rouge">Chắc chắn có bóng đỏ trong rổ</code>)</p>
+
+<p>Do câu trả lời nhận được là <code class="highlighter-rouge">có khả năng</code>, nghĩa là FP không <code class="highlighter-rouge">hoàn toàn chắc chắn (hoàn toàn khẳng định)</code> với câu trả lời (ví dụ <code class="highlighter-rouge">chắc chắn trong rổ có quả bóng đỏ</code>), nghĩa là có những lúc bạn sẽ nhận được câu trả lời sai! (Ví dụ, trong rổ không có quả bóng đỏ nào, nhưng câu trả lời nhận được lại là <code class="highlighter-rouge">có thể có bóng đỏ trong rổ</code>). Vì vậy nó mới được gọi là False positive, tức là có thể sai trong trường hợp câu trả lời có tính khẳng định.</p>
+
+<h2 id="bloom-filter-bf-là-gì">Bloom filter (BF) là gì?</h2>
+<p>Được nghĩ ra bởi Burton Howard Bloom vào năm 1970, BF là một cấu trúc dữ liệu cho phép xác định một phần tử E (element) có nằm trong tập cho trước S (set) hay không. Và BF thoả mãn tính chất FP, nghĩa là BF sẽ đưa ra câu trả lời dạng <code class="highlighter-rouge">hoàn toàn phủ định</code> hoặc <code class="highlighter-rouge">có khả năng</code> cho câu hỏi được đưa ra.</p>
+
+<h2 id="nguyên-tắc-hoạt-động">Nguyên tắc hoạt động</h2>
+<p>Để có thể đưa ra câu trả lời cho câu hỏi <code class="highlighter-rouge">Có phần tử E trong tập S không?</code>, thì với mọi phần tử của tập S, BF lưu giữ những đặc điểm của từng phần tử này.
+Khi phần tử E được đưa cho BF, BF sẽ kiểm tra xem phần tử E này có đặc điểm nào trùng với những đặc điểm mà nó đang lưu giữ không. Nếu không có đặc điểm trùng, thì khẳng định chắc chắn là E không nằm trong tập S, ngược lại thì S <strong>có khả năng có chứa</strong> E.</p>
+
+<p>Vậy, sẽ dẫn tới một số câu hỏi:</p>
+<ul>
+  <li>Q: BF trích xuất đặc điểm của từng phần tử trong S và lưu trữ thế nào?</li>
+  <li>
+    <p>A: BF dùng những hàm băm (hash function) để lấy ra những đặc điểm của phần tử, và lưu giữ những đặc điểm này. Càng nhiều hàm băm thì cho tỉ lệ câu trả lời <code class="highlighter-rouge">hoàn toàn phủ định</code> càng chính xác (hay ngược lại là tỉ lệ câu trả lời <code class="highlighter-rouge">có khả năng</code> là sai càng thấp).</p>
+
+    <p>Việc chứng minh phải dùng tới công thức tính xác xuất(có thể tham khảo mục <a href="https://en.wikipedia.org/wiki/Bloom_filter"><code class="highlighter-rouge">Probability of false positives</code> ở đây</a>), nhưng có thể hiểu nôm na là, khi càng dùng nhiều các hàm băm khác nhau, vậy ta sẽ có càng nhiều các đặc điểm khác nhau của phần tử đó. Như vậy, càng nhiều đặc điểm mà phần tử phải thoả mãn, thì tỉ lệ phần tử thoả mãn tất cả các điều kiện đó càng thấp.
+  (Ví dụ, em gái tuyển người yêu với các tiêu chí (đặc điểm): <code class="highlighter-rouge">đẹp trai, cao to nhà giàu, học Back Quoa, là dân IT</code> thì sẽ có ít cơ hội hơn em gái chỉ tuyển với 1 tiêu chí là: <code class="highlighter-rouge">Là dân IT</code>.)</p>
+
+    <p>(<em>Trong chuyên ngành thực tế</em>, BF dùng một mảng gồm m bits, và k hash functions, để tính toán và lưu trữ những “đặc điểm” của phần tử đó. Cụ thể:
+   <img src="/images/assets/Bloom-Filter-works.png" alt="Bloom filter works" /></p>
+
+    <p>Ảnh: Wikipedia)</p>
+  </li>
+  <li>Q: Tại sao lại là <strong>có khả năng có chứa</strong>? Chẳng phải E thoả mãn đặc điểm thì E sẽ nằm trong S hay sao?</li>
+  <li>A: Tuy E thoả mãn điều kiện, nhưng có thể có trường hợp E’ khác (E’ khác E) cũng thoả mãn điều kiện, và S chứa E’ chứ không chứa E. Vậy nên <strong>không thể khẳng định chắc chắn</strong> là S chứa E được.</li>
+</ul>
+
+<h2 id="ứng-dụng-dạng-ý-tưởng">Ứng dụng dạng ý tưởng</h2>
+<p>Một công việc T có chi phí thực hiện lớn, thường sẽ được đặt sau BF để giảm chi phí cho yêu cầu không thoả mãn công việc T. Ví dụ, có 1 rổ gồm 1000 quả bóng, được đánh số ngẫu nhiên từ 1 đến 10.000. Giờ có yêu cầu, tìm quả bóng có đánh số X.
+Nếu làm theo cách thông thường, thì sẽ tìm lần lượt trong 1000 quả bóng đó, nếu có thì trả về quả bóng X, còn nếu ko có thì trả lời là không có. Rõ ràng là khá tốn công.</p>
+
+<p>Có nhiều cách để tìm nhanh quả bóng, nhưng để liên quan đến bài viết, ta sẽ đặt trước rổ bóng một BF, và dùng hàm băm là: <code class="highlighter-rouge">Là phần dư của X cho 10</code>. Vậy với ví dụ: rổ có <code class="highlighter-rouge">các quả bóng 1, 2, 11, ...</code>, ta sẽ có:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1 / 10 = 0 dư 1
+2 / 10 = 0 dư 2
+11 / 10 = 1 dư 1
+</code></pre></div></div>
+<p>=&gt; BF sẽ lưu trữ 1, 2 lần lượt là số dư các phép chia trên</p>
+
+<ul>
+  <li>Nếu X = 3, ta có <code class="highlighter-rouge">3 / 10 = 0 dư 3</code>, 3 không nằm trong số những số dư mà BF đang lưu giữ =&gt; kết luận luôn là bóng 3 <code class="highlighter-rouge">hoàn toàn không</code> nằm trong rổ mà không cần tìm kiếm gì cả.</li>
+  <li>Nếu X = 21, ta có <code class="highlighter-rouge">21 / 10 = 2 dư 1</code>, 1 nằm trong danh sách số dư, vậy kết luận là 21 <code class="highlighter-rouge">có khả năng</code> nằm trong rổ. Tuy nhiên khi tìm thì không có. Đây chính là một false positive.</li>
+</ul>
+
+<h2 id="ứng-dụng-thực-tế">Ứng dụng thực tế</h2>
+<p>Trong lĩnh vực công nghệ thông tin, BF được ứng dụng cực kỳ rộng rãi. Tuy nhiên, do đặc thù từng ứng dụng là khác nhau, mà cách cài đặt BF cho ứng dụng đó cũng khác nhau.</p>
+
+<ul>
+  <li>Ví dụ với Bitcoin
+    <ul>
+      <li>Overview ở <a href="https://bitcoin.org/en/glossary/bloom-filter">đây</a> và <a href="https://bitcoin.org/en/operating-modes-guide#bloom-filters">đây</a></li>
+      <li>Source code ở <a href="https://github.com/bitcoin/bitcoin/blob/8f9df2ed88c4b80691144a810e62e86fec694384/src/bloom.h">đây</a> và <a href="https://github.com/bitcoin/bitcoin/blob/8f9df2ed88c4b80691144a810e62e86fec694384/src/bloom.cpp">đây</a></li>
+    </ul>
+  </li>
+  <li>Ví dụ với Redis
+    <ul>
+      <li>Overview ở <a href="https://oss.redislabs.com/redisbloom/#bfexists">đây</a> và <a href="https://redislabs.com/redis-best-practices/bloom-filter-pattern/">đây</a></li>
+      <li>Source code ở <a href="https://github.com/RedisBloom/RedisBloom/blob/fa54d05800acc25c1039ba671cac54906e190a74/contrib/bloom.h">đây</a> và <a href="https://github.com/RedisBloom/RedisBloom/blob/e4c3f5d3f26689a61685af983a9535a9c64e8f75/contrib/bloom.c">đây</a></li>
+    </ul>
+  </li>
+</ul>
+
+<p>Rõ ràng có sự khác nhau trong việc cài đặt hash function cho BF trong <a href="https://github.com/bitcoin/bitcoin/blob/8f9df2ed88c4b80691144a810e62e86fec694384/src/hash.cpp#L15:14">Bitcoin</a> và <a href="https://github.com/RedisBloom/RedisBloom/blob/e4c3f5d3f26689a61685af983a9535a9c64e8f75/contrib/MurmurHash2.c#L21:10">Redis</a></p>
+
+<h2 id="một-số-biến-thể-trong-cuộc-sống">Một số biến thể trong cuộc sống</h2>
+<p>Trong cuộc sống cũng có những ứng dụng, nếu xét về bản chất, thì rất liên quan đến ý tưởng của BF ở trên.</p>
+
+<p>Ví dụ gần đây có <a href="https://baosuckhoecongdong.vn/giam-doc-bv-xanh-pon-khong-co-chuyen-tron-nhieu-mau-mau-benh-nhan-truoc-khi-xet-nghiem-144856.html">tin đồn bệnh viện Xanh Lè cho trộn chung huyết thanh của bệnh nhân để xét nghiệm.</a> Nếu nhìn dưới góc độ BF thì việc này không hẳn hoàn toàn là xấu.</p>
+
+<p>Việc trộn chung mẫu máu (ví dụ của 3 người) chính là việc chọn hàm băm (hash function), và việc xét nghiệm trên máy ELISA chính là việc có chi phí tốn kém (“tốn kém” theo tiêu chí: Số lượng máy ELISA có hạn, người cần xét nghiệm đông, vậy nếu xét nghiệm từng người một, sẽ rất mất thời gian).</p>
+
+<p>Với việc xét nghiệm chung 1 lần cho 3 người</p>
+<ul>
+  <li>Nếu kết quả trả về là âm tính, nghĩa là cả 3 người đều <strong>không có bệnh</strong> =&gt; giảm số lần xét nghiệm từ 3 xuống 1.</li>
+  <li>Nếu kết quả trả về là dương tính, nghĩa là 1 trong 3 (hoặc cả 3) <strong>có khả năng có bệnh</strong> =&gt; xét nghiệm riêng 1 lần nữa với nhóm 3 người này =&gt; nâng số lần xét nghiệm từ 3 lên 4.</li>
+  <li>Tuy nhiên, phải để ý rằng, tỉ lệ người nhiễm bệnh là <strong>thấp hơn rất nhiều</strong> người không bệnh, nên nếu tính ra thì sự đánh đổi này là “có lời”</li>
+</ul>
+
+<p>Mặc dù vậy, đây sẽ là tai hại, nếu</p>
+<ul>
+  <li>Việc trộn chung mẫu máu làm ảnh hưởng tới độ chính xác của xét nghiệm. 
+  Ví dụ người có bệnh có tỉ lệ máu xấu (để phát hiện ra bệnh) trên tổng máu là 10% (người viết không rành về y, chỉ nói trên góc nhìn con số). Vậy 1 người nhiễm bệnh trộn với 2 người ko bệnh sẽ cho ra mẫu huyết thanh là 3.3%. Giả sử máy ELISA phát hiện với tỉ lệ máu xâú tối thiểu là 5%, vậy nghiễm nhiên người có bệnh sẽ đc chuẩn đoán là không bệnh.</li>
+  <li>Việc gộp chung thế này có làm giảm chi phí xét nghiệm cho bệnh nhân không? Hay là 1 người xét nghiệm riêng cũng 1 chẹo, 3 người gộp chung mà vẫn mỗi người 1 chẹo?</li>
+</ul>
+
+                    ]]>
+                </content:encoded>
+                <guid isPermaLink="false">/programming/vi/2019/12/21/tim-hieu-bloom-filter-va-mot-so-ung-dung/</guid>
+                <description>
+                    
+                    Bloom filter không phải là một cài đặt cụ thể, nó là một tư tưởng thoả mãn tính chất False positive.
+                    
+                </description>
+                <pubDate>Sat, 21 Dec 2019 09:00:00 +0900</pubDate>
+                <author>Manh Dao Van</author>
+            </item>
+        
+    
+        
+            <item>
                 <title>Higher-Order Function (HOF) và Currying</title>
                 <link>http://localhost:4000/programming/vi/2017/10/14/higer-order-function-and-currying/</link>
                 <content:encoded>
@@ -36,7 +151,7 @@ Là một ông bố mẫu mực với niềm kiêu hãnh nhiều năm kinh nghi�
 bạn muốn viết một chương trình hoành tráng để lấy le với con mình. Ok, you win!.
 Dưới đây chắc hẳn là đoạn code đầu tiên xuất hiện trong đầu:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function pickOddNumbers(maximum) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function pickOddNumbers(maximum) {
   const result = [];
 
   for (let i = 1; i &lt;= maximum; i += 1) {
@@ -47,13 +162,12 @@ Dưới đây chắc hẳn là đoạn code đầu tiên xuất hiện trong đ�
 }
 
 pickOddNumbers(20);
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Nhưng đời không bao giờ là mơ, khi hôm sau nhóc con lại mếu máo: “Cô giáo cho thêm bài: Tìm những số tự nhiên khác 0 nhỏ hơn 20 mà nếu gấp 3 số đó rồi từ đi 2 thì thu được số chẵn.”.
 Ok bố chiều cô luôn. Vậy là bạn lại cho ra phiên bản mới:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function pickSpecialNumbers(maximum) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function pickSpecialNumbers(maximum) {
   const result = [];
 
   for (let i = 1; i &lt;= maximum; i += 1) {
@@ -64,8 +178,7 @@ Ok bố chiều cô luôn. Vậy là bạn lại cho ra phiên bản mới:</p>
 }
 
 pickSpecialNumbers(20);
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Đời vẫn ko như mơ khi cô giáo lại cho thêm bài tập: “Tìm những số tự nhiên khác 0 nhỏ hơn 20 mà nếu lấy phần dư số đó cho 9 rồi cộng thêm 2 thì thu số lẻ.”
 Ơ cô giáo từ từ, để bố em sửa function bên trên đã :))))</p>
@@ -78,27 +191,25 @@ Và bạn chợt nhớ tới HOF, một ứng cử viên sáng giá cho việc l
 
 <p>Theo <a href="https://en.wikipedia.org/wiki/Higher-order_function">wikipedia</a> thì:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>A higher-order function (also functional, functional form or functor) is a function that does at least one of the following:
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>A higher-order function (also functional, functional form or functor) is a function that does at least one of the following:
 
 ・takes one or more functions as arguments,
 ・returns a function as its result.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Vietsub:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>HOF là một function mà cho phép thực hiện ít nhất 1 trong 2 khả năng sau:
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HOF là một function mà cho phép thực hiện ít nhất 1 trong 2 khả năng sau:
 ・Nhận vào một hoặc nhiều function như là tham số, hoặc/và
 ・Trả về kết quả là một function.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><em>// Bạn có thể thấy có rất nhiều ngôn ngữ hỗ trợ HOF ở link wiki trên. Đến Java còn hỗ trợ nữa là :v</em></p>
 
 <p>Trăm nghe không bằng một thấy, trăm thấy không bằng một sờ, và chúng ta lại cùng sờ với ví dụ bên trên.
 Lần này là bản nâng cấp có giá trị về mặt học thuật, vì được áp dụng HOF vào cơ mà :)))</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function pickNumbers(maximum, pickingCondition) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function pickNumbers(maximum, pickingCondition) {
   const result = [];
 
   for (let i = 1; i &lt;= maximum; i += 1) {
@@ -118,8 +229,7 @@ pickNumbers(20, function(number) {
   return ((number * 3) - 2) % 2 === 0;
 });
 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Với việc đưa HOF vào function bên trên, giờ thì cô giáo thích gì cũng chiều được nhé,
 chỉ cần thay đổi function kiểm tra điều kiện vào thôi, ko cần phải copy thành function mới nữa.</p>
@@ -128,25 +238,23 @@ chỉ cần thay đổi function kiểm tra điều kiện vào thôi, ko cần 
 
 <p>Lại theo <a href="https://en.wikipedia.org/wiki/Currying">wikipedia</a>:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code> Currying is the technique of translating the evaluation of a function
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Currying is the technique of translating the evaluation of a function
  that takes multiple arguments (or a tuple of arguments)
  into evaluating a sequence of functions, each with a single argument.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Vietsub:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Currying là kỹ thuật mà cho phép chuyển đổi một function với nhiều tham số
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Currying là kỹ thuật mà cho phép chuyển đổi một function với nhiều tham số
 thành những functions liên tiếp có một tham số.
 // Ví dụ f(a,b,c) có thể được convert thành g(a)h(b, c) hay g(a)h(b)k(c), thậm chí là đổi thứ tự của các function tương ứng...
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Vậy dễ dàng nhận thấy <code class="highlighter-rouge">Currying</code> là một trường hợp của <code class="highlighter-rouge">HOF</code>, vì nó thỏa mãn điều kiện <code class="highlighter-rouge">trả về kết quả là một function</code>.</p>
 
 <p>Cụ thể áp dụng cho ví dụ trên, có thể viết thành dạng sau:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function pickNumbers(maximum) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function pickNumbers(maximum) {
   return function (pickingCondition) {
     const result = [];
 
@@ -167,8 +275,7 @@ pickNumbers(20)(function (number) {
 pickNumbers(20)(function (number) {
   return (number * 3 - 2) % 2 === 0;
 });
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So sánh ví dụ áp dụng Currying này với ví dụ sử dụng HOF ở trên, rõ ràng là ta chưa thấy sự ưu việt của Currying so với HOF, thậm chí còn thấy hơi rườm rà nữa.
 Tuy nhiên, hãy cùng xem xét ví dụ dưới đây:</p>
@@ -179,7 +286,7 @@ Tuy nhiên, hãy cùng xem xét ví dụ dưới đây:</p>
 
 <p>Với HOF:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function getValue(objects, key, pickingCondition) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function getValue(objects, key, pickingCondition) {
   var object = null;
 
   for (var i = 0; i &lt; objects.length; i++) {
@@ -191,19 +298,17 @@ Tuy nhiên, hãy cùng xem xét ví dụ dưới đây:</p>
 
   return object ? object[key] : null;
 };
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Mỗi khi gọi function với key khác nhau, hẳn là sẽ phải gọi kiểu như vầy:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>var valueByKey1 = getValue(objects, 'key1', pickingCondition);
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var valueByKey1 = getValue(objects, 'key1', pickingCondition);
 var valueByKey2 = getValue(objects, 'key2', pickingCondition);
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Nếu như coi <code class="highlighter-rouge">key</code> là <strong>biết trước</strong>, chỉ thay đổi <code class="highlighter-rouge">objects</code> và <code class="highlighter-rouge">pickingCondition</code>, thì việc áp dụng Currying lại hợp lý:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function getValue(key) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function getValue(key) {
   return function (objects, pickingCondition) {
     let object = null;
 
@@ -225,8 +330,7 @@ var getValueByKey2 = getValue('key2');
 // Sử dụng:
 var valueByKey1 = getValueByKey1(objects, pickingCondition);
 var valueByKey2 = getValueByKey2(objects, pickingCondition);
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Khá là gọn gàng.</p>
 
@@ -239,7 +343,7 @@ hay các selectors mà redux-form cung cấp, thì chúng đều áp dụng kỹ
 
 <p>Viết function để kiểm tra độ dài của một xâu <code class="highlighter-rouge">s</code> có vượt quá <code class="highlighter-rouge">n</code> hay ko.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>// Cách 1: Không dùng Currying
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Cách 1: Không dùng Currying
 function isLengthOver(s, n){
   return s.length &gt; n
 }
@@ -250,20 +354,17 @@ function isLengthOver(n){
     return s.length &gt; n;
   }
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Giả sử cả 2 cách viết trên được sử dụng cho việc validate của một field trên form, với <code class="highlighter-rouge">n = 10</code> thì có sự khác biệt như sau:</p>
 
 <p>Với cách 1:</p>
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;input type="text" validate={value =&gt; isLengthOver(value, 10)} /&gt;
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;input type="text" validate={value =&gt; isLengthOver(value, 10)} /&gt;
+</code></pre></div></div>
 
 <p>Với cách 2:</p>
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;input type="text" validate={isLengthOver(10)} /&gt;
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;input type="text" validate={isLengthOver(10)} /&gt;
+</code></pre></div></div>
 
 <p>Quá khác bọt!</p>
 
@@ -291,7 +392,7 @@ function isLengthOver(n){
 
 <p>Chắc hẳn bạn sẽ nghĩ tới cách dùng vòng lặp, kiểm tra chừng nào còn tìm thấy group có id bằng <code class="highlighter-rouge">parentGroupId</code>. Và tôi cũng nghĩ vậy :D</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>const getGroupFullPathName = (groups, employeeGroupId) =&gt; {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>const getGroupFullPathName = (groups, employeeGroupId) =&gt; {
   const groupNames = [];
 
   let group = groups.find(grp =&gt; grp.id === employeeGroupId);
@@ -302,15 +403,14 @@ function isLengthOver(n){
 
   return groupNames.join('/');
 };
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Nhưng đoạn code trên vẫn chưa ngon, do vi phạm rule <a href="https://eslint.org/docs/rules/no-loop-func">Don’t make functions within a loop</a> của ESLint.
 Cụ thể: Mỗi khi vòng while được chạy thì <code class="highlighter-rouge">groups.find(grp =&gt; grp.id === group.parentGroupId)</code> lại sinh ra một anonymous function, chính là <code class="highlighter-rouge">grp =&gt; grp.id === group.parentGroupId</code>.</p>
 
 <p>Cách khắc phục là ta viết một currying bên ngoài vòng while là được:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>const getGroupFullPathName = (groups, employeeGroupId) =&gt; {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>const getGroupFullPathName = (groups, employeeGroupId) =&gt; {
   const groupNames = [];
   const condition = parentGroupId =&gt; group =&gt; group.id === parentGroupId;
 
@@ -322,8 +422,7 @@ Cụ thể: Mỗi khi vòng while được chạy thì <code class="highlighter-
 
   return groupNames.join('/');
 };
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="kết-luận">Kết luận:</h3>
 <p>Bài quá dài.</p>
@@ -337,7 +436,7 @@ Cụ thể: Mỗi khi vòng while được chạy thì <code class="highlighter-
                     HOF và Currying là hai kỹ thuật không khó, thậm chí bạn đang dùng nó hàng ngày mà không để ý. Cùng tìm hiểu chúng thông qua một số ví dụ.
                     
                 </description>
-                <pubDate>Sat, 14 Oct 2017 00:00:00 +0000</pubDate>
+                <pubDate>Sat, 14 Oct 2017 09:00:00 +0900</pubDate>
                 <author>Manh Dao Van</author>
             </item>
         
@@ -384,20 +483,18 @@ bạn sẽ phải đưa thêm những bit giám sát (=cài cắm người mà b
 
 <p>Theo định nghĩa xịn ở <a href="https://www.cs.cmu.edu/~guyb/realworld/reedsolomon/reed_solomon_codes.html">đây</a>:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>A Reed-Solomon code is specified as RS(n,k) with s-bit symbols.
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>A Reed-Solomon code is specified as RS(n,k) with s-bit symbols.
 
 This means that the encoder takes k data symbols of s bits each and adds parity symbols to make an n symbol codeword.
 There are n-k parity symbols of s bits each. A Reed-Solomon decoder can correct up to t symbols that contain errors in a codeword, where 2t = n-k.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Vietsub:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Mã Reed-Solomon được đặc tả là RS(n,k), với mỗi ký tự được cấu tạo từ s-bit.
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Mã Reed-Solomon được đặc tả là RS(n,k), với mỗi ký tự được cấu tạo từ s-bit.
 Nghĩa là bộ mã hóa sẽ nhận k ký tự, sau đó thêm vào các ký tự kiểm tra để tạo ra codeword có độ lớn n ký tự.
 Số ký tự kiểm tra là `n-k`, và số ký tự có thể được sửa tối đa là (n-k)/2
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Ta có thể liên tưởng đến các khái niệm được nhắc tới với nguyên lý chung ở trên như sau:</p>
 
@@ -485,7 +582,7 @@ với format png, ansi… mà mình cũng đang sử dụng cho <a href="https:/
                     Tìm hiểu một số khái niệm và tính chất của kỹ thuật sửa lỗi Reed - Solomon, với sự xuất hiện của Ưng Hoàng Phúc, Ngọc Trinh :v
                     
                 </description>
-                <pubDate>Sun, 24 Sep 2017 00:00:00 +0000</pubDate>
+                <pubDate>Sun, 24 Sep 2017 09:00:00 +0900</pubDate>
                 <author>Manh Dao Van</author>
             </item>
         
@@ -502,12 +599,11 @@ với format png, ansi… mà mình cũng đang sử dụng cho <a href="https:/
 Mọi ý kiến trong bài đều dựa trên góc nhìn của người viết, không có ý gây ra những tranh luận tiêu cực không đáng có.</code></p>
 
 <h3 id="tldr">TL;DR:</h3>
-<div class="highlighter-rouge"><pre class="highlight"><code>LTV là nghề đáng làm, vì:
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>LTV là nghề đáng làm, vì:
   * Không có trăn trở quá lớn về đạo đức
   * Không tổn thật hoặc tổn thất ít tài nguyên khi thử nghiệm hoặc thử nghiệm thất bại
   * Không yêu cầu quá nhiều thể lực
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Anh nhà bác tôi sang năm thi đại học. Bác tôi có hỏi là giờ nên cho anh mày học cái gì, tôi mạnh dạn: “Để anh ấy học CNTT đi bác”.</p>
 
@@ -547,7 +643,7 @@ Nó có những đặc thù riêng, với những chuẩn bị cũng khác nữa
                     Nghề LTV dưới góc nhìn của người viết. Liệu nó có phải là nghề &quot;đáng làm&quot; hay không?
                     
                 </description>
-                <pubDate>Sun, 24 Sep 2017 00:00:00 +0000</pubDate>
+                <pubDate>Sun, 24 Sep 2017 09:00:00 +0900</pubDate>
                 <author>Manh Dao Van</author>
             </item>
         
@@ -614,7 +710,7 @@ Nó có những đặc thù riêng, với những chuẩn bị cũng khác nữa
                     A-to-Z Xây dựng ứng dụng realtime chat sử dụng action cable rails 5
                     
                 </description>
-                <pubDate>Fri, 07 Apr 2017 00:00:00 +0000</pubDate>
+                <pubDate>Fri, 07 Apr 2017 09:00:00 +0900</pubDate>
                 <author>Manh Dao Van</author>
             </item>
         
@@ -703,13 +799,12 @@ Nó có những đặc thù riêng, với những chuẩn bị cũng khác nữa
   <li>Họ lưu cấu hình <strong>shard nào, có ID là bao nhiêu? con EC2 nào chứa shard nào? …</strong> vào ZooKeeper:</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[{“range”:     (0,511), “master”: “MySQL001A”, “slave”: “MySQL001B”},
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[{“range”:     (0,511), “master”: “MySQL001A”, “slave”: “MySQL001B”},
  {“range”: (512, 1023), “master”: “MySQL002A”, “slave”: “MySQL002B”},
     ...
  {“range”: (3072, 3583), “master”: “MySQL007A”, “slave”: “MySQL007B”},
  {“range”: (3584, 4095), “master”: “MySQL008A”, “slave”: “MySQL008B”}]
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><em>// (0,511) tương ứng với db00000 to db00511 ở hình trên.</em></p>
 
@@ -751,11 +846,10 @@ Nó có những đặc thù riêng, với những chuẩn bị cũng khác nữa
 
 <p><code class="highlighter-rouge">https://www.pinterest.com/pin/241294492511762325/, thì UUID nhận được là 241294492511762325.</code>, sẽ được decompose cái UUID theo cách sau:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Shard ID = (241294492511762325 &gt;&gt; 46) &amp; 0xFFFF = 3429
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Shard ID = (241294492511762325 &gt;&gt; 46) &amp; 0xFFFF = 3429
 Type ID  = (241294492511762325 &gt;&gt; 36) &amp; 0x3FF = 1 // type Pin -&gt; query vào table pins
 Local ID = (241294492511762325 &gt;&gt;  0) &amp; 0xFFFFFFFFF = 7075733
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Từ công thức trên, có thể thấy được:</p>
 
@@ -770,11 +864,10 @@ Local ID = (241294492511762325 &gt;&gt;  0) &amp; 0xFFFFFFFFF = 7075733
 
 <p>Sau khi đã có đầy đủ thông tin, chỉ việc query:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>conn = MySQLdb.connect(host=”MySQL007A”)
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conn = MySQLdb.connect(host=”MySQL007A”)
 conn.execute(“SELECT data FROM db03429.pins where local_id=7075733”)
-</code></pre>
-</div>
-<p><em>// Host MySQL007A được nhặt ra từ shard ID 3429, có range nằm trong <code class="highlighter-rouge"><span class="p">{</span><span class="err">“range”:</span><span class="w"> </span><span class="err">(3072,</span><span class="w"> </span><span class="err">3583),</span><span class="w"> </span><span class="err">“master”:</span><span class="w"> </span><span class="err">“MySQL007A”,</span><span class="w"> </span><span class="err">“slave”:</span><span class="w"> </span><span class="err">“MySQL007B”</span><span class="p">}</span></code>, nên nó chọn host MySQL007A để query thôi.</em></p>
+</code></pre></div></div>
+<p><em>// Host MySQL007A được nhặt ra từ shard ID 3429, có range nằm trong <code class="highlighter-rouge">{“range”: (3072, 3583), “master”: “MySQL007A”, “slave”: “MySQL007B”}</code>, nên nó chọn host MySQL007A để query thôi.</em></p>
 
 <ul>
   <li>
@@ -785,19 +878,17 @@ conn.execute(“SELECT data FROM db03429.pins where local_id=7075733”)
       <li>Ví dụ với table Pin:</li>
     </ul>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code>CREATE TABLE pins (
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE TABLE pins (
    local_id INT PRIMARY KEY AUTO_INCREMENT,
    data TEXT,
    ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE
-</code></pre>
-    </div>
+</code></pre></div>    </div>
 
     <ul>
       <li>Để ý thấy là table Pin có bao nhiêu thông tin như thế, vậy mà sao lại có mỗi column data ? Cái hay là họ nhét tất cả các thông tin liên quan đến pin vào column data này, dưới dạng JSON:
-        <div class="highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="err">“details”:</span><span class="w"> </span><span class="err">“New</span><span class="w"> </span><span class="err">Star</span><span class="w"> </span><span class="err">Wars</span><span class="w"> </span><span class="err">character”,</span><span class="w"> </span><span class="err">“link”:</span><span class="w"> </span><span class="err">“http://webpage.com/asdf”,</span><span class="w"> </span><span class="err">“user_id”:</span><span class="w"> </span><span class="err">241294629943640797,</span><span class="w"> </span><span class="err">“board_id”:</span><span class="w"> </span><span class="err">241294561224164665,</span><span class="w"> </span><span class="err">…</span><span class="p">}</span><span class="w">
-</span></code></pre>
-        </div>
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{“details”: “New Star Wars character”, “link”: “http://webpage.com/asdf”, “user_id”: 241294629943640797, “board_id”: 241294561224164665, …}
+</code></pre></div>        </div>
       </li>
     </ul>
 
@@ -808,14 +899,13 @@ conn.execute(“SELECT data FROM db03429.pins where local_id=7075733”)
       <li>Còn với table dạng Map thì có cấu trúc như này:</li>
     </ul>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code>CREATE TABLE board_has_pins (
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE TABLE board_has_pins (
   board_id INT,
   pin_id INT,
   sequence INT,
   INDEX(board_id, pin_id, sequence)
 ) ENGINE=InnoDB;
-</code></pre>
-    </div>
+</code></pre></div>    </div>
 
     <p><code class="highlighter-rouge">board_id</code> và <code class="highlighter-rouge">pin_id</code> là các UUID 64bit như trên, sequence có dạng timestamp, bảo đảm cho việc order theo created time rồi.</p>
 
@@ -840,7 +930,7 @@ conn.execute(“SELECT data FROM db03429.pins where local_id=7075733”)
                     Bài viết lược dịch từ Sharding Pinterest How we scaled our MySQL fleet, một bài viết theo mình đánh giá là rất chất lượng, và có nhiều giá trị có thể tham khảo.
                     
                 </description>
-                <pubDate>Wed, 22 Mar 2017 00:00:00 +0000</pubDate>
+                <pubDate>Wed, 22 Mar 2017 09:00:00 +0900</pubDate>
                 <author>Manh Dao Van</author>
             </item>
         
@@ -940,14 +1030,13 @@ Do <strong>cứ có số 0 đứng đầu thì số tạo thành là ko hợp l�
 
 <p>Vậy có thể viết thành công thức tổng quát như sau:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>numbers_start_with_0 = if(original_number.contains(0)) bookkeeper(original_number.remove_one(0)) else 0
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>numbers_start_with_0 = if(original_number.contains(0)) bookkeeper(original_number.remove_one(0)) else 0
 simillar_numbers = bookkeeper(original_number) - numbers_start_with_0
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Mình có viết một đoạn code bằng Ruby minh hoạ cho công thức trên như sau:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># Calculate number of Similar Numbers
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Calculate number of Similar Numbers
 # 112 has 112, 121, 211 (3 similar numbers)
 # 100 has 100 (1 similar number)
 # Given integer a (1 &lt;= a &lt;= 2^32)
@@ -988,8 +1077,7 @@ def solution(a)
 
   total_cases
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Make #cấp3 great again!</p>
 
@@ -1021,10 +1109,9 @@ end
 
 <h3 id="môi-trường">Môi trường:</h3>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$mysql --version
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$mysql --version
 mysql  Ver 14.14 Distrib 5.7.14, for osx10.11 (x86_64) using  EditLine wrapper
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>CoreI5 @2.6GHz, DDR3 8GB@1600MHz, SSD</p>
 
@@ -1034,7 +1121,7 @@ mysql  Ver 14.14 Distrib 5.7.14, for osx10.11 (x86_64) using  EditLine wrapper
   <li><strong>Một MySQL instance KHÔNG CẤU HÌNH LOAD BP khi startup:</strong></li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mysql&gt; show variables like '%buffer_pool%';
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql&gt; show variables like '%buffer_pool%';
 +-------------------------------------+----------------+
 | Variable_name                       | Value          |
 +-------------------------------------+----------------+
@@ -1050,14 +1137,13 @@ mysql  Ver 14.14 Distrib 5.7.14, for osx10.11 (x86_64) using  EditLine wrapper
 | innodb_buffer_pool_size             | 268435456      |
 +-------------------------------------+----------------+
 10 rows in set (0.00 sec)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li><strong>Một table với structure đơn giản như sau:</strong></li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mysql&gt; desc test_data;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql&gt; desc test_data;
 +-------------+--------------+------+-----+---------+----------------+
 | Field       | Type         | Null | Key | Default | Extra          |
 +-------------+--------------+------+-----+---------+----------------+
@@ -1066,30 +1152,27 @@ mysql  Ver 14.14 Distrib 5.7.14, for osx10.11 (x86_64) using  EditLine wrapper
 | random_str2 | varchar(255) | YES  |     | NULL    |                |
 +-------------+--------------+------+-----+---------+----------------+
 3 rows in set (0.00 sec)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li><strong>Với 10triệu records:</strong></li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mysql&gt; select count(*) from test_data;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql&gt; select count(*) from test_data;
 +----------+
 | count(*) |
 +----------+
 | 10000000 |
 +----------+
 1 row in set (8.38 sec)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li><strong>Một file SQL chứa 20k câu query để thực hiện BM, có format:</strong></li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>select * from test_data where random_str = "unique_string_value";
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select * from test_data where random_str = "unique_string_value";
+</code></pre></div></div>
 
 <p>Với <code class="highlighter-rouge">unique_string_value</code> lần lượt là các giá trị lấy ra từ <code class="highlighter-rouge">random_str</code> của table trên.</p>
 
@@ -1099,15 +1182,14 @@ mysql  Ver 14.14 Distrib 5.7.14, for osx10.11 (x86_64) using  EditLine wrapper
   <li><strong>Step0: Khởi động MySQL với option chỉ định KHÔNG LOAD, KHÔNG DUMP BP, và init BP size là 256MB:</strong></li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$mysql.server start --innodb_buffer_pool_load_at_startup=0 --innodb_buffer_pool_dump_at_shutdown=0 --innodb_buffer_pool_chunk_size=256M --innodb_buffer_pool_size=256M
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$mysql.server start --innodb_buffer_pool_load_at_startup=0 --innodb_buffer_pool_dump_at_shutdown=0 --innodb_buffer_pool_chunk_size=256M --innodb_buffer_pool_size=256M
+</code></pre></div></div>
 
 <ul>
   <li><strong>Step1: Chạy BM command khi không dùng tool <a href="https://github.com/manhdaovan/mysql_warmup">mysql-warmup</a></strong></li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$mysqlslap --create-schema=warmup_benchmark --delimiter=";" --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$mysqlslap --create-schema=warmup_benchmark --delimiter=";" --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
 Enter password:
 Benchmark
     Average number of seconds to run all queries: 7.562 seconds
@@ -1115,15 +1197,14 @@ Benchmark
     Maximum number of seconds to run all queries: 7.562 seconds
     Number of clients running queries: 1
     Average number of queries per client: 20001
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Ý nghĩa câu lệnh trên là: Mô phỏng 1 client, thực hiện 20k queries, mỗi query là 1 câu select theo value của column random_str (column này đã được index).<br />
 Giả sử câu lệnh BM chuyển thành: Mô phỏng 20k clients, query cùng 1 nội dung, thì BM ko có ý nghĩa.</p>
 
 <ul>
   <li><strong>Step2: Chạy cùng câu lệnh như trên ngay sau đó, để thấy sự khác biệt khi BP được hit thay vì hit vào disk:</strong>
-    <div class="highlighter-rouge"><pre class="highlight"><code>$mysqlslap --create-schema=warmup_benchmark --delimiter=";" --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$mysqlslap --create-schema=warmup_benchmark --delimiter=";" --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
 Enter password:
 Benchmark
   Average number of seconds to run all queries: 1.740 seconds
@@ -1131,8 +1212,7 @@ Benchmark
   Maximum number of seconds to run all queries: 1.740 seconds
   Number of clients running queries: 1
   Average number of queries per client: 20001
-</code></pre>
-    </div>
+</code></pre></div>    </div>
   </li>
   <li>
     <p><strong>Step 3: Tắt mysql, Khởi động lại máy (cho chắc, tránh MySQL rơi vào sleep mode), sau đó khởi động MySQL service lên như Step0.</strong></p>
@@ -1140,7 +1220,7 @@ Benchmark
   <li><strong>Step4: Chạy mysql-warmup tool:</strong></li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$mysql-warmup -uroot -dwarmup_benchmark
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$mysql-warmup -uroot -dwarmup_benchmark
 
 Input the mysql password:
 my_mysql_root_password
@@ -1149,14 +1229,13 @@ my_mysql_root_password
 2017-02-24 15:33:29 +0900: --- SUCCESS WARMUP FOR TABLE: `warmup_benchmark`.`test_data`
 
 2017-02-24 15:33:29 +0900: --- +++++++ SUCCESS WARMUP FOR DB: warmup_benchmark +++++++
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li><strong>Step5: Chạy lại câu lệnh BM như Step1:</strong></li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$mysqlslap --create-schema=warmup_benchmark --delimiter=";" --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$mysqlslap --create-schema=warmup_benchmark --delimiter=";" --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
 Enter password:
 Benchmark
     Average number of seconds to run all queries: 2.132 seconds
@@ -1164,14 +1243,13 @@ Benchmark
     Maximum number of seconds to run all queries: 2.132 seconds
     Number of clients running queries: 1
     Average number of queries per client: 20001
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li><strong>Step6: Chạy lại câu lệnh như trên một lần nữa, xem có sự khác biệt nào không:</strong></li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$mysqlslap --create-schema=warmup_benchmark --delimiter=";" --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$mysqlslap --create-schema=warmup_benchmark --delimiter=";" --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
 Enter password:
 Benchmark
     Average number of seconds to run all queries: 1.886 seconds
@@ -1179,8 +1257,7 @@ Benchmark
     Maximum number of seconds to run all queries: 1.886 seconds
     Number of clients running queries: 1
     Average number of queries per client: 20001
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="kết-luận">Kết luận:</h3>
 <ul>
@@ -1204,7 +1281,7 @@ Benchmark
                     Mình thực hiện BM này cho chính [tool mình viết](https://github.com/manhdaovan/mysql_warmup), cũng là 1 tool đơn giản thôi, tiện thể đem kết quả lên khoe với mọi người luôn.
                     
                 </description>
-                <pubDate>Thu, 02 Mar 2017 00:00:00 +0000</pubDate>
+                <pubDate>Thu, 02 Mar 2017 09:00:00 +0900</pubDate>
                 <author>Manh Dao Van</author>
             </item>
         
@@ -1281,7 +1358,7 @@ Benchmark
                     Buffer pool(BF) của mysql quả thực có nhiều lợi ích, và việc warm up BP luôn là việc nên làm đầu tiên mỗi khi start/reload/create new mysql. Tuy nhiên, &quot;touch&quot; thế nào cho tối ưu nhất? Trong quá trình thực hiện benchmark cho [tool này](https://github.com/manhdaovan/mysql_warmup), người viết thấy có 1 số điều thú vị như dưới đây.
                     
                 </description>
-                <pubDate>Mon, 16 Jan 2017 00:00:00 +0000</pubDate>
+                <pubDate>Mon, 16 Jan 2017 09:00:00 +0900</pubDate>
                 <author>Manh Dao Van</author>
             </item>
         
@@ -1381,7 +1458,7 @@ Chúc bạn may mắn và đạt được công việc mong muốn.</p>
                     Kinh nghiệm bản thân về việc chuẩn bị sang vùng kinh tế mới :v
                     
                 </description>
-                <pubDate>Fri, 26 Jun 2015 00:00:00 +0000</pubDate>
+                <pubDate>Fri, 26 Jun 2015 09:00:00 +0900</pubDate>
                 <author>Manh Dao Van</author>
             </item>
         

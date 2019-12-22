@@ -17,7 +17,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for ManhDV's blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201710152132" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201912221043" type="text/css">
 
     <!-- Fonts -->
     
@@ -271,14 +271,13 @@ Do <strong>cứ có số 0 đứng đầu thì số tạo thành là ko hợp l�
 
 <p>Vậy có thể viết thành công thức tổng quát như sau:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>numbers_start_with_0 = if(original_number.contains(0)) bookkeeper(original_number.remove_one(0)) else 0
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>numbers_start_with_0 = if(original_number.contains(0)) bookkeeper(original_number.remove_one(0)) else 0
 simillar_numbers = bookkeeper(original_number) - numbers_start_with_0
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Mình có viết một đoạn code bằng Ruby minh hoạ cho công thức trên như sau:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># Calculate number of Similar Numbers
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Calculate number of Similar Numbers
 # 112 has 112, 121, 211 (3 similar numbers)
 # 100 has 100 (1 similar number)
 # Given integer a (1 &lt;= a &lt;= 2^32)
@@ -319,8 +318,7 @@ def solution(a)
 
   total_cases
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Make #cấp3 great again!</p>
 
@@ -329,7 +327,8 @@ end
 
 
   <br/>
-  <div class="share-page">
+  <hr />
+<div class="share-page">
   <div>♫Em có thể dối anh trong lời nói</div>
   <div>Nhưng làm sao giấu được trên Facebook</div>
   <div>Em nói là sẽ nhấn share bài viết</div>
@@ -399,6 +398,13 @@ end
 
 
   <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/programming/vi/2019/12/21/tim-hieu-bloom-filter-va-mot-so-ung-dung/" class="post-link">
+        <h4 class="post-title">Tìm hiểu bộ lọc Bloom (Bloom filter) và một số ứng dụng dưới con mắt đời thường</h4>
+        <p class="post-summary">Bloom filter không phải là một cài đặt cụ thể, nó là một tư tưởng thoả mãn tính chất False positive.</p>
+      </a>
+    </div>
   
     <div class="post ml2">
       <a href="/programming/vi/2017/10/14/higer-order-function-and-currying/" class="post-link">

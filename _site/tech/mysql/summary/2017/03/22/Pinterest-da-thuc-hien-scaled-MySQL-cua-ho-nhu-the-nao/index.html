@@ -17,7 +17,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for ManhDV's blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201710152132" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201912221043" type="text/css">
 
     <!-- Fonts -->
     
@@ -260,13 +260,12 @@
   <li>Họ lưu cấu hình <strong>shard nào, có ID là bao nhiêu? con EC2 nào chứa shard nào? …</strong> vào ZooKeeper:</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[{“range”:     (0,511), “master”: “MySQL001A”, “slave”: “MySQL001B”},
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[{“range”:     (0,511), “master”: “MySQL001A”, “slave”: “MySQL001B”},
  {“range”: (512, 1023), “master”: “MySQL002A”, “slave”: “MySQL002B”},
     ...
  {“range”: (3072, 3583), “master”: “MySQL007A”, “slave”: “MySQL007B”},
  {“range”: (3584, 4095), “master”: “MySQL008A”, “slave”: “MySQL008B”}]
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><em>// (0,511) tương ứng với db00000 to db00511 ở hình trên.</em></p>
 
@@ -308,11 +307,10 @@
 
 <p><code class="highlighter-rouge">https://www.pinterest.com/pin/241294492511762325/, thì UUID nhận được là 241294492511762325.</code>, sẽ được decompose cái UUID theo cách sau:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Shard ID = (241294492511762325 &gt;&gt; 46) &amp; 0xFFFF = 3429
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Shard ID = (241294492511762325 &gt;&gt; 46) &amp; 0xFFFF = 3429
 Type ID  = (241294492511762325 &gt;&gt; 36) &amp; 0x3FF = 1 // type Pin -&gt; query vào table pins
 Local ID = (241294492511762325 &gt;&gt;  0) &amp; 0xFFFFFFFFF = 7075733
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Từ công thức trên, có thể thấy được:</p>
 
@@ -327,11 +325,10 @@ Local ID = (241294492511762325 &gt;&gt;  0) &amp; 0xFFFFFFFFF = 7075733
 
 <p>Sau khi đã có đầy đủ thông tin, chỉ việc query:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>conn = MySQLdb.connect(host=”MySQL007A”)
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conn = MySQLdb.connect(host=”MySQL007A”)
 conn.execute(“SELECT data FROM db03429.pins where local_id=7075733”)
-</code></pre>
-</div>
-<p><em>// Host MySQL007A được nhặt ra từ shard ID 3429, có range nằm trong <code class="highlighter-rouge"><span class="p">{</span><span class="err">“range”:</span><span class="w"> </span><span class="err">(3072,</span><span class="w"> </span><span class="err">3583),</span><span class="w"> </span><span class="err">“master”:</span><span class="w"> </span><span class="err">“MySQL007A”,</span><span class="w"> </span><span class="err">“slave”:</span><span class="w"> </span><span class="err">“MySQL007B”</span><span class="p">}</span></code>, nên nó chọn host MySQL007A để query thôi.</em></p>
+</code></pre></div></div>
+<p><em>// Host MySQL007A được nhặt ra từ shard ID 3429, có range nằm trong <code class="highlighter-rouge">{“range”: (3072, 3583), “master”: “MySQL007A”, “slave”: “MySQL007B”}</code>, nên nó chọn host MySQL007A để query thôi.</em></p>
 
 <ul>
   <li>
@@ -342,19 +339,17 @@ conn.execute(“SELECT data FROM db03429.pins where local_id=7075733”)
       <li>Ví dụ với table Pin:</li>
     </ul>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code>CREATE TABLE pins (
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE TABLE pins (
    local_id INT PRIMARY KEY AUTO_INCREMENT,
    data TEXT,
    ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE
-</code></pre>
-    </div>
+</code></pre></div>    </div>
 
     <ul>
       <li>Để ý thấy là table Pin có bao nhiêu thông tin như thế, vậy mà sao lại có mỗi column data ? Cái hay là họ nhét tất cả các thông tin liên quan đến pin vào column data này, dưới dạng JSON:
-        <div class="highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="err">“details”:</span><span class="w"> </span><span class="err">“New</span><span class="w"> </span><span class="err">Star</span><span class="w"> </span><span class="err">Wars</span><span class="w"> </span><span class="err">character”,</span><span class="w"> </span><span class="err">“link”:</span><span class="w"> </span><span class="err">“http://webpage.com/asdf”,</span><span class="w"> </span><span class="err">“user_id”:</span><span class="w"> </span><span class="err">241294629943640797,</span><span class="w"> </span><span class="err">“board_id”:</span><span class="w"> </span><span class="err">241294561224164665,</span><span class="w"> </span><span class="err">…</span><span class="p">}</span><span class="w">
-</span></code></pre>
-        </div>
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{“details”: “New Star Wars character”, “link”: “http://webpage.com/asdf”, “user_id”: 241294629943640797, “board_id”: 241294561224164665, …}
+</code></pre></div>        </div>
       </li>
     </ul>
 
@@ -365,14 +360,13 @@ conn.execute(“SELECT data FROM db03429.pins where local_id=7075733”)
       <li>Còn với table dạng Map thì có cấu trúc như này:</li>
     </ul>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code>CREATE TABLE board_has_pins (
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE TABLE board_has_pins (
   board_id INT,
   pin_id INT,
   sequence INT,
   INDEX(board_id, pin_id, sequence)
 ) ENGINE=InnoDB;
-</code></pre>
-    </div>
+</code></pre></div>    </div>
 
     <p><code class="highlighter-rouge">board_id</code> và <code class="highlighter-rouge">pin_id</code> là các UUID 64bit như trên, sequence có dạng timestamp, bảo đảm cho việc order theo created time rồi.</p>
 
@@ -393,7 +387,8 @@ conn.execute(“SELECT data FROM db03429.pins where local_id=7075733”)
 
 
   <br/>
-  <div class="share-page">
+  <hr />
+<div class="share-page">
   <div>♫Em có thể dối anh trong lời nói</div>
   <div>Nhưng làm sao giấu được trên Facebook</div>
   <div>Em nói là sẽ nhấn share bài viết</div>
@@ -463,6 +458,13 @@ conn.execute(“SELECT data FROM db03429.pins where local_id=7075733”)
 
 
   <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/programming/vi/2019/12/21/tim-hieu-bloom-filter-va-mot-so-ung-dung/" class="post-link">
+        <h4 class="post-title">Tìm hiểu bộ lọc Bloom (Bloom filter) và một số ứng dụng dưới con mắt đời thường</h4>
+        <p class="post-summary">Bloom filter không phải là một cài đặt cụ thể, nó là một tư tưởng thoả mãn tính chất False positive.</p>
+      </a>
+    </div>
   
     <div class="post ml2">
       <a href="/programming/vi/2017/10/14/higer-order-function-and-currying/" class="post-link">

@@ -17,7 +17,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for ManhDV's blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201710152132" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201912221043" type="text/css">
 
     <!-- Fonts -->
     
@@ -190,10 +190,9 @@
 
 <h3 id="môi-trường">Môi trường:</h3>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$mysql --version
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$mysql --version
 mysql  Ver 14.14 Distrib 5.7.14, for osx10.11 (x86_64) using  EditLine wrapper
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>CoreI5 @2.6GHz, DDR3 8GB@1600MHz, SSD</p>
 
@@ -203,7 +202,7 @@ mysql  Ver 14.14 Distrib 5.7.14, for osx10.11 (x86_64) using  EditLine wrapper
   <li><strong>Một MySQL instance KHÔNG CẤU HÌNH LOAD BP khi startup:</strong></li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mysql&gt; show variables like '%buffer_pool%';
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql&gt; show variables like '%buffer_pool%';
 +-------------------------------------+----------------+
 | Variable_name                       | Value          |
 +-------------------------------------+----------------+
@@ -219,14 +218,13 @@ mysql  Ver 14.14 Distrib 5.7.14, for osx10.11 (x86_64) using  EditLine wrapper
 | innodb_buffer_pool_size             | 268435456      |
 +-------------------------------------+----------------+
 10 rows in set (0.00 sec)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li><strong>Một table với structure đơn giản như sau:</strong></li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mysql&gt; desc test_data;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql&gt; desc test_data;
 +-------------+--------------+------+-----+---------+----------------+
 | Field       | Type         | Null | Key | Default | Extra          |
 +-------------+--------------+------+-----+---------+----------------+
@@ -235,30 +233,27 @@ mysql  Ver 14.14 Distrib 5.7.14, for osx10.11 (x86_64) using  EditLine wrapper
 | random_str2 | varchar(255) | YES  |     | NULL    |                |
 +-------------+--------------+------+-----+---------+----------------+
 3 rows in set (0.00 sec)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li><strong>Với 10triệu records:</strong></li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mysql&gt; select count(*) from test_data;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql&gt; select count(*) from test_data;
 +----------+
 | count(*) |
 +----------+
 | 10000000 |
 +----------+
 1 row in set (8.38 sec)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li><strong>Một file SQL chứa 20k câu query để thực hiện BM, có format:</strong></li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>select * from test_data where random_str = "unique_string_value";
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select * from test_data where random_str = "unique_string_value";
+</code></pre></div></div>
 
 <p>Với <code class="highlighter-rouge">unique_string_value</code> lần lượt là các giá trị lấy ra từ <code class="highlighter-rouge">random_str</code> của table trên.</p>
 
@@ -268,15 +263,14 @@ mysql  Ver 14.14 Distrib 5.7.14, for osx10.11 (x86_64) using  EditLine wrapper
   <li><strong>Step0: Khởi động MySQL với option chỉ định KHÔNG LOAD, KHÔNG DUMP BP, và init BP size là 256MB:</strong></li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$mysql.server start --innodb_buffer_pool_load_at_startup=0 --innodb_buffer_pool_dump_at_shutdown=0 --innodb_buffer_pool_chunk_size=256M --innodb_buffer_pool_size=256M
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$mysql.server start --innodb_buffer_pool_load_at_startup=0 --innodb_buffer_pool_dump_at_shutdown=0 --innodb_buffer_pool_chunk_size=256M --innodb_buffer_pool_size=256M
+</code></pre></div></div>
 
 <ul>
   <li><strong>Step1: Chạy BM command khi không dùng tool <a href="https://github.com/manhdaovan/mysql_warmup">mysql-warmup</a></strong></li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$mysqlslap --create-schema=warmup_benchmark --delimiter=";" --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$mysqlslap --create-schema=warmup_benchmark --delimiter=";" --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
 Enter password:
 Benchmark
     Average number of seconds to run all queries: 7.562 seconds
@@ -284,15 +278,14 @@ Benchmark
     Maximum number of seconds to run all queries: 7.562 seconds
     Number of clients running queries: 1
     Average number of queries per client: 20001
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Ý nghĩa câu lệnh trên là: Mô phỏng 1 client, thực hiện 20k queries, mỗi query là 1 câu select theo value của column random_str (column này đã được index).<br />
 Giả sử câu lệnh BM chuyển thành: Mô phỏng 20k clients, query cùng 1 nội dung, thì BM ko có ý nghĩa.</p>
 
 <ul>
   <li><strong>Step2: Chạy cùng câu lệnh như trên ngay sau đó, để thấy sự khác biệt khi BP được hit thay vì hit vào disk:</strong>
-    <div class="highlighter-rouge"><pre class="highlight"><code>$mysqlslap --create-schema=warmup_benchmark --delimiter=";" --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$mysqlslap --create-schema=warmup_benchmark --delimiter=";" --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
 Enter password:
 Benchmark
   Average number of seconds to run all queries: 1.740 seconds
@@ -300,8 +293,7 @@ Benchmark
   Maximum number of seconds to run all queries: 1.740 seconds
   Number of clients running queries: 1
   Average number of queries per client: 20001
-</code></pre>
-    </div>
+</code></pre></div>    </div>
   </li>
   <li>
     <p><strong>Step 3: Tắt mysql, Khởi động lại máy (cho chắc, tránh MySQL rơi vào sleep mode), sau đó khởi động MySQL service lên như Step0.</strong></p>
@@ -309,7 +301,7 @@ Benchmark
   <li><strong>Step4: Chạy mysql-warmup tool:</strong></li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$mysql-warmup -uroot -dwarmup_benchmark
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$mysql-warmup -uroot -dwarmup_benchmark
 
 Input the mysql password:
 my_mysql_root_password
@@ -318,14 +310,13 @@ my_mysql_root_password
 2017-02-24 15:33:29 +0900: --- SUCCESS WARMUP FOR TABLE: `warmup_benchmark`.`test_data`
 
 2017-02-24 15:33:29 +0900: --- +++++++ SUCCESS WARMUP FOR DB: warmup_benchmark +++++++
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li><strong>Step5: Chạy lại câu lệnh BM như Step1:</strong></li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$mysqlslap --create-schema=warmup_benchmark --delimiter=";" --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$mysqlslap --create-schema=warmup_benchmark --delimiter=";" --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
 Enter password:
 Benchmark
     Average number of seconds to run all queries: 2.132 seconds
@@ -333,14 +324,13 @@ Benchmark
     Maximum number of seconds to run all queries: 2.132 seconds
     Number of clients running queries: 1
     Average number of queries per client: 20001
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li><strong>Step6: Chạy lại câu lệnh như trên một lần nữa, xem có sự khác biệt nào không:</strong></li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$mysqlslap --create-schema=warmup_benchmark --delimiter=";" --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$mysqlslap --create-schema=warmup_benchmark --delimiter=";" --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
 Enter password:
 Benchmark
     Average number of seconds to run all queries: 1.886 seconds
@@ -348,8 +338,7 @@ Benchmark
     Maximum number of seconds to run all queries: 1.886 seconds
     Number of clients running queries: 1
     Average number of queries per client: 20001
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="kết-luận">Kết luận:</h3>
 <ul>
@@ -369,7 +358,8 @@ Benchmark
 
 
   <br/>
-  <div class="share-page">
+  <hr />
+<div class="share-page">
   <div>♫Em có thể dối anh trong lời nói</div>
   <div>Nhưng làm sao giấu được trên Facebook</div>
   <div>Em nói là sẽ nhấn share bài viết</div>
@@ -439,6 +429,13 @@ Benchmark
 
 
   <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/programming/vi/2019/12/21/tim-hieu-bloom-filter-va-mot-so-ung-dung/" class="post-link">
+        <h4 class="post-title">Tìm hiểu bộ lọc Bloom (Bloom filter) và một số ứng dụng dưới con mắt đời thường</h4>
+        <p class="post-summary">Bloom filter không phải là một cài đặt cụ thể, nó là một tư tưởng thoả mãn tính chất False positive.</p>
+      </a>
+    </div>
   
     <div class="post ml2">
       <a href="/programming/vi/2017/10/14/higer-order-function-and-currying/" class="post-link">

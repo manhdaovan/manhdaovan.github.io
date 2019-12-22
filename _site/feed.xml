@@ -7,6 +7,109 @@
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Tìm hiểu bộ lọc Bloom (Bloom filter) và một số ứng dụng dưới con mắt đời thường</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;Bạn có thể đọc bản gốc về định nghĩa, tính chất cũng như cách hoạt động Bloom filter (BF) &lt;a href=&quot;https://en.wikipedia.org/wiki/Bloom_filter&quot;&gt;tại đây&lt;/a&gt;. Tuy nhiên, do bản gốc có thể gây lạ lẫm với những người không liên quan đến IT, nên người viết sẽ cố gắng trình bày theo ngôn từ gần gũi hơn.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Trước khi đến với BF, chúng ta cùng tìm hiểu xem tính chất &lt;code class=&quot;highlighter-rouge&quot;&gt;False positive&lt;/code&gt; là gì, vì đây là tính chất quan trọng, gắn chặt với BF.&lt;/p&gt;
+
+&lt;h2 id=&quot;tính-chất-false-positive-fp&quot;&gt;Tính chất False positive (FP)&lt;/h2&gt;
+&lt;p&gt;Khi ta đưa ra câu hỏi X, thì nếu như một thực thể đưa ra câu trả lời chỉ là &lt;code class=&quot;highlighter-rouge&quot;&gt;X hoàn toàn không có (hoàn toàn phủ định)&lt;/code&gt; hoặc &lt;code class=&quot;highlighter-rouge&quot;&gt;X có thể có (có khả năng)&lt;/code&gt;, thì thực thể đó có tính chất FP.
+Ví dụ, ta có câu hỏi: &lt;code class=&quot;highlighter-rouge&quot;&gt;Trong rổ có quả bóng đỏ nào không?&lt;/code&gt;, mà câu trả lời nhận được là &lt;code class=&quot;highlighter-rouge&quot;&gt;Hoàn toàn không có&lt;/code&gt; hoặc &lt;code class=&quot;highlighter-rouge&quot;&gt;Có thể có&lt;/code&gt;, thì đây cũng thoả mãn tính chất của FP.&lt;/p&gt;
+
+&lt;p&gt;Nếu như câu trả lời không phải là &lt;code class=&quot;highlighter-rouge&quot;&gt;hoàn toàn phủ định&lt;/code&gt; hoặc &lt;code class=&quot;highlighter-rouge&quot;&gt;có khả năng&lt;/code&gt;, thì không thoả mãn tính chất FP. (Ví dụ như câu trả lời là: &lt;code class=&quot;highlighter-rouge&quot;&gt;Chắc chắn có bóng đỏ trong rổ&lt;/code&gt;)&lt;/p&gt;
+
+&lt;p&gt;Do câu trả lời nhận được là &lt;code class=&quot;highlighter-rouge&quot;&gt;có khả năng&lt;/code&gt;, nghĩa là FP không &lt;code class=&quot;highlighter-rouge&quot;&gt;hoàn toàn chắc chắn (hoàn toàn khẳng định)&lt;/code&gt; với câu trả lời (ví dụ &lt;code class=&quot;highlighter-rouge&quot;&gt;chắc chắn trong rổ có quả bóng đỏ&lt;/code&gt;), nghĩa là có những lúc bạn sẽ nhận được câu trả lời sai! (Ví dụ, trong rổ không có quả bóng đỏ nào, nhưng câu trả lời nhận được lại là &lt;code class=&quot;highlighter-rouge&quot;&gt;có thể có bóng đỏ trong rổ&lt;/code&gt;). Vì vậy nó mới được gọi là False positive, tức là có thể sai trong trường hợp câu trả lời có tính khẳng định.&lt;/p&gt;
+
+&lt;h2 id=&quot;bloom-filter-bf-là-gì&quot;&gt;Bloom filter (BF) là gì?&lt;/h2&gt;
+&lt;p&gt;Được nghĩ ra bởi Burton Howard Bloom vào năm 1970, BF là một cấu trúc dữ liệu cho phép xác định một phần tử E (element) có nằm trong tập cho trước S (set) hay không. Và BF thoả mãn tính chất FP, nghĩa là BF sẽ đưa ra câu trả lời dạng &lt;code class=&quot;highlighter-rouge&quot;&gt;hoàn toàn phủ định&lt;/code&gt; hoặc &lt;code class=&quot;highlighter-rouge&quot;&gt;có khả năng&lt;/code&gt; cho câu hỏi được đưa ra.&lt;/p&gt;
+
+&lt;h2 id=&quot;nguyên-tắc-hoạt-động&quot;&gt;Nguyên tắc hoạt động&lt;/h2&gt;
+&lt;p&gt;Để có thể đưa ra câu trả lời cho câu hỏi &lt;code class=&quot;highlighter-rouge&quot;&gt;Có phần tử E trong tập S không?&lt;/code&gt;, thì với mọi phần tử của tập S, BF lưu giữ những đặc điểm của từng phần tử này.
+Khi phần tử E được đưa cho BF, BF sẽ kiểm tra xem phần tử E này có đặc điểm nào trùng với những đặc điểm mà nó đang lưu giữ không. Nếu không có đặc điểm trùng, thì khẳng định chắc chắn là E không nằm trong tập S, ngược lại thì S &lt;strong&gt;có khả năng có chứa&lt;/strong&gt; E.&lt;/p&gt;
+
+&lt;p&gt;Vậy, sẽ dẫn tới một số câu hỏi:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Q: BF trích xuất đặc điểm của từng phần tử trong S và lưu trữ thế nào?&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;A: BF dùng những hàm băm (hash function) để lấy ra những đặc điểm của phần tử, và lưu giữ những đặc điểm này. Càng nhiều hàm băm thì cho tỉ lệ câu trả lời &lt;code class=&quot;highlighter-rouge&quot;&gt;hoàn toàn phủ định&lt;/code&gt; càng chính xác (hay ngược lại là tỉ lệ câu trả lời &lt;code class=&quot;highlighter-rouge&quot;&gt;có khả năng&lt;/code&gt; là sai càng thấp).&lt;/p&gt;
+
+    &lt;p&gt;Việc chứng minh phải dùng tới công thức tính xác xuất(có thể tham khảo mục &lt;a href=&quot;https://en.wikipedia.org/wiki/Bloom_filter&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Probability of false positives&lt;/code&gt; ở đây&lt;/a&gt;), nhưng có thể hiểu nôm na là, khi càng dùng nhiều các hàm băm khác nhau, vậy ta sẽ có càng nhiều các đặc điểm khác nhau của phần tử đó. Như vậy, càng nhiều đặc điểm mà phần tử phải thoả mãn, thì tỉ lệ phần tử thoả mãn tất cả các điều kiện đó càng thấp.
+  (Ví dụ, em gái tuyển người yêu với các tiêu chí (đặc điểm): &lt;code class=&quot;highlighter-rouge&quot;&gt;đẹp trai, cao to nhà giàu, học Back Quoa, là dân IT&lt;/code&gt; thì sẽ có ít cơ hội hơn em gái chỉ tuyển với 1 tiêu chí là: &lt;code class=&quot;highlighter-rouge&quot;&gt;Là dân IT&lt;/code&gt;.)&lt;/p&gt;
+
+    &lt;p&gt;(&lt;em&gt;Trong chuyên ngành thực tế&lt;/em&gt;, BF dùng một mảng gồm m bits, và k hash functions, để tính toán và lưu trữ những “đặc điểm” của phần tử đó. Cụ thể:
+   &lt;img src=&quot;/images/assets/Bloom-Filter-works.png&quot; alt=&quot;Bloom filter works&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;Ảnh: Wikipedia)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Q: Tại sao lại là &lt;strong&gt;có khả năng có chứa&lt;/strong&gt;? Chẳng phải E thoả mãn đặc điểm thì E sẽ nằm trong S hay sao?&lt;/li&gt;
+  &lt;li&gt;A: Tuy E thoả mãn điều kiện, nhưng có thể có trường hợp E’ khác (E’ khác E) cũng thoả mãn điều kiện, và S chứa E’ chứ không chứa E. Vậy nên &lt;strong&gt;không thể khẳng định chắc chắn&lt;/strong&gt; là S chứa E được.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;ứng-dụng-dạng-ý-tưởng&quot;&gt;Ứng dụng dạng ý tưởng&lt;/h2&gt;
+&lt;p&gt;Một công việc T có chi phí thực hiện lớn, thường sẽ được đặt sau BF để giảm chi phí cho yêu cầu không thoả mãn công việc T. Ví dụ, có 1 rổ gồm 1000 quả bóng, được đánh số ngẫu nhiên từ 1 đến 10.000. Giờ có yêu cầu, tìm quả bóng có đánh số X.
+Nếu làm theo cách thông thường, thì sẽ tìm lần lượt trong 1000 quả bóng đó, nếu có thì trả về quả bóng X, còn nếu ko có thì trả lời là không có. Rõ ràng là khá tốn công.&lt;/p&gt;
+
+&lt;p&gt;Có nhiều cách để tìm nhanh quả bóng, nhưng để liên quan đến bài viết, ta sẽ đặt trước rổ bóng một BF, và dùng hàm băm là: &lt;code class=&quot;highlighter-rouge&quot;&gt;Là phần dư của X cho 10&lt;/code&gt;. Vậy với ví dụ: rổ có &lt;code class=&quot;highlighter-rouge&quot;&gt;các quả bóng 1, 2, 11, ...&lt;/code&gt;, ta sẽ có:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1 / 10 = 0 dư 1
+2 / 10 = 0 dư 2
+11 / 10 = 1 dư 1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;=&amp;gt; BF sẽ lưu trữ 1, 2 lần lượt là số dư các phép chia trên&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Nếu X = 3, ta có &lt;code class=&quot;highlighter-rouge&quot;&gt;3 / 10 = 0 dư 3&lt;/code&gt;, 3 không nằm trong số những số dư mà BF đang lưu giữ =&amp;gt; kết luận luôn là bóng 3 &lt;code class=&quot;highlighter-rouge&quot;&gt;hoàn toàn không&lt;/code&gt; nằm trong rổ mà không cần tìm kiếm gì cả.&lt;/li&gt;
+  &lt;li&gt;Nếu X = 21, ta có &lt;code class=&quot;highlighter-rouge&quot;&gt;21 / 10 = 2 dư 1&lt;/code&gt;, 1 nằm trong danh sách số dư, vậy kết luận là 21 &lt;code class=&quot;highlighter-rouge&quot;&gt;có khả năng&lt;/code&gt; nằm trong rổ. Tuy nhiên khi tìm thì không có. Đây chính là một false positive.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;ứng-dụng-thực-tế&quot;&gt;Ứng dụng thực tế&lt;/h2&gt;
+&lt;p&gt;Trong lĩnh vực công nghệ thông tin, BF được ứng dụng cực kỳ rộng rãi. Tuy nhiên, do đặc thù từng ứng dụng là khác nhau, mà cách cài đặt BF cho ứng dụng đó cũng khác nhau.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Ví dụ với Bitcoin
+    &lt;ul&gt;
+      &lt;li&gt;Overview ở &lt;a href=&quot;https://bitcoin.org/en/glossary/bloom-filter&quot;&gt;đây&lt;/a&gt; và &lt;a href=&quot;https://bitcoin.org/en/operating-modes-guide#bloom-filters&quot;&gt;đây&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;Source code ở &lt;a href=&quot;https://github.com/bitcoin/bitcoin/blob/8f9df2ed88c4b80691144a810e62e86fec694384/src/bloom.h&quot;&gt;đây&lt;/a&gt; và &lt;a href=&quot;https://github.com/bitcoin/bitcoin/blob/8f9df2ed88c4b80691144a810e62e86fec694384/src/bloom.cpp&quot;&gt;đây&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Ví dụ với Redis
+    &lt;ul&gt;
+      &lt;li&gt;Overview ở &lt;a href=&quot;https://oss.redislabs.com/redisbloom/#bfexists&quot;&gt;đây&lt;/a&gt; và &lt;a href=&quot;https://redislabs.com/redis-best-practices/bloom-filter-pattern/&quot;&gt;đây&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;Source code ở &lt;a href=&quot;https://github.com/RedisBloom/RedisBloom/blob/fa54d05800acc25c1039ba671cac54906e190a74/contrib/bloom.h&quot;&gt;đây&lt;/a&gt; và &lt;a href=&quot;https://github.com/RedisBloom/RedisBloom/blob/e4c3f5d3f26689a61685af983a9535a9c64e8f75/contrib/bloom.c&quot;&gt;đây&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Rõ ràng có sự khác nhau trong việc cài đặt hash function cho BF trong &lt;a href=&quot;https://github.com/bitcoin/bitcoin/blob/8f9df2ed88c4b80691144a810e62e86fec694384/src/hash.cpp#L15:14&quot;&gt;Bitcoin&lt;/a&gt; và &lt;a href=&quot;https://github.com/RedisBloom/RedisBloom/blob/e4c3f5d3f26689a61685af983a9535a9c64e8f75/contrib/MurmurHash2.c#L21:10&quot;&gt;Redis&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;một-số-biến-thể-trong-cuộc-sống&quot;&gt;Một số biến thể trong cuộc sống&lt;/h2&gt;
+&lt;p&gt;Trong cuộc sống cũng có những ứng dụng, nếu xét về bản chất, thì rất liên quan đến ý tưởng của BF ở trên.&lt;/p&gt;
+
+&lt;p&gt;Ví dụ gần đây có &lt;a href=&quot;https://baosuckhoecongdong.vn/giam-doc-bv-xanh-pon-khong-co-chuyen-tron-nhieu-mau-mau-benh-nhan-truoc-khi-xet-nghiem-144856.html&quot;&gt;tin đồn bệnh viện Xanh Lè cho trộn chung huyết thanh của bệnh nhân để xét nghiệm.&lt;/a&gt; Nếu nhìn dưới góc độ BF thì việc này không hẳn hoàn toàn là xấu.&lt;/p&gt;
+
+&lt;p&gt;Việc trộn chung mẫu máu (ví dụ của 3 người) chính là việc chọn hàm băm (hash function), và việc xét nghiệm trên máy ELISA chính là việc có chi phí tốn kém (“tốn kém” theo tiêu chí: Số lượng máy ELISA có hạn, người cần xét nghiệm đông, vậy nếu xét nghiệm từng người một, sẽ rất mất thời gian).&lt;/p&gt;
+
+&lt;p&gt;Với việc xét nghiệm chung 1 lần cho 3 người&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Nếu kết quả trả về là âm tính, nghĩa là cả 3 người đều &lt;strong&gt;không có bệnh&lt;/strong&gt; =&amp;gt; giảm số lần xét nghiệm từ 3 xuống 1.&lt;/li&gt;
+  &lt;li&gt;Nếu kết quả trả về là dương tính, nghĩa là 1 trong 3 (hoặc cả 3) &lt;strong&gt;có khả năng có bệnh&lt;/strong&gt; =&amp;gt; xét nghiệm riêng 1 lần nữa với nhóm 3 người này =&amp;gt; nâng số lần xét nghiệm từ 3 lên 4.&lt;/li&gt;
+  &lt;li&gt;Tuy nhiên, phải để ý rằng, tỉ lệ người nhiễm bệnh là &lt;strong&gt;thấp hơn rất nhiều&lt;/strong&gt; người không bệnh, nên nếu tính ra thì sự đánh đổi này là “có lời”&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Mặc dù vậy, đây sẽ là tai hại, nếu&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Việc trộn chung mẫu máu làm ảnh hưởng tới độ chính xác của xét nghiệm. 
+  Ví dụ người có bệnh có tỉ lệ máu xấu (để phát hiện ra bệnh) trên tổng máu là 10% (người viết không rành về y, chỉ nói trên góc nhìn con số). Vậy 1 người nhiễm bệnh trộn với 2 người ko bệnh sẽ cho ra mẫu huyết thanh là 3.3%. Giả sử máy ELISA phát hiện với tỉ lệ máu xâú tối thiểu là 5%, vậy nghiễm nhiên người có bệnh sẽ đc chuẩn đoán là không bệnh.&lt;/li&gt;
+  &lt;li&gt;Việc gộp chung thế này có làm giảm chi phí xét nghiệm cho bệnh nhân không? Hay là 1 người xét nghiệm riêng cũng 1 chẹo, 3 người gộp chung mà vẫn mỗi người 1 chẹo?&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sat, 21 Dec 2019 09:00:00 +0900</pubDate>
+        <link>http://localhost:4000/programming/vi/2019/12/21/tim-hieu-bloom-filter-va-mot-so-ung-dung/</link>
+        <guid isPermaLink="true">http://localhost:4000/programming/vi/2019/12/21/tim-hieu-bloom-filter-va-mot-so-ung-dung/</guid>
+      </item>
+    
+      <item>
         <title>Higher-Order Function (HOF) và Currying</title>
         <description>&lt;p&gt;&lt;strong&gt;Bài viết khá dài và có nhiều chi tiết rất bình thường, hãy cân nhắc trước khi đọc :D&lt;/strong&gt;&lt;/p&gt;
 
@@ -31,7 +134,7 @@ Là một ông bố mẫu mực với niềm kiêu hãnh nhiều năm kinh nghi�
 bạn muốn viết một chương trình hoành tráng để lấy le với con mình. Ok, you win!.
 Dưới đây chắc hẳn là đoạn code đầu tiên xuất hiện trong đầu:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function pickOddNumbers(maximum) {
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function pickOddNumbers(maximum) {
   const result = [];
 
   for (let i = 1; i &amp;lt;= maximum; i += 1) {
@@ -42,13 +145,12 @@ Dưới đây chắc hẳn là đoạn code đầu tiên xuất hiện trong đ�
 }
 
 pickOddNumbers(20);
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Nhưng đời không bao giờ là mơ, khi hôm sau nhóc con lại mếu máo: “Cô giáo cho thêm bài: Tìm những số tự nhiên khác 0 nhỏ hơn 20 mà nếu gấp 3 số đó rồi từ đi 2 thì thu được số chẵn.”.
 Ok bố chiều cô luôn. Vậy là bạn lại cho ra phiên bản mới:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function pickSpecialNumbers(maximum) {
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function pickSpecialNumbers(maximum) {
   const result = [];
 
   for (let i = 1; i &amp;lt;= maximum; i += 1) {
@@ -59,8 +161,7 @@ Ok bố chiều cô luôn. Vậy là bạn lại cho ra phiên bản mới:&lt;/
 }
 
 pickSpecialNumbers(20);
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Đời vẫn ko như mơ khi cô giáo lại cho thêm bài tập: “Tìm những số tự nhiên khác 0 nhỏ hơn 20 mà nếu lấy phần dư số đó cho 9 rồi cộng thêm 2 thì thu số lẻ.”
 Ơ cô giáo từ từ, để bố em sửa function bên trên đã :))))&lt;/p&gt;
@@ -73,27 +174,25 @@ Và bạn chợt nhớ tới HOF, một ứng cử viên sáng giá cho việc l
 
 &lt;p&gt;Theo &lt;a href=&quot;https://en.wikipedia.org/wiki/Higher-order_function&quot;&gt;wikipedia&lt;/a&gt; thì:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A higher-order function (also functional, functional form or functor) is a function that does at least one of the following:
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A higher-order function (also functional, functional form or functor) is a function that does at least one of the following:
 
 ・takes one or more functions as arguments,
 ・returns a function as its result.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Vietsub:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;HOF là một function mà cho phép thực hiện ít nhất 1 trong 2 khả năng sau:
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;HOF là một function mà cho phép thực hiện ít nhất 1 trong 2 khả năng sau:
 ・Nhận vào một hoặc nhiều function như là tham số, hoặc/và
 ・Trả về kết quả là một function.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;em&gt;// Bạn có thể thấy có rất nhiều ngôn ngữ hỗ trợ HOF ở link wiki trên. Đến Java còn hỗ trợ nữa là :v&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;Trăm nghe không bằng một thấy, trăm thấy không bằng một sờ, và chúng ta lại cùng sờ với ví dụ bên trên.
 Lần này là bản nâng cấp có giá trị về mặt học thuật, vì được áp dụng HOF vào cơ mà :)))&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function pickNumbers(maximum, pickingCondition) {
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function pickNumbers(maximum, pickingCondition) {
   const result = [];
 
   for (let i = 1; i &amp;lt;= maximum; i += 1) {
@@ -113,8 +212,7 @@ pickNumbers(20, function(number) {
   return ((number * 3) - 2) % 2 === 0;
 });
 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Với việc đưa HOF vào function bên trên, giờ thì cô giáo thích gì cũng chiều được nhé,
 chỉ cần thay đổi function kiểm tra điều kiện vào thôi, ko cần phải copy thành function mới nữa.&lt;/p&gt;
@@ -123,25 +221,23 @@ chỉ cần thay đổi function kiểm tra điều kiện vào thôi, ko cần 
 
 &lt;p&gt;Lại theo &lt;a href=&quot;https://en.wikipedia.org/wiki/Currying&quot;&gt;wikipedia&lt;/a&gt;:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; Currying is the technique of translating the evaluation of a function
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; Currying is the technique of translating the evaluation of a function
  that takes multiple arguments (or a tuple of arguments)
  into evaluating a sequence of functions, each with a single argument.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Vietsub:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Currying là kỹ thuật mà cho phép chuyển đổi một function với nhiều tham số
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Currying là kỹ thuật mà cho phép chuyển đổi một function với nhiều tham số
 thành những functions liên tiếp có một tham số.
 // Ví dụ f(a,b,c) có thể được convert thành g(a)h(b, c) hay g(a)h(b)k(c), thậm chí là đổi thứ tự của các function tương ứng...
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Vậy dễ dàng nhận thấy &lt;code class=&quot;highlighter-rouge&quot;&gt;Currying&lt;/code&gt; là một trường hợp của &lt;code class=&quot;highlighter-rouge&quot;&gt;HOF&lt;/code&gt;, vì nó thỏa mãn điều kiện &lt;code class=&quot;highlighter-rouge&quot;&gt;trả về kết quả là một function&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;Cụ thể áp dụng cho ví dụ trên, có thể viết thành dạng sau:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function pickNumbers(maximum) {
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function pickNumbers(maximum) {
   return function (pickingCondition) {
     const result = [];
 
@@ -162,8 +258,7 @@ pickNumbers(20)(function (number) {
 pickNumbers(20)(function (number) {
   return (number * 3 - 2) % 2 === 0;
 });
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;So sánh ví dụ áp dụng Currying này với ví dụ sử dụng HOF ở trên, rõ ràng là ta chưa thấy sự ưu việt của Currying so với HOF, thậm chí còn thấy hơi rườm rà nữa.
 Tuy nhiên, hãy cùng xem xét ví dụ dưới đây:&lt;/p&gt;
@@ -174,7 +269,7 @@ Tuy nhiên, hãy cùng xem xét ví dụ dưới đây:&lt;/p&gt;
 
 &lt;p&gt;Với HOF:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function getValue(objects, key, pickingCondition) {
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function getValue(objects, key, pickingCondition) {
   var object = null;
 
   for (var i = 0; i &amp;lt; objects.length; i++) {
@@ -186,19 +281,17 @@ Tuy nhiên, hãy cùng xem xét ví dụ dưới đây:&lt;/p&gt;
 
   return object ? object[key] : null;
 };
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Mỗi khi gọi function với key khác nhau, hẳn là sẽ phải gọi kiểu như vầy:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var valueByKey1 = getValue(objects, 'key1', pickingCondition);
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var valueByKey1 = getValue(objects, 'key1', pickingCondition);
 var valueByKey2 = getValue(objects, 'key2', pickingCondition);
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Nếu như coi &lt;code class=&quot;highlighter-rouge&quot;&gt;key&lt;/code&gt; là &lt;strong&gt;biết trước&lt;/strong&gt;, chỉ thay đổi &lt;code class=&quot;highlighter-rouge&quot;&gt;objects&lt;/code&gt; và &lt;code class=&quot;highlighter-rouge&quot;&gt;pickingCondition&lt;/code&gt;, thì việc áp dụng Currying lại hợp lý:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function getValue(key) {
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function getValue(key) {
   return function (objects, pickingCondition) {
     let object = null;
 
@@ -220,8 +313,7 @@ var getValueByKey2 = getValue('key2');
 // Sử dụng:
 var valueByKey1 = getValueByKey1(objects, pickingCondition);
 var valueByKey2 = getValueByKey2(objects, pickingCondition);
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Khá là gọn gàng.&lt;/p&gt;
 
@@ -234,7 +326,7 @@ hay các selectors mà redux-form cung cấp, thì chúng đều áp dụng kỹ
 
 &lt;p&gt;Viết function để kiểm tra độ dài của một xâu &lt;code class=&quot;highlighter-rouge&quot;&gt;s&lt;/code&gt; có vượt quá &lt;code class=&quot;highlighter-rouge&quot;&gt;n&lt;/code&gt; hay ko.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Cách 1: Không dùng Currying
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Cách 1: Không dùng Currying
 function isLengthOver(s, n){
   return s.length &amp;gt; n
 }
@@ -245,20 +337,17 @@ function isLengthOver(n){
     return s.length &amp;gt; n;
   }
 }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Giả sử cả 2 cách viết trên được sử dụng cho việc validate của một field trên form, với &lt;code class=&quot;highlighter-rouge&quot;&gt;n = 10&lt;/code&gt; thì có sự khác biệt như sau:&lt;/p&gt;
 
 &lt;p&gt;Với cách 1:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;input type=&quot;text&quot; validate={value =&amp;gt; isLengthOver(value, 10)} /&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;input type=&quot;text&quot; validate={value =&amp;gt; isLengthOver(value, 10)} /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Với cách 2:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;input type=&quot;text&quot; validate={isLengthOver(10)} /&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;input type=&quot;text&quot; validate={isLengthOver(10)} /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Quá khác bọt!&lt;/p&gt;
 
@@ -286,7 +375,7 @@ function isLengthOver(n){
 
 &lt;p&gt;Chắc hẳn bạn sẽ nghĩ tới cách dùng vòng lặp, kiểm tra chừng nào còn tìm thấy group có id bằng &lt;code class=&quot;highlighter-rouge&quot;&gt;parentGroupId&lt;/code&gt;. Và tôi cũng nghĩ vậy :D&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;const getGroupFullPathName = (groups, employeeGroupId) =&amp;gt; {
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;const getGroupFullPathName = (groups, employeeGroupId) =&amp;gt; {
   const groupNames = [];
 
   let group = groups.find(grp =&amp;gt; grp.id === employeeGroupId);
@@ -297,15 +386,14 @@ function isLengthOver(n){
 
   return groupNames.join('/');
 };
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Nhưng đoạn code trên vẫn chưa ngon, do vi phạm rule &lt;a href=&quot;https://eslint.org/docs/rules/no-loop-func&quot;&gt;Don’t make functions within a loop&lt;/a&gt; của ESLint.
 Cụ thể: Mỗi khi vòng while được chạy thì &lt;code class=&quot;highlighter-rouge&quot;&gt;groups.find(grp =&amp;gt; grp.id === group.parentGroupId)&lt;/code&gt; lại sinh ra một anonymous function, chính là &lt;code class=&quot;highlighter-rouge&quot;&gt;grp =&amp;gt; grp.id === group.parentGroupId&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;Cách khắc phục là ta viết một currying bên ngoài vòng while là được:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;const getGroupFullPathName = (groups, employeeGroupId) =&amp;gt; {
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;const getGroupFullPathName = (groups, employeeGroupId) =&amp;gt; {
   const groupNames = [];
   const condition = parentGroupId =&amp;gt; group =&amp;gt; group.id === parentGroupId;
 
@@ -317,14 +405,13 @@ Cụ thể: Mỗi khi vòng while được chạy thì &lt;code class=&quot;high
 
   return groupNames.join('/');
 };
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;kết-luận&quot;&gt;Kết luận:&lt;/h3&gt;
 &lt;p&gt;Bài quá dài.&lt;/p&gt;
 
 </description>
-        <pubDate>Sat, 14 Oct 2017 00:00:00 +0000</pubDate>
+        <pubDate>Sat, 14 Oct 2017 09:00:00 +0900</pubDate>
         <link>http://localhost:4000/programming/vi/2017/10/14/higer-order-function-and-currying/</link>
         <guid isPermaLink="true">http://localhost:4000/programming/vi/2017/10/14/higer-order-function-and-currying/</guid>
       </item>
@@ -367,20 +454,18 @@ bạn sẽ phải đưa thêm những bit giám sát (=cài cắm người mà b
 
 &lt;p&gt;Theo định nghĩa xịn ở &lt;a href=&quot;https://www.cs.cmu.edu/~guyb/realworld/reedsolomon/reed_solomon_codes.html&quot;&gt;đây&lt;/a&gt;:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A Reed-Solomon code is specified as RS(n,k) with s-bit symbols.
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A Reed-Solomon code is specified as RS(n,k) with s-bit symbols.
 
 This means that the encoder takes k data symbols of s bits each and adds parity symbols to make an n symbol codeword.
 There are n-k parity symbols of s bits each. A Reed-Solomon decoder can correct up to t symbols that contain errors in a codeword, where 2t = n-k.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Vietsub:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Mã Reed-Solomon được đặc tả là RS(n,k), với mỗi ký tự được cấu tạo từ s-bit.
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Mã Reed-Solomon được đặc tả là RS(n,k), với mỗi ký tự được cấu tạo từ s-bit.
 Nghĩa là bộ mã hóa sẽ nhận k ký tự, sau đó thêm vào các ký tự kiểm tra để tạo ra codeword có độ lớn n ký tự.
 Số ký tự kiểm tra là `n-k`, và số ký tự có thể được sửa tối đa là (n-k)/2
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Ta có thể liên tưởng đến các khái niệm được nhắc tới với nguyên lý chung ở trên như sau:&lt;/p&gt;
 
@@ -460,7 +545,7 @@ tập hữu hạn và các phép toán trên tập hữu hạn (finite fields)&l
 với format png, ansi… mà mình cũng đang sử dụng cho &lt;a href=&quot;https://anychat.4me.tips/&quot;&gt;Anychat&lt;/a&gt;&lt;/p&gt;
 
 </description>
-        <pubDate>Sun, 24 Sep 2017 00:00:00 +0000</pubDate>
+        <pubDate>Sun, 24 Sep 2017 09:00:00 +0900</pubDate>
         <link>http://localhost:4000/math/advance/2017/09/24/reed-solomon-error-correction/</link>
         <guid isPermaLink="true">http://localhost:4000/math/advance/2017/09/24/reed-solomon-error-correction/</guid>
       </item>
@@ -473,12 +558,11 @@ với format png, ansi… mà mình cũng đang sử dụng cho &lt;a href=&quot
 Mọi ý kiến trong bài đều dựa trên góc nhìn của người viết, không có ý gây ra những tranh luận tiêu cực không đáng có.&lt;/code&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;tldr&quot;&gt;TL;DR:&lt;/h3&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;LTV là nghề đáng làm, vì:
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;LTV là nghề đáng làm, vì:
   * Không có trăn trở quá lớn về đạo đức
   * Không tổn thật hoặc tổn thất ít tài nguyên khi thử nghiệm hoặc thử nghiệm thất bại
   * Không yêu cầu quá nhiều thể lực
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Anh nhà bác tôi sang năm thi đại học. Bác tôi có hỏi là giờ nên cho anh mày học cái gì, tôi mạnh dạn: “Để anh ấy học CNTT đi bác”.&lt;/p&gt;
 
@@ -510,7 +594,7 @@ Và chỉ có vọc vạch thì tay nghề mới lên được.&lt;/p&gt;
 Nó có những đặc thù riêng, với những chuẩn bị cũng khác nữa.&lt;/p&gt;
 
 </description>
-        <pubDate>Sun, 24 Sep 2017 00:00:00 +0000</pubDate>
+        <pubDate>Sun, 24 Sep 2017 09:00:00 +0900</pubDate>
         <link>http://localhost:4000/opinion/vi/2017/09/24/nghe-lap-trinh-vien/</link>
         <guid isPermaLink="true">http://localhost:4000/opinion/vi/2017/09/24/nghe-lap-trinh-vien/</guid>
       </item>
@@ -565,7 +649,7 @@ Nó có những đặc thù riêng, với những chuẩn bị cũng khác nữa
 
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;All pull requests, issues, stars are welcome!&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
 </description>
-        <pubDate>Fri, 07 Apr 2017 00:00:00 +0000</pubDate>
+        <pubDate>Fri, 07 Apr 2017 09:00:00 +0900</pubDate>
         <link>http://localhost:4000/tech/rails/actioncable/2017/04/07/Realtime-chat-voi-websocket/</link>
         <guid isPermaLink="true">http://localhost:4000/tech/rails/actioncable/2017/04/07/Realtime-chat-voi-websocket/</guid>
       </item>
@@ -650,13 +734,12 @@ Nó có những đặc thù riêng, với những chuẩn bị cũng khác nữa
   &lt;li&gt;Họ lưu cấu hình &lt;strong&gt;shard nào, có ID là bao nhiêu? con EC2 nào chứa shard nào? …&lt;/strong&gt; vào ZooKeeper:&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[{“range”:     (0,511), “master”: “MySQL001A”, “slave”: “MySQL001B”},
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[{“range”:     (0,511), “master”: “MySQL001A”, “slave”: “MySQL001B”},
  {“range”: (512, 1023), “master”: “MySQL002A”, “slave”: “MySQL002B”},
     ...
  {“range”: (3072, 3583), “master”: “MySQL007A”, “slave”: “MySQL007B”},
  {“range”: (3584, 4095), “master”: “MySQL008A”, “slave”: “MySQL008B”}]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;em&gt;// (0,511) tương ứng với db00000 to db00511 ở hình trên.&lt;/em&gt;&lt;/p&gt;
 
@@ -698,11 +781,10 @@ Nó có những đặc thù riêng, với những chuẩn bị cũng khác nữa
 
 &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;https://www.pinterest.com/pin/241294492511762325/, thì UUID nhận được là 241294492511762325.&lt;/code&gt;, sẽ được decompose cái UUID theo cách sau:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Shard ID = (241294492511762325 &amp;gt;&amp;gt; 46) &amp;amp; 0xFFFF = 3429
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Shard ID = (241294492511762325 &amp;gt;&amp;gt; 46) &amp;amp; 0xFFFF = 3429
 Type ID  = (241294492511762325 &amp;gt;&amp;gt; 36) &amp;amp; 0x3FF = 1 // type Pin -&amp;gt; query vào table pins
 Local ID = (241294492511762325 &amp;gt;&amp;gt;  0) &amp;amp; 0xFFFFFFFFF = 7075733
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Từ công thức trên, có thể thấy được:&lt;/p&gt;
 
@@ -717,11 +799,10 @@ Local ID = (241294492511762325 &amp;gt;&amp;gt;  0) &amp;amp; 0xFFFFFFFFF = 7075
 
 &lt;p&gt;Sau khi đã có đầy đủ thông tin, chỉ việc query:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;conn = MySQLdb.connect(host=”MySQL007A”)
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;conn = MySQLdb.connect(host=”MySQL007A”)
 conn.execute(“SELECT data FROM db03429.pins where local_id=7075733”)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;&lt;em&gt;// Host MySQL007A được nhặt ra từ shard ID 3429, có range nằm trong &lt;code class=&quot;highlighter-rouge&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“range”:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;(3072,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;3583),&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“master”:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“MySQL007A”,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“slave”:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“MySQL007B”&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;, nên nó chọn host MySQL007A để query thôi.&lt;/em&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;// Host MySQL007A được nhặt ra từ shard ID 3429, có range nằm trong &lt;code class=&quot;highlighter-rouge&quot;&gt;{“range”: (3072, 3583), “master”: “MySQL007A”, “slave”: “MySQL007B”}&lt;/code&gt;, nên nó chọn host MySQL007A để query thôi.&lt;/em&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -732,19 +813,17 @@ conn.execute(“SELECT data FROM db03429.pins where local_id=7075733”)
       &lt;li&gt;Ví dụ với table Pin:&lt;/li&gt;
     &lt;/ul&gt;
 
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CREATE TABLE pins (
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CREATE TABLE pins (
    local_id INT PRIMARY KEY AUTO_INCREMENT,
    data TEXT,
    ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
 
     &lt;ul&gt;
       &lt;li&gt;Để ý thấy là table Pin có bao nhiêu thông tin như thế, vậy mà sao lại có mỗi column data ? Cái hay là họ nhét tất cả các thông tin liên quan đến pin vào column data này, dưới dạng JSON:
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“details”:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“New&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;Star&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;Wars&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;character”,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“link”:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“http://webpage.com/asdf”,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“user_id”:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;241294629943640797,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“board_id”:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;241294561224164665,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;…&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{“details”: “New Star Wars character”, “link”: “http://webpage.com/asdf”, “user_id”: 241294629943640797, “board_id”: 241294561224164665, …}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
       &lt;/li&gt;
     &lt;/ul&gt;
 
@@ -755,14 +834,13 @@ conn.execute(“SELECT data FROM db03429.pins where local_id=7075733”)
       &lt;li&gt;Còn với table dạng Map thì có cấu trúc như này:&lt;/li&gt;
     &lt;/ul&gt;
 
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CREATE TABLE board_has_pins (
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CREATE TABLE board_has_pins (
   board_id INT,
   pin_id INT,
   sequence INT,
   INDEX(board_id, pin_id, sequence)
 ) ENGINE=InnoDB;
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
 
     &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;board_id&lt;/code&gt; và &lt;code class=&quot;highlighter-rouge&quot;&gt;pin_id&lt;/code&gt; là các UUID 64bit như trên, sequence có dạng timestamp, bảo đảm cho việc order theo created time rồi.&lt;/p&gt;
 
@@ -779,7 +857,7 @@ conn.execute(“SELECT data FROM db03429.pins where local_id=7075733”)
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Mấy anh to lúc nào cũng đẳng cấp.&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
 
 </description>
-        <pubDate>Wed, 22 Mar 2017 00:00:00 +0000</pubDate>
+        <pubDate>Wed, 22 Mar 2017 09:00:00 +0900</pubDate>
         <link>http://localhost:4000/tech/mysql/summary/2017/03/22/Pinterest-da-thuc-hien-scaled-MySQL-cua-ho-nhu-the-nao/</link>
         <guid isPermaLink="true">http://localhost:4000/tech/mysql/summary/2017/03/22/Pinterest-da-thuc-hien-scaled-MySQL-cua-ho-nhu-the-nao/</guid>
       </item>
@@ -875,14 +953,13 @@ Do &lt;strong&gt;cứ có số 0 đứng đầu thì số tạo thành là ko h�
 
 &lt;p&gt;Vậy có thể viết thành công thức tổng quát như sau:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;numbers_start_with_0 = if(original_number.contains(0)) bookkeeper(original_number.remove_one(0)) else 0
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;numbers_start_with_0 = if(original_number.contains(0)) bookkeeper(original_number.remove_one(0)) else 0
 simillar_numbers = bookkeeper(original_number) - numbers_start_with_0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Mình có viết một đoạn code bằng Ruby minh hoạ cho công thức trên như sau:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Calculate number of Similar Numbers
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Calculate number of Similar Numbers
 # 112 has 112, 121, 211 (3 similar numbers)
 # 100 has 100 (1 similar number)
 # Given integer a (1 &amp;lt;= a &amp;lt;= 2^32)
@@ -923,8 +1000,7 @@ def solution(a)
 
   total_cases
 end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Make #cấp3 great again!&lt;/p&gt;
 
@@ -944,10 +1020,9 @@ end
 
 &lt;h3 id=&quot;môi-trường&quot;&gt;Môi trường:&lt;/h3&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$mysql --version
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$mysql --version
 mysql  Ver 14.14 Distrib 5.7.14, for osx10.11 (x86_64) using  EditLine wrapper
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;CoreI5 @2.6GHz, DDR3 8GB@1600MHz, SSD&lt;/p&gt;
 
@@ -957,7 +1032,7 @@ mysql  Ver 14.14 Distrib 5.7.14, for osx10.11 (x86_64) using  EditLine wrapper
   &lt;li&gt;&lt;strong&gt;Một MySQL instance KHÔNG CẤU HÌNH LOAD BP khi startup:&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; show variables like '%buffer_pool%';
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; show variables like '%buffer_pool%';
 +-------------------------------------+----------------+
 | Variable_name                       | Value          |
 +-------------------------------------+----------------+
@@ -973,14 +1048,13 @@ mysql  Ver 14.14 Distrib 5.7.14, for osx10.11 (x86_64) using  EditLine wrapper
 | innodb_buffer_pool_size             | 268435456      |
 +-------------------------------------+----------------+
 10 rows in set (0.00 sec)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;strong&gt;Một table với structure đơn giản như sau:&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; desc test_data;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; desc test_data;
 +-------------+--------------+------+-----+---------+----------------+
 | Field       | Type         | Null | Key | Default | Extra          |
 +-------------+--------------+------+-----+---------+----------------+
@@ -989,30 +1063,27 @@ mysql  Ver 14.14 Distrib 5.7.14, for osx10.11 (x86_64) using  EditLine wrapper
 | random_str2 | varchar(255) | YES  |     | NULL    |                |
 +-------------+--------------+------+-----+---------+----------------+
 3 rows in set (0.00 sec)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;strong&gt;Với 10triệu records:&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; select count(*) from test_data;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; select count(*) from test_data;
 +----------+
 | count(*) |
 +----------+
 | 10000000 |
 +----------+
 1 row in set (8.38 sec)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;strong&gt;Một file SQL chứa 20k câu query để thực hiện BM, có format:&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;select * from test_data where random_str = &quot;unique_string_value&quot;;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;select * from test_data where random_str = &quot;unique_string_value&quot;;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Với &lt;code class=&quot;highlighter-rouge&quot;&gt;unique_string_value&lt;/code&gt; lần lượt là các giá trị lấy ra từ &lt;code class=&quot;highlighter-rouge&quot;&gt;random_str&lt;/code&gt; của table trên.&lt;/p&gt;
 
@@ -1022,15 +1093,14 @@ mysql  Ver 14.14 Distrib 5.7.14, for osx10.11 (x86_64) using  EditLine wrapper
   &lt;li&gt;&lt;strong&gt;Step0: Khởi động MySQL với option chỉ định KHÔNG LOAD, KHÔNG DUMP BP, và init BP size là 256MB:&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$mysql.server start --innodb_buffer_pool_load_at_startup=0 --innodb_buffer_pool_dump_at_shutdown=0 --innodb_buffer_pool_chunk_size=256M --innodb_buffer_pool_size=256M
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$mysql.server start --innodb_buffer_pool_load_at_startup=0 --innodb_buffer_pool_dump_at_shutdown=0 --innodb_buffer_pool_chunk_size=256M --innodb_buffer_pool_size=256M
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;strong&gt;Step1: Chạy BM command khi không dùng tool &lt;a href=&quot;https://github.com/manhdaovan/mysql_warmup&quot;&gt;mysql-warmup&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$mysqlslap --create-schema=warmup_benchmark --delimiter=&quot;;&quot; --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$mysqlslap --create-schema=warmup_benchmark --delimiter=&quot;;&quot; --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
 Enter password:
 Benchmark
     Average number of seconds to run all queries: 7.562 seconds
@@ -1038,15 +1108,14 @@ Benchmark
     Maximum number of seconds to run all queries: 7.562 seconds
     Number of clients running queries: 1
     Average number of queries per client: 20001
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Ý nghĩa câu lệnh trên là: Mô phỏng 1 client, thực hiện 20k queries, mỗi query là 1 câu select theo value của column random_str (column này đã được index).&lt;br /&gt;
 Giả sử câu lệnh BM chuyển thành: Mô phỏng 20k clients, query cùng 1 nội dung, thì BM ko có ý nghĩa.&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;strong&gt;Step2: Chạy cùng câu lệnh như trên ngay sau đó, để thấy sự khác biệt khi BP được hit thay vì hit vào disk:&lt;/strong&gt;
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$mysqlslap --create-schema=warmup_benchmark --delimiter=&quot;;&quot; --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$mysqlslap --create-schema=warmup_benchmark --delimiter=&quot;;&quot; --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
 Enter password:
 Benchmark
   Average number of seconds to run all queries: 1.740 seconds
@@ -1054,8 +1123,7 @@ Benchmark
   Maximum number of seconds to run all queries: 1.740 seconds
   Number of clients running queries: 1
   Average number of queries per client: 20001
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;&lt;strong&gt;Step 3: Tắt mysql, Khởi động lại máy (cho chắc, tránh MySQL rơi vào sleep mode), sau đó khởi động MySQL service lên như Step0.&lt;/strong&gt;&lt;/p&gt;
@@ -1063,7 +1131,7 @@ Benchmark
   &lt;li&gt;&lt;strong&gt;Step4: Chạy mysql-warmup tool:&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$mysql-warmup -uroot -dwarmup_benchmark
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$mysql-warmup -uroot -dwarmup_benchmark
 
 Input the mysql password:
 my_mysql_root_password
@@ -1072,14 +1140,13 @@ my_mysql_root_password
 2017-02-24 15:33:29 +0900: --- SUCCESS WARMUP FOR TABLE: `warmup_benchmark`.`test_data`
 
 2017-02-24 15:33:29 +0900: --- +++++++ SUCCESS WARMUP FOR DB: warmup_benchmark +++++++
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;strong&gt;Step5: Chạy lại câu lệnh BM như Step1:&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$mysqlslap --create-schema=warmup_benchmark --delimiter=&quot;;&quot; --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$mysqlslap --create-schema=warmup_benchmark --delimiter=&quot;;&quot; --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
 Enter password:
 Benchmark
     Average number of seconds to run all queries: 2.132 seconds
@@ -1087,14 +1154,13 @@ Benchmark
     Maximum number of seconds to run all queries: 2.132 seconds
     Number of clients running queries: 1
     Average number of queries per client: 20001
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;strong&gt;Step6: Chạy lại câu lệnh như trên một lần nữa, xem có sự khác biệt nào không:&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$mysqlslap --create-schema=warmup_benchmark --delimiter=&quot;;&quot; --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$mysqlslap --create-schema=warmup_benchmark --delimiter=&quot;;&quot; --query=benchmark_query_20000_rows.sql --concurrency=1 --iterations=1 -uroot -p
 Enter password:
 Benchmark
     Average number of seconds to run all queries: 1.886 seconds
@@ -1102,8 +1168,7 @@ Benchmark
     Maximum number of seconds to run all queries: 1.886 seconds
     Number of clients running queries: 1
     Average number of queries per client: 20001
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;kết-luận&quot;&gt;Kết luận:&lt;/h3&gt;
 &lt;ul&gt;
@@ -1119,7 +1184,7 @@ Benchmark
 
 &lt;p&gt;Bạn có thể đọc &lt;a href=&quot;https://github.com/manhdaovan/mysql_warmup/blob/master/BENCHMARK.md&quot;&gt;bản tiếng Anh ở đây&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Thu, 02 Mar 2017 00:00:00 +0000</pubDate>
+        <pubDate>Thu, 02 Mar 2017 09:00:00 +0900</pubDate>
         <link>http://localhost:4000/tech/mysql/mytool/2017/03/02/benchmark-mysql-inno-db-buffer-pool/</link>
         <guid isPermaLink="true">http://localhost:4000/tech/mysql/mytool/2017/03/02/benchmark-mysql-inno-db-buffer-pool/</guid>
       </item>
@@ -1184,7 +1249,7 @@ Benchmark
 &lt;/ul&gt;
 
 </description>
-        <pubDate>Mon, 16 Jan 2017 00:00:00 +0000</pubDate>
+        <pubDate>Mon, 16 Jan 2017 09:00:00 +0900</pubDate>
         <link>http://localhost:4000/tech/mysql/mytool/2017/01/16/so-sanh-warmup-commands/</link>
         <guid isPermaLink="true">http://localhost:4000/tech/mysql/mytool/2017/01/16/so-sanh-warmup-commands/</guid>
       </item>
@@ -1272,7 +1337,7 @@ Như đã nói ở trên, muốn sang Nhật làm việc thì nhà tuyển dụn
 &lt;p&gt;Trên đây là vài dòng tâm sự dựa trên kinh nghiệm bản thân mình.
 Chúc bạn may mắn và đạt được công việc mong muốn.&lt;/p&gt;
 </description>
-        <pubDate>Fri, 26 Jun 2015 00:00:00 +0000</pubDate>
+        <pubDate>Fri, 26 Jun 2015 09:00:00 +0900</pubDate>
         <link>http://localhost:4000/opinion/career/2015/06/26/muon-sang-nhat-thi-lam-gi/</link>
         <guid isPermaLink="true">http://localhost:4000/opinion/career/2015/06/26/muon-sang-nhat-thi-lam-gi/</guid>
       </item>
